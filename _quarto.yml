@@ -1,0 +1,44 @@
+project:
+  type: website
+
+website:
+  title: "Nicolas Cachanosky"
+  favicon: /files/icon.png
+  open-graph: true
+  page-footer:
+    center: |
+      © 2025 Nicolas Cachanosky
+  navbar:
+    background: "#041E42" # UTEP Blue, consistent in both modes
+    foreground: "white"   # Makes links/icons white by default
+    logo: "/files/icon.png"
+    left:
+      - href: index.qmd
+        text: Home
+      - href: /pages/publications
+        text: Publications
+      - href: /pages/books
+        text: Books
+      - text: Blogs
+        menu:
+          - text: Economic Order
+            href: https://economicorder.substack.com/
+          - text: Public Choice in Latin America
+            href: https://publicchoicelatinamerica.substack.com/       
+    tools:
+      - icon: "bi-moon-stars"
+        toggle: color-scheme
+      # Optional: Add search
+      - icon: "bi-search"
+        href: "#"
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: cosmo
+    css: styles.css
+    toc: true
+    font:
+      family: Roboto Condensed
+      source: google

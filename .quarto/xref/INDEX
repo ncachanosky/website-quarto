@@ -1,0 +1,23 @@
+{
+  "index.qmd": {
+    "index.html": "01eb5ca8"
+  },
+  "about.qmd": {
+    "about.html": "e5664fee"
+  },
+  "notes.md": {
+    "notes.html": "0af3d14d"
+  },
+  "publications/index.qmd": {
+    "index.html": "4ec1daa0"
+  },
+  "pages/books/index.qmd": {
+    "index.html": "0eb151d2"
+  },
+  "pages/publications/index.qmd": {
+    "index.html": "7807923d"
+  },
+  "slides/milei/milei.md": {
+    "milei.html": "f426c678"
+  }
+}

@@ -1,0 +1,147 @@
+/* ================================
+   UTEP Brand Colors
+   ================================ */
+:root {
+  --utep-blue: #041E42;   /* UTEP Blue */
+  --utep-orange: #FF8200; /* UTEP Orange */
+  --utep-silver: #B1B3B3; /* UTEP Silver */
+  --background-color: #ffffff;
+  --text-color: black;
+}
+
+/* Dark mode overrides */
+[data-bs-theme="dark"] {
+  --background-color: #121212;
+  --text-color: var(--utep-silver);
+}
+
+/* Smooth transitions for theme changes */
+html, body, a, a:hover {
+  transition:
+    background-color 0.4s ease-in-out,
+    color 0.4s ease-in-out;
+}
+
+/* ================================
+   Navbar
+   ================================ */
+
+/* Keep navbar UTEP Blue in both modes */
+.navbar {
+  background-color: var(--utep-blue) !important;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  min-height: 60px;
+}
+
+/* Make navbar icons & text white */
+.navbar a,
+.navbar .nav-link,
+.navbar .navbar-brand,
+.navbar .quarto-color-scheme-toggle,
+.navbar .quarto-search {
+  color: white !important;
+}
+
+.navbar .quarto-color-scheme-toggle svg,
+.navbar .quarto-search svg {
+  fill: white !important;
+}
+
+/* Hover color for navbar links */
+.navbar a.nav-link:hover {
+  color: var(--utep-orange) !important;
+}
+
+/* Dropdown menu background to match navbar dark blue */
+.navbar .dropdown-menu {
+  background-color: #041E42 !important;
+  border: none !important;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  display: none;
+  transform: translateY(10px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  will-change: opacity, transform;
+}
+
+.navbar .dropdown.show .dropdown-menu {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Dropdown menu links hover - UTEP orange */
+.navbar .dropdown-menu a.dropdown-item:hover,
+.navbar .dropdown-menu a.dropdown-item:focus {
+  color: #FF8200 !important;
+  background-color: transparent !important;
+}
+
+/* ================================
+   Typography
+   ================================ */
+body {
+  font-family: 'Roboto Condensed', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  line-height: 1.6;
+  font-size: 18px;
+
+  /* Improve font rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--utep-blue);
+}
+
+/* ================================
+   Links
+   ================================ */
+a {
+  text-decoration: none;
+  color: var(--utep-blue);
+  transition: color 0.3s ease-in-out;
+}
+a:hover {
+  color: var(--utep-orange);
+}
+
+/* ================================
+   Buttons
+   ================================ */
+
+/* Primary button */
+a.button-link {
+  display: inline-block;
+  padding: 0.2rem 0.4rem;
+  color: var(--utep-blue);
+  border: 2px solid var(--utep-blue);
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+}
+a.button-link:hover {
+  background-color: var(--utep-orange);
+  color: white;
+  border-color: var(--utep-orange);
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ================================
+   About section
+   ================================ */
+/* Links and icons */
+#about .links a,
+#about .links a svg {
+  color: white;  /* default color */
+  transition: color 0.3s ease-in-out, fill 0.3s ease-in-out;
+}
+
+#about .links a:hover,
+#about .links a:hover svg {
+  color: var(--utep-orange) !important;
+  fill: var(--utep-orange) !important; /* For SVG icons */
+}

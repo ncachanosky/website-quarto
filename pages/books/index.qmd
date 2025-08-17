@@ -1,0 +1,94 @@
+---
+title: Books
+
+comments: false
+
+---
+
+::: columns
+
+::: {.column width="30%"}
+![](/pages/books/Book_5.jpg){width=80%}
+:::
+
+::: {.column width="70%"}
+### [Dolarización: Una solución para la Argentina](https://dolarizacionunasolucionparaargentina.com/)  
+
+2005 | **Claridad**  
+ISBN: 978-950-620-937-7  
+with [Emilio Ocampo](https://ucema.edu.ar/cgi-bin/profesores/listap.pl?id=15534)
+:::
+
+:::
+
+---
+
+::: columns
+
+::: {.column width="30%"}
+![](/pages/books/Book_4.jpg){width=80%}
+:::
+
+::: {.column width="70%"}
+### [Capital and Finance: Theory and History](https://www.routledge.com/Capital-and-Finance-Theory-and-History/Lewin-Cachanosky/p/book/9780367143725)
+
+2020 | **Routledge**  
+ISBN-13: 978-0367143725  
+with [Peter Lewin](http://www.utdallas.edu/~plewin/)
+:::
+
+:::
+
+---
+
+::: columns
+
+::: {.column width="30%"}
+![](/pages/books/Book_3.jpg){width=80%}
+:::
+
+::: {.column width="70%"}
+### [Austrian Capita Theory: A Modern Survey of the Essentials](https://www.cambridge.org/us/academic/subjects/economics/economics-general-interest/austrian-capital-theory-modern-survey-essentials?format=PB&isbn=9781108735889)
+
+2019 | **Cambridge University Press**  
+ISBN-13: 978-1108735889  
+with [Peter Lewin](http://www.utdallas.edu/~plewin/)
+:::
+
+:::
+
+---
+
+::: columns
+
+::: {.column width="30%"}
+![](/pages/books/Book_2.jpg){width=80%}
+:::
+
+::: {.column width="70%"}
+### [Monetary Equilibrium and Nominal Income Targeting](https://www.routledge.com/Monetary-Equilibrium-and-Monetary-Theory-The-Case-of-Nominal-Income-Targeting/Cachanosky/p/book/9781138215023)
+
+2019 | **Routledge**  
+ISBN-13: 978-1138215023 
+:::
+
+:::
+
+---
+
+::: columns
+
+::: {.column width="30%"}
+![](/pages/books/Book_1.jpg){width=80%}
+:::
+
+::: {.column width="70%"}
+### [Reflexiones sobre la economía argentina](https://www.amazon.com/Reflexiones-econom%C3%ADa-argentina-Biblioteca-Spanish-ebook/dp/B0768L23G2/ref=sr_1_17?ie=UTF8&qid=1507660240&sr=8-17&keywords=instituto+acton)
+
+2017 | **Instituto Acton Argentina**  
+ASIN: B0768L23G2
+:::
+
+:::
+
+
