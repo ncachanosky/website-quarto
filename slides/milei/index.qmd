@@ -1,0 +1,34 @@
+---
+title: "Milei"
+subtitle: "A Public Choice Perspective"
+author: "Nicolas Cachanosky"
+institute: "The University of Texas at El Paso | Center for Free Enterprise"
+format:
+  revealjs:
+    theme: default
+    css: /slides/styles-reveal-UTEP.css
+    slide-number: true
+    show-slide-number: all
+    title-slide-attributes:
+      data-background-color: "#041E42"
+---
+
+## Section Title {.section-slide}
+
+::: {.utep-callout}
+### Important Point
+This is a highlighted call-out box.
+:::
+
+---
+
+::: {.two-columns}
+## My title
+
+:::: {.column}
+Left column content
+::::
+:::: {.column}  
+Right column content
+::::
+:::

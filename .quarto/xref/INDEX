@@ -19,5 +19,8 @@
   },
   "slides/milei/milei.md": {
     "milei.html": "f426c678"
+  },
+  "slides/milei/index.qmd": {
+    "index.html": "3eb4dd06"
   }
 }

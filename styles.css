@@ -58,7 +58,6 @@ html, body, a, a:hover {
   background-color: #041E42 !important;
   border: none !important;
   box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  display: none;
   transform: translateY(10px);
   transition: opacity 0.25s ease, transform 0.25s ease;
   will-change: opacity, transform;
