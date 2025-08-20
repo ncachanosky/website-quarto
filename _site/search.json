@@ -1,17 +1,17 @@
 [
   {
-    "objectID": "slides/milei/milei.html#can-milei-reform-argentina-back-to-prosperity",
-    "href": "slides/milei/milei.html#can-milei-reform-argentina-back-to-prosperity",
+    "objectID": "slides/milei/index.html#section-title",
+    "href": "slides/milei/index.html#section-title",
     "title": "Milei",
-    "section": "Can Milei Reform Argentina Back to Prosperity?",
-    "text": "Can Milei Reform Argentina Back to Prosperity?\nNicolas Cachanosky\nUTEP Center for Free Enterprise\nWoody L. Hunt College of Business"
+    "section": "Section Title",
+    "text": "Section Title\n\nImportant Point\nThis is a highlighted call-out box."
   },
   {
-    "objectID": "slides/milei/milei.html#the-new-rise-of-populism",
-    "href": "slides/milei/milei.html#the-new-rise-of-populism",
+    "objectID": "slides/milei/index.html#my-title",
+    "href": "slides/milei/index.html#my-title",
     "title": "Milei",
-    "section": "The New Rise of Populism",
-    "text": "The New Rise of Populism"
+    "section": "My title",
+    "text": "My title\n\nLeft column content\n\nRight column content"
   },
   {
     "objectID": "pages/books/index.html",
@@ -110,54 +110,5 @@
     "title": "Publications",
     "section": "Working Papers",
     "text": "Working Papers\n[04] 2024. Conflict Theories of Inflation: A Note\nC4FE Working Paper Series 2024/06\nNicolas Cachanosky | Emilio Ocampo\n[03] 2024. Dollarization and Default Risk: A Brief Note\nC4FE Working Paper Series 2024/06\nEmilio Ocampo | Nicolas Cachanosky\n[02] 2023. Dollarization Dynamics: A Comment\nC4FE Working Paper Series 2024/02 Emilio Ocampo | Nicolas Cachanosky\n[01] 2023. Is Inflation Caused by Conflict\nC4FE Working Paper Series 2024/01 Nicolas Cachanosky | Emilio Ocampo"
-  },
-  {
-    "objectID": "slides/milei/milei.html",
-    "href": "slides/milei/milei.html",
-    "title": "Milei",
-    "section": "",
-    "text": "This is a highlighted call-out box.\n\n\n\nLeft column content\n\n\nRight column content"
-  },
-  {
-    "objectID": "slides/milei/milei.html#section-title",
-    "href": "slides/milei/milei.html#section-title",
-    "title": "Milei",
-    "section": "",
-    "text": "This is a highlighted call-out box.\n\n\n\nLeft column content\n\n\nRight column content"
-  },
-  {
-    "objectID": "slides/milei/index.html",
-    "href": "slides/milei/index.html",
-    "title": "Milei",
-    "section": "",
-    "text": "This is a highlighted call-out box.\n\n\n\nLeft column content\n\n\nRight column content"
-  },
-  {
-    "objectID": "slides/milei/index.html#section-title",
-    "href": "slides/milei/index.html#section-title",
-    "title": "Milei",
-    "section": "Section Title",
-    "text": "Section Title\n\nImportant Point\nThis is a highlighted call-out box."
-  },
-  {
-    "objectID": "slides/milei/index.html#my-title",
-    "href": "slides/milei/index.html#my-title",
-    "title": "Milei",
-    "section": "My title",
-    "text": "My title\n\nLeft column content\n\nRight column content"
-  },
-  {
-    "objectID": "slides/milei/index.html#milei",
-    "href": "slides/milei/index.html#milei",
-    "title": "Milei",
-    "section": "Milei",
-    "text": "Milei\nA Public Choice Perspective\nNicolas Cachanosky The University of Texas at El Paso Center for Free Enterprise"
-  },
-  {
-    "objectID": "slides/milei/index.html#a-public-choice-perspective",
-    "href": "slides/milei/index.html#a-public-choice-perspective",
-    "title": "Milei",
-    "section": "A Public Choice Perspective",
-    "text": "A Public Choice Perspective\nNicolas Cachanosky The University of Texas at El Paso Center for Free Enterprise"
   }
 ]

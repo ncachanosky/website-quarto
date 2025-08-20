@@ -2,7 +2,9 @@
 title: "Milei"
 subtitle: "A Public Choice Perspective"
 author: "Nicolas Cachanosky"
-institute: "The University of Texas at El Paso | Center for Free Enterprise"
+institute: 
+  <span>The University of Texas at El Paso</span><br>
+  <span>Center for Free Enterprise</span>
 format:
   revealjs:
     theme: default
@@ -12,15 +14,6 @@ format:
     title-slide-attributes:
       data-background-color: "#041E42"
 ---
-
-  Nicolas Cachanosky<br>
-  <span style="font-size:0.60em; font-weight:normal">Director | Center for Free Enterprise</span><br>
-  <span style="font-size:0.60em; font-weight:normal">
-    <a href="https://www.utep.edu/" target="_blank" style="color:inherit; text-decoration:none;">
-      The University of Texas at El Paso
-    </a>
-  </span>
-
 
 ## Section Title {.section-slide}
 
