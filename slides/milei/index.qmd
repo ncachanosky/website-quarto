@@ -6,12 +6,21 @@ institute: "The University of Texas at El Paso | Center for Free Enterprise"
 format:
   revealjs:
     theme: default
-    css: /slides/styles-reveal-UTEP.css
+    css: my-style.css
     slide-number: true
     show-slide-number: all
     title-slide-attributes:
       data-background-color: "#041E42"
 ---
+
+  Nicolas Cachanosky<br>
+  <span style="font-size:0.60em; font-weight:normal">Director | Center for Free Enterprise</span><br>
+  <span style="font-size:0.60em; font-weight:normal">
+    <a href="https://www.utep.edu/" target="_blank" style="color:inherit; text-decoration:none;">
+      The University of Texas at El Paso
+    </a>
+  </span>
+
 
 ## Section Title {.section-slide}
 
