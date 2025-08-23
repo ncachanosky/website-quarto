@@ -2,9 +2,11 @@
 title: "Milei"
 subtitle: "A Public Choice Perspective"
 author: "Nicolas Cachanosky"
-institute: 
+institution:
   <span>The University of Texas at El Paso</span><br>
   <span>Center for Free Enterprise</span>
+title-slide-attributes:
+  data-background-color: "#041E42"
 format:
   revealjs:
     theme: default
@@ -13,24 +15,21 @@ format:
     show-slide-number: all
     title-slide-attributes:
       data-background-color: "#041E42"
+    template-partials:
+      - title-slide.html
 ---
 
-## Section Title {.section-slide}
+## The Context {.section-slide}
+### Explaining Milei's rise to power
 
-::: {.utep-callout}
-### Important Point
-This is a highlighted call-out box.
-:::
+## The Context
 
----
+* 2001: The Argentine Great Depression
+* What did the *median voter* learn from the 2001 crisis?
+  * Neo-liberal reforms do not work
+  * Free market policies are highly corrupt
+  * Economic growth takes place at the expense of the poor
+  * International organizations and financial institutinos are bad actors
+  * The goverment must "do something"
+* Perfect setting the for the rise of a new left-leaning populist regime
 
-::: {.two-columns}
-## My title
-
-:::: {.column}
-Left column content
-::::
-:::: {.column}  
-Right column content
-::::
-:::

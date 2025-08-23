@@ -72,6 +72,7 @@
 .reveal section.title-slide {
   background-color: var(--utep-blue) !important;
   color: white !important;
+  position: relative;
 }
 
 /* Force blue background on all title slide containers */
@@ -88,6 +89,37 @@
 .reveal .title-slide section,
 .reveal .title-slide div {
   background-color: transparent !important;
+}
+
+/* Logo positioning on title slide */
+.reveal .title-slide::before {
+  content: "";
+  background-image: url("path/to/utep-logo.png"); /* Update this path */
+  background-size: 150px auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 150px;
+  height: 100px;
+  z-index: 10;
+}
+
+/* Alternative: Logo at bottom center */
+.reveal .title-slide::after {
+  content: "";
+  background-image: url("path/to/utep-logo.png"); /* Update this path */
+  background-size: 100px auto;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 60px;
+  z-index: 10;
 }
 
 .reveal .title-slide h1,
