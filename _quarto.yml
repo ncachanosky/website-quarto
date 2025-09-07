@@ -36,7 +36,7 @@ format:
   html:
     theme:
       light: cosmo
-      dark: cosmo
+      dark: darkly
     css: styles.css
     toc: true
     font:
