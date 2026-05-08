@@ -21,7 +21,7 @@ website:
         text: Publications
       - href: /pages/books
         text: Books
-      - href: /lecture-notes/QMB-5311/index.html
+      - href: /books
         text: Teaching
       - text: /teaching
         menu:
