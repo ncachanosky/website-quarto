@@ -14,7 +14,7 @@ comments: false
 ::: {.column width="70%"}
 ### [Dolarización: Una solución para la Argentina](https://dolarizacionunasolucionparaargentina.com/)  
 
-2005 | **Claridad**  
+2022 | **Claridad**  
 ISBN: 978-950-620-937-7  
 with [Emilio Ocampo](https://ucema.edu.ar/cgi-bin/profesores/listap.pl?id=15534)
 :::

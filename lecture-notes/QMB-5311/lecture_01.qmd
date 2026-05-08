@@ -1,0 +1,1456 @@
+---
+title: "Descriptive Statistics"
+subtitle: "Lecture 1"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: true
+    code-tools: true
+    fig-width: 10
+    fig-height: 6
+---
+
+## Learning Objectives {.unnumbered}
+
+By the end of this chapter, you will be able to:
+
+1.  ✅ Understand and apply measures of location (mean, median, mode, percentiles, quartiles)  
+2.  ✅ Calculate and interpret measures of variability (range, IQR, variance, standard deviation, coefficient of variation)  
+3.  ✅ Assess distribution characteristics (skewness, z-scores, outliers)  
+4.  ✅ Create and interpret boxplots for data comparison  
+5.  ✅ Measure association between two variables using covariance and correlation
+
+## Introduction: The \$2.3 Million Question
+
+It's 9:00 AM on January 16, 2025. Sarah Chen, CEO of TechFlow Solutions, sits in the executive conference room reviewing her marketing team's Q4 2024 performance report. Her coffee grows cold as she reads:
+
+> Total revenue for Q4 was **\$2.3 million**, which is up from \$2.1 million in Q3. That's an increase of about \$200,000 or roughly 9.5%. The average monthly revenue was around \$767,000... Daily sales ranged quite a bit—our lowest day was around \$18,000 and our highest was \$52,000 during the holiday rush. Most days we did somewhere in the middle range... We had some outliers on both ends.
+
+Sarah sets down the report and looks at her leadership team. "What decisions can we actually make from this?"
+
+Silence.
+
+"Should we discontinue Product D? Expand in Asia-Pacific? Hire more customer service staff? This report tells me we made \$2.3 million, but it doesn't tell me what to do about it."
+
+Her CFO clears his throat. "The numbers are vague. 'Around \$767,000'? 'Somewhere in the middle'? I can't forecast with that. I can't set budgets with that."
+
+Sarah slides the report across the table. "I want this redone. I want precision. I want statistics that tell us where to invest, what to fix, and which assumptions to challenge. And I want it by end of week."
+
+The marketing team scrambles. They realize they lack the statistical expertise to transform their vague observations into actionable insights. In desperation, they reach out to the EMBA program at The University of Texas at El Paso, hoping to find students who can save the day.
+
+Enter David and Maria, two EMBA students specializing in quantitative methods. Within hours of receiving the raw data, they begin transforming vague impressions into statistical precision.
+
+::: callout-warning
+## The Cost of Vague Analysis
+
+Every year, businesses lose millions because of imprecise statistical reporting:  
+
+- "Around" numbers prevent tracking month-over-month changes  
+- "Somewhere in the middle" doesn't help set performance targets  
+- "Some outliers" misses both problems (to fix) and opportunities (to leverage)  
+- Vague language makes recommendations indefensible to stakeholders  
+
+**The fix**: Calculate exact values. Use proper statistical measures. Quantify variation.
+:::
+
+This chapter is about the difference between those two reports. The gap between "around" and "exactly." Between "some outliers" and "15% of tickets exceed our 21-hour threshold." Between data and decisions.
+
+Welcome to descriptive statistics. The art and science of making data speak clearly.
+
+## Types of Data: Knowing What You're Working With
+
+Before the analytics team at TechFlow could redo their analysis, they faced a fundamental question: What kind of data do we actually have?
+
+It sounds simple, but this question matters. Calculate a mean for customer satisfaction categories (Very Unsatisfied, Unsatisfied, Neutral, Satisfied, Very Satisfied), and you'll get a number that means nothing. Try to find an average color, and you'll waste everyone's time.
+
+### The Building Blocks: Elements, Variables, and Observations
+
+Think of your data as a spreadsheet. Each row represents an **element**—the thing you're studying. At TechFlow, one element might be a single customer order. Another analysis might treat each product as an element, or each region, or each day.
+
+The columns are your **variables**—the characteristics you've measured. For a customer order, variables might include: order amount, product purchased, customer region, satisfaction score, and response time if they contacted support.
+
+Each cell (the intersection of a row and column) is an **observation**. It's the specific value recorded. Order #1247 bought Product A for \$220 from North America with a satisfaction score of 4.5 out of 5.
+
+Understanding this structure matters because it determines what questions you can ask. If your elements are orders, you can analyze typical order size. If your elements are customers, you can analyze purchase frequency. Same underlying data, different analytical structure, different insights.
+
+### Categorical vs. Quantitative: The Great Divide
+
+David pulls up the customer file.
+
+"Okay, we've got `product type`, that's categorical. `Region`, also categorical. `Order amount`, that's quantitative. `Satisfaction rating`... wait, is that categorical or quantitative?"
+
+Maria leans over. "It's ordinal. The numbers have order; 5 is better than 4, but the distance between them isn't necessarily equal. Someone going from 2 to 3 might be a bigger jump than 4 to 5."
+
+After their discussion, David and Maria identify three types of variables in the TechFlow data.
+
+**Categorical (qualitative) data** divides observations into groups. Some categorical variables are **nominal**, pure categories with no inherent order, like product type (A, B, C, D), region (North America, Europe, Asia-Pacific), or color. For nominal data, you can count how many observations fall into each category, calculate percentages, and identify which category appears most often (the mode). But you can't rank them or calculate an average.
+
+Other categorical variables are **ordinal**, they have a meaningful order. Customer satisfaction ratings (1 through 5), education levels (high school, bachelor's, master's, doctorate), or performance categories (poor, fair, good, excellent) all have a natural sequence. With ordinal data, you can do everything you'd do with nominal data, plus you can calculate the median to find the middle category. But here's the catch: the distances between categories aren't necessarily equal. Moving from "dissatisfied" to "neutral" might represent a bigger psychological shift than moving from "satisfied" to "very satisfied," even though both are one-step moves on a five-point scale.
+
+**Quantitative (numerical) data** represents actual measurements you can do math with—sales revenue in dollars, response time in hours, age in years, temperature, weight. These are **interval** or **ratio** variables, and you can perform all mathematical operations on them: addition, subtraction, multiplication, division, mean, standard deviation. Most business metrics fall into this category.
+
+The key distinction David and Maria emphasize: ordinal data looks like numbers but behaves like categories. Just because satisfaction is rated 1 through 5 doesn't mean you can treat those numbers like actual measurements. The distance between 1 and 2 may not equal the distance between 4 and 5.
+
+::: callout-warning
+## Common Mistake: Calculating Mean for Ordinal Data
+
+**Wrong**: "Average satisfaction is 3.7"
+
+**Problem**: The distance between 3 and 4 may not equal the distance between 4 and 5. A mean of 3.7 implies precision that doesn't exist.
+
+**Better**: "Median satisfaction is 4" or "70% of customers rated us 4 or 5"
+
+**Exception**: If you have large sample sizes and treat the scale as approximately continuous, mean can be acceptable—but report median too.
+:::
+
+### The Time Dimension: Cross-Sectional, Time Series, and Panel Data
+
+David pulls up three different analyses.
+
+"Report A looks at all four products' Q4 performance—snapshot at one point in time. Report B tracks Product A's sales monthly from 2020 to 2025. Report C tracks all four products monthly over the same period. These need different approaches."
+
+A dataset can have one of the following three structures:
+
+-   **Cross-Sectional**: Different entities, same time point
+    -   Example: Q4 2024 sales for Products A, B, C, D
+    -   Order doesn't matter (can scramble rows)
+    -   Enables: Comparison across entities
+    -   Use for: "Which product/region/customer is best?"
+-   **Time Series**: One entity, multiple time points
+    -   Example: Product A monthly sales 2020-2025
+    -   Order matters enormously (dates carry information)
+    -   Enables: Trend identification, seasonality, forecasting
+    -   Use for: "How are we changing over time?"
+-   **Panel Data**: Multiple entities × multiple time points
+    -   Example: All products' monthly sales 2020-2025
+    -   Most information-rich, most complex
+    -   Enables: Both cross-sectional and time series analysis
+    -   Use for: "How do differences across products evolve over time?"
+
+Maria nods. "For the Q4 analysis, we're mostly cross-sectional. But Sarah wants to know if Product D's poor performance is new or ongoing. That requires time series thinking."
+
+## Measures of Location: Finding the Center
+
+Sarah's directive was clear: precision, not approximation. The analytics team starts with the most basic question: What is typical performance?
+
+But "typical" turns out to be more complicated than it sounds.
+
+### The Mean: Precision Matters
+
+David pulls up the monthly revenue numbers.
+
+"October was \$720,000. November hit \$780,000. December reached \$800,000. The marketing report said 'around \$767,000' for average monthly revenue. Let me calculate the exact mean."
+
+$$\bar{x} = \frac{720{,}000 + 780{,}000 + 800{,}000}{3} = \frac{2{,}300{,}000}{3} = \$766{,}666.67$$
+
+"So it's \$766,667, not 'around \$767,000.' Big difference?" Maria asks.
+
+"Track this over six months," David responds. "Month 1: 'around \$767k.' Month 2: 'around \$770k.' Month 3: 'around \$773k.' You report to Sarah that revenue is growing, and she asks by how much. You can't answer because 'around' doesn't give you enough precision to measure change."
+
+::: callout-note
+## Definition: Sample Mean
+
+$$\bar{x} = \frac{\sum_{i=1}^{n} x_i}{n} = \frac{x_1 + x_2 + \cdots + x_n}{n}$$
+
+**In plain English**: Add up all values, divide by how many you have.
+
+**Population mean** (when you have ALL possible values): $$\mu = \frac{\sum_{i=1}^{N} x_i}{N}$$
+
+**What it represents**: The "center of gravity" of your data. Each observation "pulls" the mean toward it.
+
+------------------------------------------------------------------------
+
+**Excel**
+```markdown
+`=AVERAGE(range)`
+```
+:::
+
+::: callout-warning
+## The First Lesson: Calculate It, Don't Estimate It
+
+"Around $767,000" vs. "$766,667"
+
+**Why precision matters**:  
+
+- Can't track month-over-month changes with "around"  
+- Can't calculate % achievement of targets  
+- Can't defend budget requests to finance  
+- Can't identify meaningful trends vs. noise
+
+**Business Rule**: If it's worth reporting, it's worth calculating exactly.
+:::
+
+### When Equal Isn't Equal: Weighted Mean
+
+Maria moves to the customer satisfaction analysis. "We surveyed 150 customers. Simple mean satisfaction score is 4.1 out of 5. Looks good."
+
+David frowns. "But wait; are all customers equally important? What if we weight by their revenue contribution?"
+
+He pulls up the data. The top 10% of customers by order value have average satisfaction of 3.8. The bottom 50% have average satisfaction of 4.3.
+
+"If we treat all responses equally, we get 4.1. But our high-value customers, the ones generating the most revenue, are actually less satisfied. That changes the story completely."
+
+::: callout-note
+## Definition: Weighted Mean
+
+$$\bar{x}_w = \frac{\sum w_i x_i}{\sum w_i} = \frac{w_1x_1 + w_2x_2 + \cdots + w_nx_n}{w_1 + w_2 + \cdots + w_n}$$
+
+where each observation $x_i$ has weight $w_i$.
+
+**When to use**: Not all observations are equally important. Weight by:  
+
+- Revenue (for customer metrics) 
+- Investment amount (for portfolio returns) 
+- Volume (for supplier quality)  
+- Credit hours (for GPA)  
+- Sales volume (for product profitability)
+
+------------------------------------------------------------------------
+
+**Excel**
+```markdown
+`=SUMPRODUCT(values_range, weights_range) / SUM(weights_range)`
+```
+:::
+
+### When Multiplication Matters: Geometric Mean
+
+"Here's another problem," David says, pulling up a different analysis. "Product C pricing. Year 1: increased price 20%. Year 2: decreased price 10%. Marketing wants to report average annual price change."
+
+Maria calculates: "(20% + (-10%))/2 = 5% average annual change."
+
+"Wrong, that's a common mistake" David says gently. "Watch what actually happens to a \$100 product: Year 1: \$100 × 1.20 = \$120. Year 2: \$120 × 0.90 = \$108. That's an 8% total increase over two years, or 3.9% average annual, not 5%."
+
+::: callout-note
+## Definition: Geometric Mean
+
+$$\bar{x}_g = \sqrt[n]{x_1 \times x_2 \times \cdots \times x_n} = (x_1 \cdot x_2 \cdot \ldots \cdot x_n)^{1/n}$$
+
+**For growth rates**: Convert percentages to multipliers (1 + rate), calculate geometric mean, subtract 1.
+
+**What it represents**: The constant rate that would produce the same cumulative effect as the varying rates.
+
+**When to use**:
+
+-   Investment returns over multiple periods
+-   Inflation rates averaged over years
+-   Population growth rates
+-   Any compound interest calculation
+-   Productivity improvements over time
+-   Price changes over multiple periods
+
+**Red flag**: If your calculation involves multiplying growth factors, you need geometric mean.
+
+------------------------------------------------------------------------
+
+**Excel**
+```markdown
+`=GEOMEAN(range)`  
+For growth rates:  
+`=GEOMEAN(1+rate1, 1+rate2, 1+rate3) - 1`
+```
+:::
+
+### The Median: When the Middle Matters More
+
+Maria pulls up the customer service response time data.
+
+"Mean response time is 7.5 hours. That seems reasonable."
+
+David scrolls through the raw data. "Look closer. Most tickets get responses in 3-5 hours. But we've got tickets here at 24 hours, 36 hours, one at 52 hours. Those outliers are pulling the mean way up."
+
+```{=html}
+<!--
+![Histogram: Response times, mean, and median](/pages/lecture_notes/QMB-5311/lecture_01/fig_histogram_2.png)
+-->
+```
+
+He calculates the median by sorting all 200 response times and finding the middle value: 4.2 hours.
+
+"So typical response time is actually 4.2 hours, not 7.5. The 7.5 is misleading because a few very slow responses are skewing it."
+
+| Use **mean** when              | Use **median** when       |
+|:------------------------------:|:-------------------------:|
+| Data is symmetric              | Data is skewed            |
+| No extreme outliers            | Outliers are present      |
+| You care about all values      | You care about robustness |
+| Mathematical properties matter | Report "typical' values"  |
+
+: Decision Rule: Mean vs. Median
+
+::: callout-note
+## Definition: Median
+
+The middle value when data are sorted in ascending order.
+
+**Calculation**:  
+
+- **Odd n**: The middle observation  
+- **Even n**: Average of the two middle observations
+
+**What it represents**: The point where 50% of data is below and 50% is above. Not affected by how extreme the extreme values are.
+
+------------------------------------------------------------------------
+
+**Excel**
+```markdown
+`=MEDIAN(range)`
+```
+:::
+
+Maria pulls up real estate data as an analogy. "Five houses sold: \$200k, \$210k, \$225k, \$230k, \$1.2M. The mean is \$413k. But would you advertise 'average home price \$413k'? That's misleading. The median of \$225k better represents the typical home."
+
+This is why real estate agents, salary surveys, and income reports use median. One billionaire in a room doesn't make everyone else rich, but it makes the mean useless.
+
+### Percentiles: Drawing Lines in the Data
+
+Sarah enters the analytics team's workspace. "I need to launch a VIP customer program. Who qualifies?"
+
+David asks, "What's the criteria?"
+
+"Top 10% by order value."
+
+This is a percentile question. The 90th percentile is the value below which 90% of customers fall, meaning the top 10% are above it.
+
+::: callout-note
+## Definition: Percentiles
+
+The $p^{th}$ percentile is the value below which $p\%$ of the data falls.
+
+**Position formula**: $$x_p = \frac{p}{100}(n + 1)$$
+
+**Interpretation**:  
+
+- *p*th percentile: *p*% of data below, (1-*p*%) above
+
+------------------------------------------------------------------------
+
+**Excel**
+```markdown
+`=PERCENTILE.INC(range, p/100)`  
+`=PERCENTILE.INC(range, 0.90)` - *example for 90th percentile*
+```
+:::
+
+For 90th percentile with 100 customer orders: $$L_{90} = \frac{90}{100}(100 + 1) = 90.9$$
+
+This means the 90th percentile is 90% of the way between the 90th and 91st observations (when sorted).
+
+David sorts the 100 customer orders and finds:\
+
+* 90th observation: $420  
+* 91st observation: $435
+
+$$P_{90} = 420 + 0.9(435 - 420) = 420 + 13.5 = \$433.50$$
+
+"Anyone who orders \$434 or more qualifies for VIP," David announces.
+
+Sarah nods. "We have the standard percentiles (Q1, Q2, and Q3), but we could create tiers: Basic (\<\$175), Standard (\$175-\$310), Premium (\>\$310). That's actionable."
+
+| Quartile             | Interpretation    | TechFlow example              |
+|----------------------|-------------------|-------------------------------|
+| 25th percentile (Q1) | 25% of data below | Bottom 25% (low spenders)     |
+| 50th percentile (Q2) | The median        | Median customer               |
+| 75th percentile (Q3) | 75% of data below | Top 25% (high spenders)       |
+| 90th percentils      | 90% of data below | Top 90% (VIP clients)         |
+
+: Quartile and percentile interpretation and example application
+
+## Measures of Variability: Understanding Consistency
+
+The next day, Sarah returns with a harder question. "Product D did \$250,000 in Q4. Is that bad?"
+
+David looks confused. "Compared to what?"
+
+"Exactly," Sarah says. "If all our products do \$250k ± \$10k, then Product D is normal. If they typically do \$600k ± \$50k, then Product D is a disaster. I need context. I need to understand variation."
+
+David nods. "That's exactly the right question. Location tells you the center—where you are on average. But variability tells you the spread—how consistent you are around that center."
+
+He pulls up a comparison on his screen. "Look at two hypothetical businesses. Business A averages $100k in monthly sales, give or take $5k. Business B also averages $100k, but give or take $60k. Same mean, completely different businesses."
+
+"Business A is predictable," Maria adds. "You can plan inventory, set budgets, manage cash flow. Business B? You might have $40k one month and $160k the next. Same average, but you need way more safety margins, bigger cash reserves, different strategies entirely."
+
+"So variability is about consistency, predictability, risk, and reliability," David summarizes. "Two numbers that look identical on average can represent fundamentally different business realities. That's why we measure spread, not just center."
+
+### Range: Simple but Dangerous
+
+Maria starts simple. "Product sales range from \$250,000 to \$890,000. Range is $640,000."
+
+"Okay, but what does that tell us?" Sarah asks.
+
+"That there's... variation?" Maria says uncertainly.
+
+David jumps in. "The problem with range is it only uses two numbers, the min and max. Black Friday could have spiked the max. A data entry error could have created the min. Range ignores almost all of your data."
+
+::: callout-note
+## Definition: Range
+
+$$R = x_{max} - x_{min}$$
+
+**Simplest measure of spread**: Maximum value minus minimum value.
+
+**Advantages**: Easy to calculate and understand.
+
+**Disadvantages**: Extremely sensitive to outliers, uses only 2 data points, ignores the bulk of your data.
+
+**The problem**: One outlier destroys the range.
+
+------------------------------------------------------------------------
+
+**Excel**
+```markdown
+`=MAX(range) - MIN(range)`
+```
+:::
+
+### IQR: The Robust Alternative
+
+"What about the middle 50% of daily sales?" Sarah asks. "Ignore the extremes. What's the range of typical days?"
+
+This is the **Interquartile Range (IQR)**:
+
+$$IQR = Q_3 - Q_1$$
+
+For TechFlow's 92 days of sales: 
+
+* Q_1 = $22,500 (25th percentile)  
+* Q_3 = $28,000 (75th percentile)  
+* IQR = $28,000 - $22,500 = $5,500
+
+"So a typical day varies by about $5,500 from the lower to upper middle," David explains. "This is robust, outliers don't affect it." The IQR solves the range problem—corporate bulk purchases don't distort it.
+
+"Why is IQR better than range?" Sarah asks.
+
+David explains: "Robustness. The middle 50% tells you what's normal without being fooled by outliers. Watch what happens if we get one unusual day."
+
+He types quickly. "One day we get a $100,000 corporate bulk purchase. The range jumps from $5,500 to $82,000—completely meaningless now. But the IQR? Still $5,500. It ignored that one weird day and kept showing us what typical days look like."
+
+"So use IQR for setting realistic performance targets, defining typical customer behavior, creating forecasts that are robust to unusual events—basically, understanding your core business range without letting extreme days distort the picture."
+
+### Variance and Standard Deviation: Measuring Typical Deviation
+
+"I still don't have a single number that tells me how much variation is normal," Sarah says.
+
+David opens a fresh calculation. "That's what standard deviation does. It measures the typical distance from the mean."
+
+::: callout-note
+## Definition: Variance and Standard Deviation
+
+**Variance** = Average squared deviation from mean: $$s^2 = \frac{\sum_{i=1}^{n}(x_i - \bar{x})^2}{n-1}$$
+
+**Standard Deviation** = Square root of variance: $$s = \sqrt{s^2}$$
+
+**Why square deviations?**  
+
+1. Prevents cancellation (positive and negative deviations would sum to zero)  
+2. Penalizes larger deviations more heavily (quadratic penalty)
+
+**What** $s$ represents: The typical distance an observation is from the mean.
+
+------------------------------------------------------------------------
+
+**Excel**
+```markdown
+`=VAR.S(range)`   ' Variance (sample)  
+`=STDEV.S(range)` ' Standard deviation (sample)  
+`=VAR.P(range)`   ' Variance (full populuation)  
+`=STDEV.P(range)` ' Standard deviation (full population)
+```
+:::
+
+For TechFlow's four product sales ($250k, $520k, $640k, $890k):
+
+1.  Mean: $\bar{x} = \$575,000$
+2.  Deviations: -\$325k, -\$55k, +\$65k, +\$315k
+3.  Squared deviations: \$105,625M, \$3,025M, \$4,225M, \$99,225M
+4.  Sum: \$212,100M
+5.  Variance: $s^2$ = \$212,100M / 3 = \$70,700M
+6.  Standard deviation: $s = \sqrt{s^2}$ = \\\$265,894
+
+"So a typical product deviates about \$266,000 from the \$575,000 mean," David explains. "Product D is \$325,000 below mean, about 1.2 standard deviations below. That's unusual but not extremely rare."
+
+"Where do I actually use standard deviation in business?" Sarah asks.
+
+Maria outlines several applications:
+
+"**Inventory planning**: Set your stock level at mean demand plus one standard deviation—that covers about 68% of days. Want 95% coverage? Go mean plus 1.65 standard deviations.
+
+**Quality control**: If a product measures more than three standard deviations from specification, investigate immediately. Your process capability range should be at least six standard deviations wide.
+
+**Sales forecasting**: Mean plus or minus one SD gives you a realistic range covering roughly 68% of scenarios. Extend that to two SDs for a conservative 95% range.
+
+**Risk assessment**: Higher standard deviation means higher uncertainty, which means you need larger safety margins. Always compare SD to the mean to understand relative risk."
+
+### Coefficient of Variation: Comparing Apples and Oranges
+
+Sarah brings up a new challenge. "You told me product SD is \$266,000. Regional SD is \$588,784. Which should I worry about more?"
+
+"Can't compare them directly," David says. "Products average \$575k; regions average \$767k. A \$266k SD on a \$575k mean is different than a \$589k SD on a \$767k mean."
+
+::: callout-note
+## Definition: Coefficient of Variation (CV)
+
+$$CV = \frac{s}{\bar{x}} \times 100\%$$
+
+**What it is**: Standard deviation expressed as a percentage of the mean.
+
+**What it does**: Enables comparison of variability across different scales, units, or time periods.
+
+**Interpretation**: "Variability is X% of the mean"  
+
+- CV < 15%: Low variability  
+- CV = 15%-30%: Moderate variability  
+- CV = 30%-100%: High variability  
+- CV > 100%: Extreme variability  
+
+------------------------------------------------------------------------
+
+**Excel**
+```markdown
+`=(STDEV.S(range) / AVERAGE(range)) * 100`
+```
+:::
+
+**Product sales**:  
+
+* Mean = $575,000 \* SD = $267,759  
+* CV = (267,759 / 575,000) $\times$ 100% = 46.6%
+
+**Regional sales**: 
+
+* Mean = $766,667  
+* SD = $588,784  
+* CV = (588,784 / 766,667) $\times$ 100% = 76.8%
+
+"So relative to their means," Maria explains, "regions are MORE variable (76.8%) than products (46.6%). Geography is your bigger consistency problem."
+
+Sarah leans back. "That changes priorities. I was going to restructure the product portfolio. But this says I should focus on geographic strategy—understand why one region dominates and others lag."
+
+## Distribution Characteristics: Understanding Shape
+
+"I've got location and variability," Sarah says. "What else do I need?"
+
+"Shape," David responds. "Is your data symmetric or skewed? Are there outliers? Is variation normal or are we seeing something unusual?"
+
+He pulls up two histograms showing daily sales for two different quarters.
+
+```{=html}
+<!--
+[INSERT TWO HISTOGRAMS SIDE BY SIDE:
+Left: Q3 daily sales - symmetric bell shape, mean and median nearly identical
+Right: Q4 daily sales - right-skewed, most values clustered left with long right tail
+Both marked with mean and median lines]
+-->
+```
+
+"Both have the same mean and same standard deviation," he says. "But look—Q3 is symmetric, most days near the middle. Q4 is right-skewed, most days are low with occasional spikes."
+
+"So what?" Sarah asks.
+
+"So in Q3, mean and median are both good measures. In Q4, median is better. In Q3, most days are near average. In Q4, 'average' is misleading because most days are below it. Your planning assumptions would be completely different."
+
+### Skewness: When Data Leans
+
+Maria knows that skewness can change data interpretation. So, she analyzes TechFlow's customer satisfaction scores:\
+
+- Mean = 4.1  
+- Median = 4.3  
+- Skewness = -0.95
+
+"It's left-skewed," she explains. "Most customers are very satisfied (4-5 range), but a few unhappy customers drag the mean down."
+
+**Skewness** measures the asymmetry of a distribution:
+
+$$\text{Skewness} = \frac{n}{(n-1)(n-2)} \sum \left(\frac{x_i - \bar{x}}{s}\right)^3$$
+
+::: callout-note
+## Definition: Skewness
+
+**What it measures**: Asymmetry in the distribution.
+
+**Interpretation**:  
+
+- **Skewness ≈ 0**: Symmetric distribution  
+- **Skewness \< 0**: Left-skewed (negative) → Tail points left  
+- **Skewness \> 0**: Right-skewed (positive) → Tail points right
+
+**Rules of Thumb**:  
+
+- \|Skewness\| \< 0.5: Approximately symmetric  
+- \|Skewness\| = 0.5-1.0: Moderately skewed  
+- \|Skewness\| \> 1.0: Highly skewed
+
+**The sign tells you where the tail points, not where most data is.**
+
+------------------------------------------------------------------------
+
+**Excel**
+```markdown
+`=SKEW(range)`
+```
+:::
+
+```{=html}
+<!--
+![Histogram: Customer satisfactoin, mean, and median](pages\lecture_notes\QMB-5311\lecture_01\fig_histogram_1.png)
+-->
+```
+
+David adds the business implication: "When you report to Sarah, say 'median satisfaction is 4.3' not 'average is 4.1.' The median better represents typical experience."
+
+Sarah nods. "And those few unhappy customers? I want to know who they are and why they're unhappy. In a left-skewed satisfaction distribution, the tail is where you find churning customers."
+
+### Z-Scores: Your Statistical Alarm System
+
+Sarah brings in the quarterly product comparison. "Product D did \$250,000. Products A, B, and C did \$890k, \$640k, and \$520k. How do I know if Product D is just naturally lower or actually failing?"
+
+"Z-scores," David says. He calculates:
+
+$$z = \frac{x - \bar{x}}{s}$$
+
+For Product D: $$z_D = \frac{250{,}000 - 575{,}000}{267{,}759} = \frac{-325{,}000}{267{,}759} = -1.21$$
+
+"Product D is 1.21 standard deviations below the mean."
+
+::: callout-note
+## Definition: Z-Score (Standardized Value)
+
+$$z_i = \frac{x_i - \bar{x}}{s}$$
+
+**What it means**: "How many standard deviations away from the mean is this value?"
+
+**Interpretation**:  
+
+\* z = 0: Exactly at the mean  
+\* z \> 0: Above the mean (positive = higher)  
+\* z \< 0: Below the mean (negative = lower)  
+\* \|z\| = 1: One standard deviation from mean  
+\* \|z\| = 2: Two standard deviations from mean  
+
+**Power**: Enables comparison across different scales. A z-score of +1.5 has the same meaning whether you're measuring sales, response times, or satisfaction.
+
+------------------------------------------------------------------------
+
+**Excel**
+```markdown
+`=(value - AVERAGE(range)) / STDEV.S(range)` `=STANDARDIZE(value, AVERAGE(range), STDEV.S(range))`
+```
+:::
+
+"Is that bad?" Sarah asks.
+
+David pulls up a reference guide:
+
+::: callout-tip
+## Z-Score Business Alarm System
+
+**|z| < 1.0**: Normal variation  
+
+- **Action**: None needed  
+- **Interpretation**: Within typical range  
+- **Example**: Product with z = 0.7 is slightly above average, but normal
+
+**|z| = 1.0-2.0**: Worth monitoring  
+
+- **Action**: Track closely, investigate if persists  
+- **Interpretation**: Unusual but not crisis  
+- **Example**: Product D at z = -1.21 → Monitor, investigate within 90 days
+
+**|z| = 2.0-3.0**: Investigate immediately  
+
+- **Action**: Urgent investigation required  
+- **Interpretation**: Highly unusual, likely problem or major opportunity  
+- **Example**: Regional sales z = -2.5 → Immediate strategic review
+
+**|z| > 3.0**: Crisis or extraordinary opportunity  
+
+- **Action**: Emergency response or immediate leverage  
+- **Interpretation**: Extreme outlier, statistically very rare  
+- **Example**: Customer order z = 4.2 → Potential VIP, analyze immediately
+:::
+
+"Product D at -1.21 is in the monitoring zone," David says. "Not a crisis yet, but definitely below normal performance. You should investigate."
+
+Sarah makes a note: "Investigate Product D performance. Compare pricing to competitors, survey customers for product-specific feedback, evaluate marketing spend allocation. Set 90-day checkpoint: improve or consider discontinuation."
+
+### Chebyshev's Theorem: Planning for Any Distribution
+
+"Here's a practical question," Sarah says. "I'm setting Q1 budget. I want enough to cover most scenarios. What's 'most'?"
+
+David introduces Chebyshev's Theorem:
+
+::: callout-note
+## Chebyshev's Theorem
+
+**For ANY distribution** (regardless of shape):
+
+At least $1 - \frac{1}{z^2}$ of values fall within $z$ standard deviations of the mean (where $z > 1$).
+
+**Key Implications**:  
+
+* At least **75%** within ±2 SD of mean  
+* At least **89%** within ±3 SD of mean   
+* At least **94%** within ±4 SD of mean
+
+**Power**: Works for ANY distribution—symmetric, skewed, bimodal, whatever. No assumptions needed.
+:::
+
+For TechFlow daily sales:  
+
+* Mean = $25,000, SD = $5,000  
+* 2 SD range: [$15,000, $35,000] covers at least 75% of days  
+* 3 SD range: [$10,000, $40,000] covers at least 89% of days
+
+Sarah calculates: "If I budget for mean + 2 SD = \$35,000 daily capacity, I'll be prepared for at least 75% of days. If I want 89% coverage, I budget for \$40,000 capacity."
+
+```{=html}
+<!--
+[INSERT DIAGRAM: Bell curve (any shape) showing ranges at ±2 SD and ±3 SD with percentages marked as per Chebyshev's theorem]
+-->
+```
+
+::: callout-tip
+## Practical Applications of Chebyshev's Theorem
+
+**Safety Stock (Inventory)**:  
+
+* Mean demand + 2 SD → Covers at least 75% of demand scenarios  
+* Mean demand + 3 SD → Covers at least 89%  
+* Conservative approach when demand pattern is unknown
+:::
+
+### Outliers: Problems or Opportunities?
+
+Maria pulls up a scatterplot of customer orders. Most cluster between \$150-\$350. But six orders exceed \$600.
+
+```{=html}
+<!--
+[INSERT SCATTERPLOT: Customer orders on Y-axis, order number on X-axis. Most points clustered $150-$350, six clear outliers above $600]
+-->
+```
+
+"Are those data errors or real?" Sarah asks.
+
+"Real," Maria confirms. "I verified them. Corporate bulk purchases, returning customers stocking up."
+
+"Then those aren't errors—they're our most valuable customers," Sarah says. "Can we identify them systematically?"
+
+::: callout-note
+## Definition: Outlier
+
+An observation with an unusually high or low value relative to the rest of the data.
+
+**Two types**:\
+
+1. **Problems**: Data errors, fraud, defects, system failures\
+2. **Opportunities**: Top performers, VIP customers, innovations
+
+**Key insight**: Never automatically delete outliers. Always investigate WHY they're unusual.
+:::
+
+::: callout-note
+## Two Methods for Detecting Outliers
+
+**Method 1: Z-Score Method**\
+- Calculate: $z = \frac{x - \bar{x}}{s}$\
+- Flag: \|z\| \> 3 (for large datasets) or \|z\| \> 2 (for small datasets)\
+- **Best for**: Approximately normal distributions
+
+------------------------------------------------------------------------
+
+**Excel**
+```markdown
+`z_score=(value - AVERAGE(range)) / STDEV.S(range)`  
+`Flag if ABS(z_score) \> 3`
+```
+
+------------------------------------------------------------------------
+
+**Method 2: IQR Method**  
+
+- Calculate: IQR = Q3 - Q1  
+- Lower boundary: Q1 - 1.5 $\times$ IQR  
+- Upper boundary: Q3 + 1.5 $\times$ IQR    - Flag: Any value outside these boundaries  
+- **Best for**: Any distribution, especially skewed data
+
+------------------------------------------------------------------------
+
+**Excel**
+```markdown
+IQR:  
+`=QUARTILE.INC(range, 3) - QUARTILE.INC(range, 1)`
+
+Lower boundary:  
+`=QUARTILE.INC(range, 1) - 1.5 * IQR`
+
+Upper boundary:  
+`=QUARTILE.INC(range, 3) + 1.5 * IQR`
+```
+:::
+
+For TechFlow customer orders using IQR method:
+
+* Q1 = $175  
+* Q3 = $310  
+* IQR = $310 - $175 = $135
+* Upper boundary: $\$310 + 1.5 $\times$ ($135) = $512.50
+* Lower boundary: $\$310 - 1.5 $\times$ ($135) = $107.50
+
+Any order above $512.50 is statistically unusual.
+
+David creates a flagging system: "Orders above \$513 automatically flag for VIP customer follow-up. Orders below lower boundary (\175 - 1.5(\$135) = -$27.50, not applicable) would flag for potential data errors if negative."
+
+::: callout-warning
+## Common Mistake: See unusual value → assume error → delete → move on
+
+**Never auto-delete. Always**: (1) Verify, (2) Classify as problem vs opportunity, (3) Investigate why
+:::
+
+::: callout-tip
+## Outliers: Problems vs. Opportunities
+
+**PROBLEMS to Investigate**:
+
+* Defective products (quality control)  
+* Fraudulent transactions (security)  
+* Data entry errors (data quality)  
+* Service breakdowns (customer service)
+
+**OPPORTUNITIES to Leverage**:  
+
+* Exceptional salespeople (best practices)  
+* High-value customers (VIP programs)  
+* Top-performing stores (success factors)  
+* Breakthrough innovations (scale up)  
+* Unusually satisfied customers (testimonials)
+:::
+
+Sarah sees the opportunity: "Those six high-value orders—can we profile those customers? Find commonalities? Market to similar prospects?"
+
+Maria pulls up the analysis. "All six were B2B customers buying for their offices. Average order \$687. They represent 3% of customers but 8% of revenue."
+
+"I want a dedicated B2B sales strategy by end of quarter," Sarah decides.
+
+## Boxplots: Seeing the Whole Picture
+
+"I need to compare," Sarah says. "Products. Regions. This quarter vs. last quarter. Can you show me all this variation in one visual?"
+
+David creates a boxplot.
+
+### Reading a Boxplot
+
+David shows Sarah the boxplot of monthly sales by product for Q4.
+
+```{=html}
+<!--
+[INSERT BOXPLOT: Four vertical boxplots side by side for Products A, B, C, D. Product A: high median, wide box. Product B: moderate median, moderate box. Product C: moderate-low median, moderate box. Product D: low median, narrow box. Mark outliers as dots if any exist.]
+-->
+```
+
+"The box shows the middle 50%—from Q1 to Q3. The line inside is the median. The whiskers extend to the min and max values within 1.5×IQR of the box. Anything beyond that plots as individual dots—outliers."
+
+Sarah studies it. "So Product D's box is lower—lower median. It's also narrower—more consistent but consistently low. Product A's box is higher and wider—higher median but more variable."
+
+::: callout-tip
+## How to Read a Boxplot
+
+**Position** (vertical placement):  
+* Higher box = Higher values overall  
+* Compare medians to see which group is typically higher
+
+**Spread** (box height):  
+* Taller box = More variability (larger IQR)  
+* Narrower box = More consistent performance
+
+**Skewness** (median position in box):  
+* Median near bottom = Right-skewed (tail extends up)  
+* Median near top = Left-skewed (tail extends down)  
+* Median centered = Approximately symmetric
+
+**Outliers** (dots beyond whiskers):  
+* Individual points show unusual values  
+* Above box = Unusually high  
+* Below box = Unusually low
+
+**Whiskers** (lines from box):  
+* Long whiskers = Extended range (excluding outliers)  
+* Short whiskers = Compact range
+:::
+
+### Comparative Boxplots: The Executive's Dashboard
+
+David creates a regional comparison boxplot for all of 2024.
+
+```{=html}
+<!--
+[INSERT BOXPLOT: Three vertical boxplots for North America, Europe, Asia-Pacific. NA: high position, wide box. Europe: moderate position, moderate box. Asia-Pacific: low position, narrow box.]
+-->
+```
+
+Sarah points to Asia-Pacific. "Tiny box, very low position. Small market, very consistent performance, but consistently low. North America: high position, wider box—larger, more variable, but strong median."
+
+"Should we invest in Asia-Pacific to grow it or North America to maintain our strength?" Sarah asks.
+
+Maria pulls up per-customer revenue. "Asia-Pacific: \$1,908 per customer. North America: \$1,790. Europe: \$1,946. The revenue per customer is actually similar—Asia-Pacific's problem is customer acquisition, not customer value."
+
+Sarah makes the decision: "Asia-Pacific needs marketing and brand awareness, not product changes. The customers we have there are profitable. We just need more of them."
+
+David and Maria recognize this as a question about **association**, whether two variables are systematically related. They have two tools for measuring this: covariance (which shows direction) and correlation (which shows both direction and strength).
+
+## Association Between Two Variables: Finding Relationships
+
+Sarah's final question: "Do longer response times hurt customer satisfaction?"
+
+This is a question about association—whether two variables are related.
+
+### Covariance: The Direction of Relationship
+
+David calculates covariance between response time and satisfaction for 200 customers:
+
+$$s_{xy} = \frac{\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{n-1}$$
+
+The result: $s_{xy} = -2.3$
+
+"Negative covariance," Maria notes. "When response time goes up, satisfaction goes down."
+
+"But how strong is the relationship?" Sarah asks. "Is -2.3 a lot or a little?"
+
+"Can't tell," David admits. "If satisfaction is measured 1-5 and response time in hours, -2.3 is in weird mixed units. We need to standardize."
+
+::: callout-note
+## Definition: Covariance
+
+**Sample covariance**: $$s_{xy} = \frac{\sum_{i=1}^{n}(x_i - \bar{x})(y_i - \bar{y})}{n-1}$$
+
+**What it measures**: How two variables vary together.
+
+**Interpretation**:  
+- $s_{xy} > 0$: Positive relationship (move together)  
+- $s_{xy} < 0$: Negative relationship (move opposite)  
+- $s_{xy} = 0$: No linear relationship
+
+**Problem**: Magnitude depends on units → Hard to interpret "Is 500 a strong relationship?"
+
+**Problem**: Magnitude depends on units. Solution: Use correlation coefficient (next section).
+
+------------------------------------------------------------------------
+
+**Excel**
+```markdown
+`=COVARIANCE.S(range1, range2)`
+```
+:::
+
+### Correlation: The Strength and Direction
+
+**Correlation coefficient** scales covariance to a standard range:
+
+$$r_{xy} = \frac{s_{xy}}{s_x \cdot s_y}$$
+
+where $r \in [-1, 1]$
+
+David recalculates: $r = -0.68$
+
+::: callout-note
+## Definition: Correlation Coefficient
+
+**Sample correlation**: $$r_{xy} = \frac{s_{xy}}{s_x \cdot s_y}$$
+
+**Population correlation**: $$\rho_{xy} = \frac{\sigma_{xy}}{\sigma_x \cdot \sigma_y}$$
+
+**Range**: Always between -1 and +1
+
+**What it measures**:\
+- **Strength**: How closely variables follow a linear relationship\
+- **Direction**: Whether they move together or opposite
+
+**Key property**: Unit-free, enabling comparison across variable pairs
+
+------------------------------------------------------------------------
+
+**Excel**
+```markdown
+`=CORREL(range1, range2)` `=PEARSON(range1, range2)`
+```
+:::
+
+::: callout-tip
+## Correlation Strength Interpretation
+
+**Strong Relationship**:    
+- |r| \> 0.8: Very strong  
+- Variables move together consistently  
+- One predicts the other well  
+
+**Moderate Relationship**:  
+- |r| = 0.5 to 0.8: Moderate  
+- Clear relationship but substantial scatter  
+- Some predictive value
+
+**Weak Relationship**:  
+- |r| \< 0.5: Weak  
+- Relationship exists but highly variable\
+- Limited predictive value  
+
+**No Linear Relationship**:  
+- |r| ≈ 0: No linear relationship  
+- Variables independent or non-linear relationship
+
+**Sign (Direction)**:  
+- Positive r: Variables move together (both increase/decrease)  
+- Negative r: Variables move opposite (one up, other down)
+:::
+
+"So r = -0.68 is a moderate negative relationship," Maria explains. "Longer response times are associated with lower satisfaction, and the relationship is moderately strong."
+
+```{=html}
+<!--
+[INSERT SCATTERPLOT: Response time (hours) on X-axis, satisfaction score on Y-axis. Points showing negative trend with moderate scatter. Trend line showing negative slope.]
+-->
+```
+
+Sarah asks the key question: "If we improve response times, will satisfaction improve?"
+
+"Probably," David says carefully, "but correlation doesn't prove causation. Maybe dissatisfied customers contact us more, leading to longer queues. The arrow could go either way. But it's worth investigating."
+
+::: callout-warning
+## Common Mistake: Correlation ≠ Causation
+
+**Strong correlation does NOT mean one causes the other.**
+
+**Classic example**:  
+* Ice cream sales correlate with drowning deaths (r ≈ +0.9)  
+* Does ice cream cause drowning? NO!\  
+* Both caused by summer weather (confounding variable)
+
+**TechFlow example**:  
+* Response time correlates with satisfaction (r = -0.68)  
+* Could mean: Slow responses → Lower satisfaction ✓  
+* Could mean: Unhappy customers → Contact support more → Longer queues ✓  
+* Could mean: Both caused by understaffing ✓
+
+**To establish causation**: Need controlled experiment, not just correlation.
+
+**Rule**: Correlation tells you WHERE to investigate. Experimentation tells you WHAT to do.
+:::
+
+### Business Applications of Correlation
+
+"Wait," Sarah says. "If we're looking at response time and satisfaction, what other relationships should we explore?"
+
+David pulls up a quick analysis of several variable pairs:
+ 
+* Advertising spend vs. sales: r = +0.45 (moderate positive—advertising helps but isn't the only factor)  
+* Employee tenure vs. sales performance: r = +0.23 (weak positive—experience helps but many factors matter)  
+* Product price vs. perceived quality: r = +0.61 (moderate positive—higher prices signal quality)  
+* Order size vs. repeat purchase rate: r = +0.71 (strong positive—high-value customers return more often)
+
+This is actionable," Sarah says. "Strong positive correlation between order size and repeat rate means we should focus retention efforts on high-value customers. The ROI will be better than trying to retain everyone equally."
+
+Maria adds a warning: "But remember, **correlation isn't causation**. Maybe high-value customers return more often because they're more satisfied, not because they spend more. We'd need an experiment to know for sure."
+
+Sarah nods. "Understood. Correlation tells me where to look. Experimentation tells me what to do."
+
+## Using AI Tools for Statistical Analysis: A Guide
+
+As David and Maria prepare the final report, Sarah asks: "You two completed this analysis incredibly fast. Did you use any AI tools like Claude?"
+
+"We did," David admits. "But we used them strategically—as assistants, not replacements for our statistical thinking."
+
+### The Proper Role of AI in Statistical Analysis
+
+**When AI Tools Like Claude Are Helpful**
+
+**Good Uses**: - **Explaining concepts**: "What's the difference between mean and median?" - **Syntax help**: "What's the Excel formula for calculating the 90th percentile?" - **Interpretation guidance**: "I have a CV of 65%. Is that high or low?" - **Checking your work**: "I calculated a correlation of 1.8. Is that possible?" - **Exploring alternatives**: "Should I use z-scores or IQR method to detect outliers in this skewed dataset?" - **Understanding formulas**: "Why do we divide by n-1 instead of n for sample variance?"
+
+**Why these work**: AI can help you understand methods, troubleshoot errors, and learn statistical reasoning.
+
+**When AI Tools Can Lead You Astray**
+
+**Risky Uses**: - **Blind calculation**: Pasting data and asking "analyze this" without understanding what's being calculated - **Interpretation without context**: AI doesn't know your business—it can't tell you if a CV of 46% is acceptable for your industry - **Statistical decision-making**: AI shouldn't decide whether to use mean vs. median, parametric vs. non-parametric tests - **Causal claims**: AI might suggest causation when only correlation exists - **Unchecked outputs**: AI can make calculation errors or misapply formulas
+
+**Why these fail**: AI lacks business context, can't assess data quality issues, and may confidently state incorrect information.
+
+### The Right Approach: AI as Assistant, Not Replacement
+
+Maria explains their workflow: "We used Claude to: 1. **Refresh our knowledge**: 'Remind me when to use geometric mean vs. arithmetic mean' 2. **Check formulas**: 'Is this the correct Excel formula for IQR?' 3. **Interpret results**: 'I have a skewness of -0.95. What does this suggest about my data?' 4. **Generate ideas**: 'What are common business applications of z-scores?'
+
+But we NEVER: - Let AI make statistical decisions (mean vs. median, which test to use) - Accept AI interpretations without business context - Use AI-generated numbers without verifying them ourselves - Skip the step of understanding what each statistic means"
+
+**Best Practices for Using AI in Statistics**
+
+**The Golden Rule**: Understand first, compute second, interpret third.
+
+**Do**: - Use AI to learn concepts you don't understand - Verify AI-suggested formulas in Excel yourself - Apply your business knowledge to AI-provided interpretations - Use AI to explore alternative approaches - Double-check any numerical outputs AI provides
+
+**Don't**: - Copy-paste data and trust whatever numbers come back - Skip learning the underlying concepts - Let AI make methodological choices for you - Accept causal interpretations without critical thinking - Treat AI as an oracle—it's a tool, not an authority
+
+David adds: "Think of Claude like a statistics textbook that can answer questions. You wouldn't let a textbook analyze your company's data and make business recommendations. But you would use it to understand what a z-score means or when to use IQR instead of range."
+
+### When AI Becomes a Crutch
+
+Sarah raises an important concern: "What about students who use AI to do all their homework without learning anything?"
+
+"That's the trap," Maria says. "If you use AI to: - Complete calculations you don't understand → You learn nothing - Generate interpretations you can't verify → You develop no judgment - Bypass the struggle of learning concepts → You miss the insight
+
+But if you use AI to: - Clarify concepts you're genuinely trying to understand → You learn faster - Check your logic after attempting the work yourself → You learn from mistakes - Explore why your answer differs from the expected one → You deepen understanding"
+
+**The Learning Paradox**
+
+**Short-term**: AI can make you faster at getting answers.\
+**Long-term**: If you never struggle with concepts, you never develop statistical intuition.
+
+**The test**: If Claude disappeared tomorrow, could you still complete the analysis? If not, you're using it as a crutch, not a tool.
+
+**For students**: Use AI to learn, not to avoid learning. The goal isn't to finish the assignment—it's to understand statistics well enough to use them in your career.
+
+### A Practical Example
+
+David demonstrates: "Wrong way to use AI:
+
+**Prompt**: 'Here's my data: 250000, 520000, 640000, 890000. Analyze it and tell me what I should do.'
+
+**Problem**: You learn nothing. You don't know what was calculated or why. You can't apply this to new problems.
+
+**Right way to use AI**:
+
+**Step 1** (You): Calculate mean, median, SD, CV yourself in Excel\
+**Step 2** (You to AI): 'I calculated CV = 46.6%. In general, is this considered high or low variability?'\
+**Step 3** (AI): Provides general interpretation guidelines\
+**Step 4** (You): Apply those guidelines to YOUR business context\
+**Step 5** (You to AI): 'Does my interpretation make sense?' \[Explain your reasoning\]\
+**Step 6** (AI): Validates or challenges your reasoning
+
+**Result**: You learned. You can repeat this process on new data. You understand the concepts."
+
+### The Bottom Line
+
+Sarah appreciates the honesty. "So AI is a powerful learning tool and workflow accelerator, but it can't replace statistical thinking or business judgment."
+
+"Exactly," Maria confirms. "We used Claude to work faster and check our understanding. But every number in this report, we calculated. Every interpretation, we made based on our knowledge of TechFlow's business. Every recommendation, we developed using our judgment."
+
+"AI made us more efficient analysts. It didn't make us analysts."
+
+## Chapter Summary: From Vagueness to Precision
+
+Six days after Sarah's request, the analytics team presents their revised Q4 2024 report. Gone are the phrases "around," "somewhere in the middle," and "some outliers."
+
+In their place:
+
+**Monthly Performance**:  
+
+- Mean: \$766,667 (CV: 5.3% - highly consistent)  
+- Median: \$780,000 (slight negative skew from October baseline)  
+- Progressive growth: +8.3% Oct-Nov, +2.6% Nov-Dec
+
+**Product Portfolio**:  
+
+- Product D: z-score = -1.21 (statistical underperformer)  
+- Performance gap: $325,000 below portfolio mean (56.5% shortfall)  
+- Product CV: 46.6% (high variability requiring individual strategies)  
+- Recommendation: 90-day investigation, pricing, quality, or market fit
+
+**Regional Analysis**:  
+
+- Regional CV: 76.8% vs Product CV: 46.6% (geography is primary challenge)  
+- 61% revenue concentration in North America (vulnerability risk)  
+- Asia-Pacific: $1,908 per customer vs $1,845 average (customer quality is good; need more customers)
+
+**Customer Insights**:  
+
+- 90th percentile order: $425 (VIP threshold)  
+- IQR: $135 ($175-$310 represents middle 50% of customers)  
+- 6 orders exceed $513 (B2B opportunity: 3% of customers, 8% of revenue)
+
+**Service Quality**:  
+
+- Median response time: 4.2 hours (mean: 7.5 hours skewed by outliers)  
+- 15% of tickets exceed 21 hours (outlier threshold)  
+- Correlation with satisfaction: r = -0.68 (moderate negative)  
+- Recommendation: 12-hour SLA for 95th percentile
+
+Sarah reads through the new report. Every claim is specific. Every comparison is quantified. Every recommendation is defensible.
+
+"This," she says, "is a report I can act on."
+
+::: callout-tip
+## Key Takeaways: Your Statistical Toolkit
+
+**Measures of Location** answer "What's typical?":  
+
+- Use **mean** for symmetric data without outliers  
+- Use **median** for skewed data or data with outliers  
+- Use **geometric mean** for growth rates and compound returns  
+- Use **weighted mean** when observations have different importance  
+- Use **percentiles** to define thresholds and create tiers
+
+**Measures of Variability** answer "How consistent are we?":  
+
+- **Range** and **IQR** show spread (IQR is robust to outliers)  
+- **Standard deviation** measures typical deviation from mean  
+- **Coefficient of variation** enables comparison across different scales  
+- Higher variability = higher uncertainty = larger safety margins needed
+
+**Distribution Characteristics** answer "What's the shape?":  
+
+- **Skewness** indicates asymmetry (affects choice of location measure)  
+- **Z-scores** identify unusually high or low values (your alarm system)  
+- **Chebyshev's theorem** works for any distribution shape (planning tool)  
+- **Outliers** can be problems to fix or opportunities to leverage
+
+**Visual Tools** answer "Can you show me?":  
+
+- **Boxplots** display five-number summary plus outliers  
+- Enable instant comparison across groups  
+- Reveal median, spread, skewness, and extremes at a glance  
+- Perfect executive dashboard for comparative analysis
+
+**Association Measures** answer "Are things related?":  
+
+- **Covariance** shows direction but hard to interpret magnitude  
+- **Correlation** standardizes to [-1, 1] for easy interpretation  
+- Strong correlation suggests where to investigate  
+- Remember: Correlation ≠ Causation (always)
+:::
+
+### The Statistical Toolkit in Action
+
+The difference between TechFlow's vague marketing report and the rigorous analytics report came down to proper application of descriptive statistics:
+
+::: callout-note
+## Before & After Comparison
+
+**Marketing Report** (❌):  
+- "Revenue was around $767,000"  
+- "Most days somewhere in the middle"  
+- "Some outliers on both ends"  
+- **Result**: No actionable insights, no defensible recommendations
+
+**Analytics Report** (✓):  
+- Mean monthly revenue: \$767,000 (CV: 5.3% - highly consistent)  
+- Product D: z-score = -1.21 (statistical underperformer, 56.5% below mean)  
+- Regional CV: 76.8% vs Product CV: 46.6% (geography is bigger challenge)  
+- Customer satisfaction: median 4.3/5 (left-skewed, majority highly satisfied)  
+- Response time outliers: 15% exceed 21-hour threshold (service quality issue)  
+- **Result**: Specific, quantifiable opportunities and risks with clear action items
+:::
+
+### From Student to Analyst
+
+The difference between a weak analyst and a strong one isn't mathematical sophistication—it's knowing which tool to use when, and what the results actually mean for decisions.
+
+**Weak analysts** calculate means and call it done. **Strong analysts** ask: "Is this data skewed? Should I use median instead? Are there outliers I should investigate? How does this variability compare to last quarter? What's unusual enough to flag?"
+
+**Weak analysts** report "average customer satisfaction: 4.1 out of 5." **Strong analysts** report "median satisfaction: 4.3 (left-skewed distribution), but 10% of customers score below 3.0 (correlation with response times: r = -0.68)."
+
+**Weak analysts** see a number below average and call it "disappointing." **Strong analysts** calculate z-scores, compare to historical variation, and determine if it's normal fluctuation or statistical evidence of a problem.
+
+Sarah's directive was simple: "Give me precision." The analytics team delivered by applying the right statistical tools to answer the right business questions.
+
+Now it's your turn.
+
+## Practice Problems
+
+Now it's your turn to apply what you've learned. These problems use the TechFlow dataset and mirror the types of analyses David and Maria performed. Work through them using Excel, showing your calculations and interpreting your results in business context.
+
+**Download the dataset**: Get `TechFlow_Q4_2024.xlsx` from Blackboard before starting.
+
+**Remember**: The goal isn't just getting the right number—it's understanding what that number means for business decisions.
+
+::: {.callout-note collapse="true"}
+## About This Dataset
+
+Dataset structure:  
+
+- Sheet 1: Daily Sales
+- Sheet 2: Product Sales
+- Sheet 3: Regional Sales
+- Sheet 4: Customer Orders
+- Sheet 5: Customer Satisfaction
+- Sheet 6: Response Times
+
+**Realism**: Values reflect typical patterns in the consumer electronics industry, including:  
+
+- Weekend sales dips in daily data  
+- Black Friday spike (November 29)  
+- Holiday season surge (December)  
+- Right-skewed response times (most fast, some very slow)  
+- Left-skewed satisfaction (most satisfied, few unhappy)
+
+**Completeness**: No missing values. All fields populated for easier learning (real-world data would require cleaning).
+
+**Rounding**: Financial figures rounded to nearest dollar for readability.
+:::
+
+
+### Problem Set 1: TechFlow Product Analysis
+
+Given TechFlow's Q4 product sales:  
+- Product A: $890,000  
+- Product B: $640,000  
+- Product C: $520,000  
+- Product D: $250,000
+
+**Calculate**:  
+1. Mean and median product sales—are they different? What does this suggest?  
+2. Standard deviation and coefficient of variation  
+3. Z-score for each product  
+4. Which products are statistical outliers (use \|z\| \> 2 criterion)?  
+5. If you could only invest in improving one product, which one and why?
+
+### Problem Set 2: Customer Order Analysis
+
+TechFlow's customer order data shows:  
+- 25th percentile: $175  
+- Median: $220  
+- 75th percentile: $310  
+- Mean: $245
+
+**Answer**:  
+1. Calculate the IQR  
+2. Calculate outlier boundaries using the IQR method  
+3. Is the distribution skewed? Which direction? How do you know?  
+4. What minimum order value qualifies for the top 10% (VIP program)?  
+5. Should TechFlow use mean or median when reporting "typical order value" in marketing materials? Explain your reasoning.
+
+### Problem Set 3: Regional Performance
+
+TechFlow's regional Q4 sales:  
+- North America: \$1,400,000 (782 customers)  
+- Europe: \$650,000 (334 customers)  
+- Asia-Pacific: \$250,000 (131 customers)
+
+**Calculate and Analyze**:  
+1. Mean and standard deviation of regional sales  
+2. Coefficient of variation  
+3. Revenue per customer for each region  
+4. Z-score for each region  
+5. Write a one-paragraph recommendation to Sarah about regional strategy, citing specific statistics.
+
+### Problem Set 4: Investment Returns
+
+An investment has the following annual returns over 5 years:  
+Year 1: +15%, Year 2: -5%, Year 3: +20%, Year 4: +10%, Year 5: -8%
+
+**Calculate**:  
+1. Arithmetic mean  
+2. Geometric mean  
+3. Which measure correctly represents average annual return? Why?  
+4. If you invested \$10,000 initially, what's your ending value after 5 years?  
+5. Why would using arithmetic mean lead to wrong conclusions?
+
+### Problem Set 5: Service Quality Analysis
+
+Response times (hours) for 200 customer tickets:  
+- Mean: 7.5 hours  
+- Median: 4.2 hours  
+- Q1: 2.5 hours, Q3: 6.0 hours  
+- Standard deviation: 8.2 hours  
+- Correlation with satisfaction: r = -0.68
+
+**Answer**:  
+1. Is the distribution skewed? Provide two pieces of evidence.  
+2. Calculate the IQR and outlier boundaries  
+3. Should the company report mean or median in their public customer service metrics? Why?  
+4. If management sets "95% of tickets under 12 hours" as a goal, use Chebyshev's theorem to assess if this is realistic  
+5. What does the correlation of -0.68 tell you? What action would you recommend?
+
+## Excel Functions Quick Reference
+
+::: {.callout-note collapse="true"}
+## Complete Excel Function Guide
+
+**Measures of Location**:
+
+``` excel
+=AVERAGE(range)              ' Mean
+=MEDIAN(range)               ' Median
+=MODE.SNGL(range)            ' Mode
+=PERCENTILE.INC(range, k)    ' kth percentile (k = 0.25 for 25th)
+=QUARTILE.INC(range, q)      ' Quartiles (q = 1, 2, or 3)
+=GEOMEAN(range)              ' Geometric mean
+```
+
+**Measures of Variability**:
+
+``` excel
+=MAX(range) - MIN(range)     ' Range
+=VAR.S(range)                ' Sample variance
+=STDEV.S(range)              ' Sample standard deviation
+=(STDEV.S(range)/AVERAGE(range))*100  ' CV (%)
+=QUARTILE.INC(range,3)-QUARTILE.INC(range,1)  ' IQR
+```
+
+**Distribution Measures**:
+
+``` excel
+=SKEW(range)                 ' Skewness
+=STANDARDIZE(x, mean, std)   ' Z-score
+=(value-AVERAGE(range))/STDEV.S(range)  ' Z-score alternative
+```
+
+**Association**:
+
+``` excel
+=COVARIANCE.S(array1, array2)  ' Sample covariance
+=CORREL(array1, array2)        ' Correlation coefficient
+```
+
+**Helpful Combinations**:
+
+``` excel
+' Outlier detection (IQR method)
+=IF(OR(A2<Q1-1.5*IQR, A2>Q3+1.5*IQR), "Outlier", "Normal")
+
+' Skewness check
+=IF(SKEW(range)>0.5, "Right-skewed", IF(SKEW(range)<-0.5, "Left-skewed", "Symmetric"))
+
+' Z-score alarm
+=IF(ABS(z)>3, "URGENT", IF(ABS(z)>2, "Investigate", IF(ABS(z)>1, "Monitor", "Normal")))
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Glossary
+
+**Boxplot**: Visual display showing five-number summary (min, Q1, median, Q3, max) plus outliers
+
+**Coefficient of Variation (CV)**: Ratio of standard deviation to mean (as percentage); enables comparison across different scales
+
+**Correlation Coefficient**: Standardized measure of linear association between two variables; ranges from -1 to +1
+
+**Covariance**: Measure of how two variables vary together; positive = move together, negative = move opposite
+
+**Geometric Mean**: Appropriate average for growth rates and returns; accounts for compounding
+
+**Interquartile Range (IQR)**: Range of middle 50% of data (Q3 - Q1); robust to outliers
+
+**Mean**: Arithmetic average; sum divided by count
+
+**Median**: Middle value when data sorted; robust to outliers and appropriate for skewed data
+
+**Outlier**: Unusually high or low value; can be problem (error) or opportunity (exceptional case)
+
+**Percentile**: Value below which a given percentage of data falls
+
+**Quartile**: Specific percentiles dividing data into four equal parts (Q1 = 25th, Q2 = 50th, Q3 = 75th)
+
+**Range**: Difference between maximum and minimum; sensitive to outliers
+
+**Skewness**: Measure of distribution asymmetry; negative = left tail, positive = right tail
+
+**Standard Deviation**: Square root of variance; measures typical deviation from mean
+
+**Variance**: Average squared deviation from mean
+
+**Weighted Mean**: Average where observations have different importance/weights
+
+**Z-score**: Number of standard deviations an observation is from the mean; standardizes values for comparison
+:::
+
+------------------------------------------------------------------------
+
+*Statistics tell stories about business performance. Learn to read them, and you'll make better decisions. Learn to tell them, and you'll lead.*

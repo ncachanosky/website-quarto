@@ -1,0 +1,19 @@
+   project:
+     type: book
+
+   book:
+     title: "Quantitative Methods"
+     author: "Nicolas Cachanosky"
+     chapters:
+       - index.qmd
+       - lecture_01.qmd
+       - lecture_02.qmd
+       - lecture_03.qmd
+       - lecture_04.qmd
+       - lecture_05.qmd
+       - lecture_06.qmd
+       - lecture_07.qmd
+
+   format:
+     html:
+       theme: cosmo

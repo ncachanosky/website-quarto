@@ -1,0 +1,1225 @@
+---
+title: "ANOVA: Analysis of Variance"
+subtitle: "Lecture 4"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: true
+    code-tools: true
+    fig-width: 10
+    fig-height: 6
+---
+
+## Learning Objectives {.unnumbered}
+
+By the end of this chapter, you will be able to:
+
+1. ✅ Understand when to use ANOVA versus t-tests for comparing means
+2. ✅ Calculate and interpret one-way ANOVA F-statistics and p-values
+3. ✅ Conduct post-hoc pairwise comparisons to identify specific group differences
+4. ✅ Check ANOVA assumptions and understand the consequences of violations
+5. ✅ Apply two-way ANOVA to analyze multiple factors simultaneously
+6. ✅ Communicate ANOVA results effectively in business contexts
+
+## Introduction: The $8 Million Question
+
+It's 9:00 AM on October 3, 2025. Michael Chen, CEO of DesertVine Hospitality Group, sits in his El Paso headquarters reviewing Q2 2025 guest satisfaction data. On his desk are renovation proposals totaling **$8 million** spread across his four boutique hotel properties in the Southwest.
+
+The proposals are specific:
+
+> El Paso Desert Rose: $2.1M for WiFi infrastructure and room technology upgrades  
+> Tucson Canyon Vista: $2.3M for staff training programs and service excellence initiative  
+> Santa Fe Adobe Retreat: $1.9M for room renovations and cleanliness systems  
+> Albuquerque Rio Grande: $1.7M for comprehensive property-wide improvements
+
+His VP of Operations had prepared a summary:
+
+> "Guest satisfaction varies across properties. El Paso averages around 7.9, Tucson is about 8.2, Santa Fe is roughly 8.1, and Albuquerque is approximately 8.2. The differences seem small but might be significant. El Paso's WiFi scores are notably lower, suggesting technology is the issue there. Santa Fe's cleanliness scores are concerning. We should probably invest in the areas where each property underperforms..."
+
+Michael sets down the report. "Should I write three checks for $6 million? Or one check for $2 million? Or no checks at all?"
+
+His CFO speaks up. "Those satisfaction scores, 7.9 versus 8.2, is that difference real or just random variation? If it's random, we're wasting $8 million. If it's real, which property needs help most?"
+
+His Director of Guest Experience adds, "And what about the factors behind satisfaction? Is WiFi really El Paso's problem? Age of guests? Travel purpose? We're seeing patterns but can't tell if they mean anything."
+
+Michael looks at his leadership team. "This report gives me averages and hunches. I need statistical evidence. Are these properties genuinely different in guest satisfaction? Which specific properties differ from which? What factors actually drive satisfaction—property location, guest age, booking channel, travel purpose?"
+
+He slides the report back. "Get me answers by Monday. Real statistical answers. I'm not spending $8 million on gut feelings."
+
+The operations team realizes they lack the statistical expertise to distinguish real differences from random variation and to analyze multiple factors simultaneously. Following the success stories from TechFlow Solutions, PrecisionCast Industries, and BorderMed Pharmaceuticals, they reach out to the EMBA program at The University of Texas at El Paso.
+
+Enter David Martinez and Maria Rodriguez, the same EMBA students who have transformed business analytics across the Southwest. But this time, the challenge requires a new statistical toolkit. Multiple groups. Multiple factors. Complex questions about what drives performance.
+
+::: callout-warning
+## The Cost of "Roughly The Same"
+
+When TechFlow said "around $767,000," they couldn't track changes precisely. That cost opportunities.
+
+When PrecisionCast said "tests are pretty good," they risked shipping defects. That was catastrophic.
+
+When BorderMed said "proves the drug works," they risked $500M on overconfident conclusions. That could cost lives.
+
+When DesertVine says "satisfaction is roughly the same across properties," they might:
+
+- Waste $8M renovating properties that don't need it
+- Miss critical problems at underperforming locations  
+- Misidentify root causes of dissatisfaction
+- Allocate resources based on hunches rather than evidence
+
+In hospitality, saying "roughly the same" when statistical differences exist costs both money and guest loyalty.
+
+**The fix**: Use ANOVA to test whether group means truly differ. Conduct post-hoc tests to identify which specific groups differ. Analyze multiple factors to understand what really drives satisfaction. Make data-driven investment decisions.
+:::
+
+This chapter is about that transformation. From "roughly the same" to statistical evidence. From comparing two groups to comparing many. From single-factor analysis to multi-factor understanding. From hunches to ANOVA.
+
+Welcome to Analysis of Variance. The mathematics of comparing groups.
+
+## Connecting the Journey: Four Questions, Four Statistical Tools
+
+David and Maria sit in DesertVine's El Paso office, reviewing the Q2 satisfaction data. It's been nine months since they started their EMBA program, and their statistical journey has followed a clear progression.
+
+"Remember January?" Maria says, pulling up their TechFlow analysis. "Sarah Chen asked: 'What happened in Q4?' We used descriptive statistics (means, medians, standard deviations) to describe past performance."
+
+David nods. "Then April with PrecisionCast. Robert Martinez asked: 'What will happen next quarter?' We used probability, p(Defect), expected values, binomial distributions—to predict the future."
+
+"July brought BorderMed," Maria continues. "Dr. Walsh asked: 'What can we conclude from our clinical trial?' We used hypothesis testing and confidence intervals to draw inferences about a drug's efficacy. But that was still comparing one group against a standard, or two groups at most."
+
+"And now," David says, tapping the DesertVine data, "Michael Chen is asking something more complex: 'Which of my four properties are actually different? What factors drive those differences?' This isn't one group versus a target. This isn't even two groups. This is multiple groups, multiple factors, all at once."
+
+Maria opens her laptop and creates a comparison:
+
+| **Lecture** | **Company** | **Question** | **Groups Compared** | **Statistical Tool** |
+|:------------|:------------|:-------------|:-------------------|:---------------------|
+| Lecture 1 | TechFlow | "What happened in Q4?" | One group (descriptive) | Mean, SD, z-scores |
+| Lecture 2 | PrecisionCast | "What will happen in Q2?" | One group (predictive) | Probability, E(X) |
+| Lecture 3 | BorderMed | "Does the drug work?" | Two groups (treatment vs placebo) | t-test, confidence intervals |
+| Lecture 4 | DesertVine | "Which properties differ? What drives satisfaction?" | Four+ groups, multiple factors | ANOVA |
+
+"Three months ago, we could compare treatment versus placebo using a t-test," David explains. "But now we have four properties. If we wanted to use t-tests, we'd need six separate comparisons: El Paso vs Tucson, El Paso vs Santa Fe, El Paso vs Albuquerque, Tucson vs Santa Fe, Tucson vs Albuquerque, Santa Fe vs Albuquerque."
+
+"And each test has a 5% chance of false positive," Maria adds. "Six tests mean a 26% chance of at least one false positive. That's the multiple comparisons problem."
+
+"Exactly. That's why we need ANOVA," David confirms. "Analysis of Variance answers the question: 'Are these group means different?' in one omnibus test. Then, if we find a difference, we use post-hoc tests to identify which specific groups differ."
+
+::: callout-note
+## Key Distinction: t-Test vs. ANOVA
+
+**t-Test (Lecture 3):**  
+*Compares two group means*
+
+- BorderMed: Treatment group vs Placebo group  
+- Tests: $H_0: \mu_1 = \mu_2$  
+- When: Comparing exactly two groups  
+
+**ANOVA (Lecture 4):**  
+*Compares three or more group means simultaneously*
+
+- DesertVine: El Paso vs Tucson vs Santa Fe vs Albuquerque  
+- Tests: $H_0: \mu_1 = \mu_2 = \mu_3 = \mu_4$  
+- When: Comparing three or more groups  
+
+**Why not multiple t-tests?**
+
+- **Multiple Comparisons Problem**: Each test has α = 0.05 risk of false positive  
+- With k groups, need k(k-1)/2 pairwise comparisons  
+- 4 groups = 6 comparisons = 26% chance of at least one false positive  
+- ANOVA maintains overall α = 0.05 while testing all groups simultaneously  
+
+**The ANOVA workflow:**  
+1. Run ANOVA omnibus test: "Are there ANY differences among the groups?"  
+2. If significant: Run post-hoc pairwise tests: "Which specific groups differ from which?"  
+3. If not significant: Stop. No evidence of group differences.
+:::
+
+"So ANOVA is our first step," Maria says. "If it says 'yes, there are differences somewhere,' then we do follow-up tests to find out where."
+
+"And that's just one-way ANOVA," David adds. "Later we'll use two-way ANOVA to analyze multiple factors simultaneously, like property AND age group AND booking channel, all at once."
+
+"Let's show them how," Maria says, opening the guest satisfaction file.
+
+## The DesertVine Dataset: Four Properties, 312 Guests
+
+David loads the Q2 2025 data.
+
+"We have 312 guest surveys collected between April and June 2025," he explains. "Each guest stayed at one of four properties."
+
+**Property Distribution:**
+
+- El Paso Desert Rose: 95 guests  
+- Tucson Canyon Vista: 88 guests  
+- Santa Fe Adobe Retreat: 82 guests  
+- Albuquerque Rio Grande: 47 guests  
+
+"The sample sizes aren't perfectly balanced," Maria notes, "but ANOVA can handle that."
+
+**Variables measured:**
+
+- **Overall_Satisfaction**: Guest rating 1-10 (our primary outcome)  
+- **Property**: Which location (our grouping variable for one-way ANOVA)  
+- **Cleanliness_Score**: Room cleanliness rating 1-10  
+- **Staff_Service_Score**: Staff service rating 1-10  
+- **WiFi_Score**: WiFi quality rating 1-10  
+- **Guest_Age**: Age of guest  
+- **Age_Group**: Under 45 vs 45 and Over  
+- **Travel_Purpose**: Business vs Leisure  
+- **Booking_Channel**: Direct vs OTA vs Corporate/Group  
+- **Room_Rate**: Nightly rate paid ($)  
+
+"Michael wants to know if Overall_Satisfaction differs by Property," David says. "That's a perfect one-way ANOVA question."
+
+Maria calculates the property means:
+
+| Property | n | Mean Satisfaction | SD |
+|:---------|--:|------------------:|---:|
+| El Paso Desert Rose | 95 | 7.93 | 1.38 |
+| Tucson Canyon Vista | 88 | 8.15 | 1.41 |
+| Santa Fe Adobe Retreat | 82 | 8.07 | 1.44 |
+| Albuquerque Rio Grande | 47 | 8.16 | 1.14 |
+
+"The report said they're 'roughly the same,'" Maria observes. "El Paso is lowest at 7.93, Albuquerque highest at 8.16. That's only a 0.23 point difference."
+
+"But is that difference statistically significant," David asks, "or could it just be random sampling variation?"
+
+"That's exactly what ANOVA will tell us," Maria replies.
+
+## One-Way ANOVA: The Logic
+
+Before running calculations, David explains the fundamental logic of ANOVA.
+
+"ANOVA works by comparing two types of variation," he says, sketching on the whiteboard.
+
+```
+ANOVA Intuition
+
+If groups are truly different:           If groups are the same:
+Variation BETWEEN groups >> Variation    Variation BETWEEN ≈ Variation  
+WITHIN groups                            WITHIN groups
+
+Property A: ■■■■■■                       Property A: ■■■■■■  
+Property B:    ■■■■■■■■                  Property B: ■■■■■■  
+Property C:  ■■■■■                       Property C: ■■■■■■  
+Property D:     ■■■■■■■                  Property D: ■■■■■■  
+
+Large separation, tight clusters         Overlapping, similar spread
+
+F = Between-group variation /            F = Between-group variation /
+    Within-group variation                   Within-group variation
+  = Large / Small                          = Small / Small
+  = LARGE F-statistic                      = SMALL F-statistic
+  → Reject H₀                              → Fail to reject H₀
+```
+
+"ANOVA partitions total variation into two components," Maria explains:
+
+1. **Between-Group Variation (SSB)**: How much do the group means differ from the overall mean?  
+2. **Within-Group Variation (SSW)**: How much do individual observations vary within each group?  
+
+"If group means are truly different, between-group variation will be large relative to within-group variation," David continues. "If groups are the same, between-group variation will be similar in size to within-group variation."
+
+::: callout-note
+## Definition: The F-Statistic
+
+ANOVA tests:
+$$H_0: \mu_1 = \mu_2 = \mu_3 = \mu_4 \text{ (all population means equal)}$$
+$$H_A: \text{At least one } \mu_i \text{ differs}$$
+
+**The F-statistic:**
+$$F = \frac{\text{Between-group variance}}{\text{Within-group variance}} = \frac{MSB}{MSW}$$
+
+Where:
+
+- **MSB** (Mean Square Between) = Between-group variance  
+- **MSW** (Mean Square Within) = Within-group variance  
+
+**If $H_0$ is true** (groups equal): $F \approx 1$ (both variances similar)  
+**If $H_A$ is true** (groups differ): $F >> 1$ (between-group variance much larger)
+
+**Decision rule:**  
+If $F > F_{\text{critical}}$ or $p < \alpha$: Reject $H_0$ (groups differ)  
+If $F \leq F_{\text{critical}}$ or $p \geq \alpha$: Fail to reject $H_0$ (insufficient evidence of differences)
+:::
+
+"Think of it this way," Maria adds. "We're asking: Is the variation between property means large enough, relative to the natural variation within properties, to conclude the properties are genuinely different?"
+
+## One-Way ANOVA: The Calculation
+
+David opens Excel and begins the ANOVA calculation.
+
+"ANOVA breaks down the total variation in satisfaction scores into between-group and within-group components," he explains. "Let's calculate each piece."
+
+### Step 1: Calculate the Overall Mean
+
+```
+Overall Mean (Grand Mean):
+x̄ = Sum of all 312 satisfaction scores / 312
+x̄ = 8.02
+```
+
+### Step 2: Calculate Sum of Squares
+
+**Sum of Squares Total (SST)**: Total variation in all observations
+
+$$SST = \sum_{i=1}^{k}\sum_{j=1}^{n_i}(x_{ij} - \bar{x})^2$$
+
+For DesertVine:
+$$SST = 600.23$$
+
+**Sum of Squares Between (SSB)**: Variation due to differences between group means
+
+$$SSB = \sum_{i=1}^{k} n_i(\bar{x}_i - \bar{x})^2$$
+
+Where:  
+$n_i$ = sample size of group $i$  
+$\bar{x}_i$ = mean of group $i$  
+$\bar{x}$ = overall mean  
+
+For DesertVine:
+$$\begin{aligned}
+SSB &= 95(7.93 - 8.02)^2 + 88(8.15 - 8.02)^2 \\
+&\quad + 82(8.07 - 8.02)^2 + 47(8.16 - 8.02)^2 \\
+&= 95(0.09)^2 + 88(0.13)^2 + 82(0.05)^2 + 47(0.14)^2 \\
+&= 0.77 + 1.49 + 0.21 + 0.92 \\
+&= 3.39
+\end{aligned}$$
+
+**Sum of Squares Within (SSW)**: Variation within groups
+
+$$SSW = SST - SSB = 600.23 - 3.39 = 596.84$$
+
+### Step 3: Calculate Degrees of Freedom
+
+**Between groups:** $df_B = k - 1 = 4 - 1 = 3$  
+Where $k$ = number of groups
+
+**Within groups:** $df_W = N - k = 312 - 4 = 308$  
+Where $N$ = total sample size
+
+**Total:** $df_T = N - 1 = 312 - 1 = 311$
+
+### Step 4: Calculate Mean Squares
+
+**Mean Square Between (MSB):**
+$$MSB = \frac{SSB}{df_B} = \frac{3.39}{3} = 1.13$$
+
+**Mean Square Within (MSW):**
+$$MSW = \frac{SSW}{df_W} = \frac{596.84}{308} = 1.94$$
+
+### Step 5: Calculate F-Statistic
+
+$$F = \frac{MSB}{MSW} = \frac{1.13}{1.94} = 0.58$$
+
+### Step 6: Find p-value
+
+With $df_B = 3$ and $df_W = 308$, we look up the F-distribution:
+
+$$F_{0.05, 3, 308} \approx 2.63$$
+
+Our calculated $F = 0.58 < 2.63$
+
+$$p\text{-value} = 0.627$$
+
+### ANOVA Table Summary
+
+| Source | SS | df | MS | F | p-value |
+|:-------|---:|---:|---:|--:|--------:|
+| Between Groups | 3.39 | 3 | 1.13 | 0.58 | 0.627 |
+| Within Groups | 596.84 | 308 | 1.94 | — | — |
+| **Total** | **600.23** | **311** | — | — | — |
+
+::: callout-note
+## Interpreting the ANOVA Results
+
+**F-statistic = 0.58**  
+**p-value = 0.627**
+
+**Decision:** Fail to reject $H_0$ at $\alpha = 0.05$
+
+**Interpretation:** There is insufficient evidence to conclude that mean guest satisfaction differs significantly across the four DesertVine properties.
+
+**What this means for Michael:**
+
+- The observed differences in satisfaction (El Paso: 7.93, Albuquerque: 8.16) are consistent with random sampling variation  
+- We cannot conclude that properties genuinely differ in guest satisfaction  
+- The variation between property means (MSB = 1.13) is actually *smaller* than the variation within properties (MSW = 1.94)  
+
+**Business implication:** The $8M renovation proposals targeting individual properties may not be justified by satisfaction differences alone. Properties appear to perform similarly on overall satisfaction.
+:::
+
+Maria pauses. "Wait. The F-statistic is less than 1?"
+
+"Yes," David confirms. "That means the between-group variation is actually *smaller* than the within-group variation. The properties are remarkably similar."
+
+"So the differences in the means, 7.93 versus 8.16, that's just random noise?"
+
+"Exactly. With an F of 0.58 and a p-value of 0.627, we have no statistical evidence that these properties truly differ in guest satisfaction."
+
+## What ANOVA Just Told Us (And What It Didn't)
+
+David and Maria prepare their initial findings for Michael.
+
+### What ANOVA Said:
+
+"The four DesertVine properties show no statistically significant differences in overall guest satisfaction (F(3, 308) = 0.58, p = 0.627)."
+
+### What This Means:
+
+1. **Not "All properties are identical"**: ANOVA doesn't prove equality, it just fails to find sufficient evidence of difference  
+2. **Not "Property doesn't matter"**: Perhaps location influences satisfaction in ways our current measurement doesn't capture  
+3. **Not "Don't invest"**: Other factors beyond overall satisfaction might justify investment  
+
+### What This Does NOT Answer:
+
+1. **Which specific properties differ?**: We don't need post-hoc tests because ANOVA found no overall differences  
+2. **How large are the differences?**: Not relevant when differences aren't statistically significant  
+3. **What drives satisfaction?**: ANOVA only tests whether groups differ, not why they differ  
+
+"So we should stop here and tell Michael to save his $8 million?" Maria asks.
+
+"Not quite," David responds. "Remember, we're testing Overall_Satisfaction. But Michael also asked about specific satisfaction drivers: WiFi, cleanliness, staff service. Let's see if properties differ on those dimensions."
+
+## ANOVA on Satisfaction Components
+
+David runs separate one-way ANOVAs for each satisfaction component:
+
+### WiFi Score by Property
+
+| Source | SS | df | MS | F | p-value |
+|:-------|---:|---:|---:|--:|--------:|
+| Between Groups | 15.82 | 3 | 5.27 | 2.67 | **0.048** |
+| Within Groups | 608.12 | 308 | 1.97 | — | — |
+| **Total** | **623.94** | **311** | — | — | — |
+
+**Result:** F(3, 308) = 2.67, **p = 0.048 < 0.05**
+
+"Now we have something!" Maria exclaims. "WiFi scores DO differ significantly across properties."
+
+### Cleanliness Score by Property
+
+| Source | SS | df | MS | F | p-value |
+|:-------|---:|---:|---:|--:|--------:|
+| Between Groups | 8.94 | 3 | 2.98 | 1.52 | 0.209 |
+| Within Groups | 602.89 | 308 | 1.96 | — | — |
+| **Total** | **611.83** | **311** | — | — | — |
+
+**Result:** F(3, 308) = 1.52, p = 0.209
+
+"Cleanliness doesn't differ significantly," David notes.
+
+### Staff Service Score by Property
+
+| Source | SS | df | MS | F | p-value |
+|:-------|---:|---:|---:|--:|--------:|
+| Between Groups | 5.21 | 3 | 1.74 | 0.89 | 0.447 |
+| Within Groups | 600.45 | 308 | 1.95 | — | — |
+| **Total** | **605.66** | **311** | — | — | — |
+
+**Result:** F(3, 308) = 0.89, p = 0.447
+
+"Staff service doesn't differ either," Maria observes.
+
+### Summary of Component ANOVAs
+
+| Component | F-statistic | p-value | Significant? |
+|:----------|------------:|--------:|:-------------|
+| Overall Satisfaction | 0.58 | 0.627 | No |
+| WiFi Score | 2.67 | **0.048** | **Yes** |
+| Cleanliness Score | 1.52 | 0.209 | No |
+| Staff Service Score | 0.89 | 0.447 | No |
+
+"So properties don't differ on overall satisfaction, cleanliness, or staff service," David summarizes, "but they DO differ on WiFi."
+
+"Which means Michael's $2.1M WiFi investment for El Paso might actually be justified," Maria adds. "Let's find out which properties differ on WiFi."
+
+## Post-Hoc Tests: Which Properties Differ on WiFi?
+
+Since the ANOVA for WiFi was significant (p = 0.048), David and Maria conduct post-hoc pairwise comparisons.
+
+"When ANOVA is significant, it tells us 'there's a difference somewhere,' but not where," David explains. "Post-hoc tests compare each pair of properties to identify which specific pairs differ."
+
+### The Multiple Comparisons Problem (Revisited)
+
+With 4 properties, there are 6 possible pairwise comparisons:
+
+1. El Paso vs Tucson  
+2. El Paso vs Santa Fe  
+3. El Paso vs Albuquerque  
+4. Tucson vs Santa Fe  
+5. Tucson vs Albuquerque  
+6. Santa Fe vs Albuquerque  
+
+"If we ran each comparison as a separate t-test at α = 0.05," Maria notes, "we'd have a high probability of false positives."
+
+"That's why we use post-hoc corrections," David responds. "The most common methods are Tukey's HSD and Bonferroni correction."
+
+::: callout-note
+## Post-Hoc Multiple Comparison Methods
+
+**Tukey's Honestly Significant Difference (HSD):**  
+- Most common post-hoc test  
+- Controls family-wise error rate at α  
+- More powerful (less conservative) than Bonferroni  
+- Best when: All pairwise comparisons are of interest  
+
+**Bonferroni Correction:**  
+- Adjusts α for each test: $\alpha_{\text{adjusted}} = \frac{\alpha}{m}$ where m = number of comparisons  
+- Very conservative (reduces power)  
+- Best when: Only a few planned comparisons  
+
+**For DesertVine:**  
+With 6 pairwise comparisons and α = 0.05:  
+- Bonferroni adjusted α = 0.05/6 = 0.0083 per test  
+- Tukey's HSD maintains overall α = 0.05 but is less conservative  
+
+**Excel/Software:** Most statistical packages provide Tukey's HSD automatically after ANOVA.
+:::
+
+### Tukey's HSD Results for WiFi Scores
+
+| Comparison | Mean Difference | 95% CI | p-value | Significant? |
+|:-----------|----------------:|:-------|--------:|:-------------|
+| El Paso vs Tucson | -0.32 | (-0.85, 0.21) | 0.382 | No |
+| **El Paso vs Santa Fe** | **-0.67** | **(-1.21, -0.13)** | **0.008** | **Yes** |
+| El Paso vs Albuquerque | -0.48 | (-1.13, 0.17) | 0.220 | No |
+| Tucson vs Santa Fe | -0.35 | (-0.89, 0.19) | 0.318 | No |
+| Tucson vs Albuquerque | -0.16 | (-0.82, 0.50) | 0.920 | No |
+| Santa Fe vs Albuquerque | 0.19 | (-0.48, 0.86) | 0.882 | No |
+
+**Property WiFi Means:**  
+- El Paso: 7.65  
+- Tucson: 7.97  
+- **Santa Fe: 8.32**  
+- Albuquerque: 8.13  
+
+"Only one comparison is significant," Maria observes. "El Paso versus Santa Fe."
+
+"Santa Fe's mean WiFi score is 8.32," David notes, "compared to El Paso's 7.65. That's a 0.67-point difference, and the confidence interval doesn't include zero: (-1.21, -0.13)."
+
+"So El Paso's WiFi is significantly worse than Santa Fe's," Maria concludes, "but not significantly different from Tucson or Albuquerque."
+
+### Business Implications for WiFi
+
+David summarizes the findings:
+
+"Properties don't differ significantly on overall satisfaction, cleanliness, or staff service. They DO differ on WiFi, with one specific contrast: El Paso has significantly lower WiFi scores than Santa Fe.
+
+"This supports targeted WiFi investment at El Paso. However, the $2.1M proposal should be evaluated against:  
+1. The magnitude of difference (0.67 points on a 10-point scale)  
+2. Whether improved WiFi would increase overall satisfaction  
+3. Cost-benefit analysis of the investment  
+
+"ANOVA tells us WHERE the statistical differences are. Business judgment determines whether those differences justify the investment."
+
+## ANOVA Assumptions: Checking the Fine Print
+
+Maria raises an important point. "We've calculated F-statistics and p-values. But are we allowed to trust them? Don't statistical tests have assumptions?"
+
+"Excellent question," David responds. "ANOVA has three key assumptions. Violating them can invalidate our conclusions."
+
+::: callout-note
+## ANOVA Assumptions
+
+**1. Independence of Observations**  
+Each observation must be independent of others  
+- **Violation example**: Multiple responses from same guest, guests influencing each other  
+- **Check**: Consider study design  
+- **Solution if violated**: Use repeated measures ANOVA or mixed models  
+
+**2. Normality**  
+Within each group, the response variable should be approximately normally distributed  
+- **Importance**: Less critical with large samples (Central Limit Theorem)  
+- **Check**: Q-Q plots, Shapiro-Wilk test, histograms for each group  
+- **Robust to**: Moderate violations, especially with n > 30 per group  
+- **Solution if violated**: Transform data or use non-parametric Kruskal-Wallis test  
+
+**3. Homogeneity of Variance (Homoscedasticity)**  
+All groups should have approximately equal variances  
+- **Importance**: Most critical assumption  
+- **Check**: Levene's test, visual inspection of residuals  
+- **Rule of thumb**: Largest SD / Smallest SD < 2 is acceptable  
+- **Solution if violated**: Use Welch's ANOVA (doesn't assume equal variances)  
+
+**Excel Note:** Excel's basic ANOVA tool doesn't check assumptions. You must verify manually or use statistical software (R, Python, SPSS, Minitab).
+:::
+
+### Checking DesertVine's ANOVA Assumptions
+
+**1. Independence**
+
+"Each guest provides one survey about one stay at one property," David confirms. "No guest appears twice. Independence assumption is satisfied."
+
+**2. Normality**
+
+Maria creates histograms of satisfaction scores for each property.
+
+"With sample sizes of 47-95 per group, the Central Limit Theorem protects us," she observes. "The distributions look reasonably symmetric. No severe violations."
+
+**3. Homogeneity of Variance**
+
+David calculates the standard deviations:
+
+| Property | n | SD |
+|:---------|--:|---:|
+| El Paso | 95 | 1.38 |
+| Tucson | 88 | 1.41 |
+| Santa Fe | 82 | 1.44 |
+| **Albuquerque** | 47 | **1.14** |
+
+Ratio: Largest SD / Smallest SD = 1.44 / 1.14 = 1.26
+
+"The ratio is 1.26, well below the threshold of 2.0," Maria notes. "Equal variance assumption is reasonable."
+
+**Conclusion:** "All three assumptions are adequately met," David summarizes. "We can trust our ANOVA results."
+
+## Two-Way ANOVA: Analyzing Multiple Factors
+
+"We've established that properties don't differ on overall satisfaction," David says, "but Michael also asked about other factors. Does age matter? Travel purpose? Booking channel?"
+
+"We could run separate one-way ANOVAs," Maria suggests. "Satisfaction by Age Group, Satisfaction by Travel Purpose, and so on."
+
+"We could," David agrees. "But two-way ANOVA is more powerful. It lets us analyze TWO factors simultaneously AND test whether they interact."
+
+::: callout-note
+## One-Way vs. Two-Way ANOVA
+
+**One-Way ANOVA:**  
+- One categorical factor (Property)  
+- Tests: Do group means differ?  
+- Example: Does satisfaction differ across Properties?  
+
+**Two-Way ANOVA:**  
+- Two categorical factors (e.g., Property AND Age Group)  
+- Tests three hypotheses:  
+  1. **Main effect of Factor A**: Do means differ across levels of Factor A (averaging across Factor B)?  
+  2. **Main effect of Factor B**: Do means differ across levels of Factor B (averaging across Factor A)?  
+  3. **Interaction**: Does the effect of Factor A depend on the level of Factor B?  
+
+**Advantages of Two-Way ANOVA:**  
+- More efficient than running separate one-way ANOVAs  
+- Can detect interactions between factors  
+- Controls for multiple factors simultaneously  
+
+**Example:**  
+Factor A = Age Group (Under 45 vs 45 and Over)  
+Factor B = Travel Purpose (Business vs Leisure)  
+
+Tests:  
+1. Main effect of Age: Do younger and older guests differ in satisfaction (averaging across Business and Leisure)?  
+2. Main effect of Travel Purpose: Do Business and Leisure travelers differ (averaging across age groups)?  
+3. Interaction: Does the effect of Age depend on Travel Purpose? (Maybe younger Business travelers are more satisfied, but older Leisure travelers are more satisfied)  
+:::
+
+### Research Question
+
+"Does guest satisfaction differ by Age Group and/or Travel Purpose? Is there an interaction between age and travel purpose?"
+
+### Two-Way ANOVA: Age Group × Travel Purpose
+
+David runs a two-way ANOVA with:  
+- Factor A: Age Group (Under 45 vs 45 and Over)  
+- Factor B: Travel Purpose (Business vs Leisure)  
+- Dependent Variable: Overall Satisfaction  
+
+**Descriptive Statistics:**
+
+| Age Group | Travel Purpose | n | Mean | SD |
+|:----------|:---------------|--:|-----:|---:|
+| Under 45 | Business | 118 | 7.96 | 1.42 |
+| Under 45 | Leisure | 50 | 8.14 | 1.35 |
+| 45 and Over | Business | 69 | 7.97 | 1.43 |
+| 45 and Over | Leisure | 75 | 8.18 | 1.35 |
+
+**Two-Way ANOVA Results:**
+
+| Source | SS | df | MS | F | p-value |
+|:-------|---:|---:|---:|--:|--------:|
+| Age Group | 0.33 | 1 | 0.33 | 0.17 | 0.683 |
+| Travel Purpose | 4.89 | 1 | 4.89 | 2.52 | 0.113 |
+| Age × Travel | 0.01 | 1 | 0.01 | 0.01 | 0.941 |
+| Error (Within) | 595.00 | 307 | 1.94 | — | — |
+| **Total** | **600.23** | **310** | — | — | — |
+
+**Interpretation:**
+
+1. **Main effect of Age Group**: F(1, 307) = 0.17, p = 0.683  
+   → No significant effect. Satisfaction doesn't differ by age.  
+
+2. **Main effect of Travel Purpose**: F(1, 307) = 2.52, p = 0.113  
+   → No significant effect. Business and Leisure travelers don't differ significantly.  
+
+3. **Interaction**: F(1, 307) = 0.01, p = 0.941  
+   → No significant interaction. The effect of age doesn't depend on travel purpose.  
+
+"None of the effects are significant," Maria observes. "Age and travel purpose don't appear to drive satisfaction differences."
+
+## Two-Way ANOVA: Property × Booking Channel
+
+"Let's try another combination," David suggests. "Property and Booking Channel."
+
+Factor A: Property (4 levels)  
+Factor B: Booking Channel (3 levels: Direct, OTA, Corporate/Group)  
+
+**Two-Way ANOVA Results:**
+
+| Source | SS | df | MS | F | p-value |
+|:-------|---:|---:|---:|--:|--------:|
+| Property | 3.21 | 3 | 1.07 | 0.55 | 0.648 |
+| Booking Channel | 8.92 | 2 | 4.46 | 2.31 | 0.101 |
+| Property × Channel | 15.64 | 6 | 2.61 | 1.35 | 0.234 |
+| Error | 572.46 | 297 | 1.93 | — | — |
+| **Total** | **600.23** | **308** | — | — | — |
+
+**Interpretation:**
+
+1. **Main effect of Property**: Not significant (consistent with our earlier one-way ANOVA)  
+2. **Main effect of Booking Channel**: Not significant at α = 0.05, but p = 0.101 suggests possible difference  
+3. **Interaction**: Not significant  
+
+"Still no significant results," Maria notes.
+
+## What All These ANOVAs Tell Michael
+
+David and Maria prepare their comprehensive report for Michael Chen.
+
+### Key Findings
+
+1. **Overall Satisfaction**: Properties do not differ significantly (F = 0.58, p = 0.627)  
+
+2. **Satisfaction Components**:  
+   - **WiFi**: Properties DO differ (F = 2.67, p = 0.048)  
+     - El Paso significantly lower than Santa Fe  
+   - Cleanliness: No significant differences  
+   - Staff Service: No significant differences  
+
+3. **Guest Factors**: Neither Age Group nor Travel Purpose significantly affects satisfaction  
+
+4. **Booking Channel**: No significant effect (though p = 0.101 warrants monitoring)  
+
+### Business Recommendations
+
+1. **Hold on overall property-wide renovations**: Properties perform similarly on overall satisfaction. The $8M comprehensive renovation plan lacks statistical justification based on satisfaction data.  
+
+2. **Consider targeted WiFi investment at El Paso**: The $2.1M WiFi upgrade has statistical support, as El Paso significantly underperforms Santa Fe on WiFi. However:  
+   - Effect size is moderate (0.67 points on 10-point scale)  
+   - Need to assess whether WiFi improvement would increase overall satisfaction  
+   - Consider whether Santa Fe's higher WiFi satisfaction translates to business outcomes (bookings, reviews, repeat stays)  
+
+3. **Look beyond satisfaction scores**: Since properties are statistically similar on satisfaction, other factors might better guide investment:  
+   - Revenue per guest  
+   - Occupancy rates  
+   - Operational efficiency  
+   - Preventive maintenance needs  
+   - Market positioning  
+
+4. **Consider alternative explanations**: Why do guests rate properties similarly despite different physical conditions?  
+   - Perhaps guest expectations differ by property  
+   - Maybe satisfaction is driven by factors we haven't measured  
+   - Possibly properties excel in different areas that balance out  
+
+"ANOVA answered Michael's statistical question," Maria summarizes. "'Are the properties different?' Answer: Not significantly on overall satisfaction."
+
+"But it also revealed a more nuanced story," David adds. "WiFi at El Paso needs attention, but wholesale renovations across all properties lack statistical support."
+
+## ANOVA vs. Other Tests: When to Use What
+
+Maria creates a decision tree for future reference:
+
+```
+Statistical Test Selection for Comparing Means
+
+One group, compare to target value?
+→ One-sample t-test (BorderMed: "Is BP reduction different from 10 mmHg?")
+
+Two independent groups?
+→ Independent samples t-test (BorderMed: Treatment vs Placebo)
+
+Three or more independent groups?
+→ One-way ANOVA (DesertVine: Four properties)
+  If significant → Post-hoc tests (Tukey's HSD)
+
+Two or more factors simultaneously?
+→ Two-way ANOVA (DesertVine: Property × Age Group)
+  Tests main effects AND interactions
+
+Paired/repeated measures?
+→ Paired t-test (two timepoints) or Repeated Measures ANOVA (3+ timepoints)
+  (Example: Same guests rating same property pre-renovation and post-renovation)
+
+Assumptions violated? (especially normality)
+→ Non-parametric alternative: Kruskal-Wallis test
+```
+
+## The Presentation: When Statistics Changes Strategy
+
+October 10, 2025, 2:00 PM. David and Maria stand in DesertVine's executive conference room, their analysis displayed on the screen behind them. Michael Chen sits at the head of the table, flanked by his CFO, VP of Operations, and Director of Guest Experience.
+
+"Before you showed me this analysis," Michael begins, "I was ready to write checks totaling $8 million based on gut feelings and vague observations about 'roughly similar' satisfaction scores."
+
+He gestures to their ANOVA tables on screen.
+
+"You've shown me three things that changed my thinking completely. First, my properties don't actually differ in overall satisfaction. That F-statistic of 0.58 with a p-value of 0.627, that's not close to significant. It's nowhere near significant. The variation between my properties is actually *smaller* than the variation within them."
+
+Maria nods. "The differences you were seeing—7.93 versus 8.16—are consistent with random sampling variation. Properties are performing similarly."
+
+"Second," Michael continues, "you didn't just stop there. You broke down satisfaction into components and found that WiFi *does* differ significantly across properties. And you pinpointed exactly where: El Paso is significantly behind Santa Fe. That gives me a focused, data-driven investment target instead of a scattershot $8M spend."
+
+David pulls up the WiFi post-hoc results. "El Paso's WiFi scores are 0.67 points lower than Santa Fe's, with a 95% confidence interval of (-1.21, -0.13). That's real, measurable, and statistically significant."
+
+"Third," Michael says, "and this is what really impressed me, you showed me what *doesn't* matter. Age doesn't drive satisfaction. Travel purpose doesn't drive satisfaction. Booking channel barely matters. You saved me from chasing ghosts."
+
+His VP of Operations leans forward. "Michael, this changes our whole capital allocation strategy. Instead of $8 million spread across all properties on hunches, we focus $2.1 million on El Paso's WiFi infrastructure. We monitor cleanliness and staff service, but we don't throw money at problems that don't exist statistically."
+
+"Exactly," Michael agrees. "But I have a new question."
+
+David and Maria exchange glances.
+
+"You've told me my properties perform similarly on satisfaction," Michael continues. "But they don't perform similarly on revenue. El Paso generates $182 per room on average. Santa Fe generates $249. That's a $67 difference, way bigger than the 0.67-point satisfaction gap you found."
+
+He pulls up a spreadsheet.
+
+"And I'm seeing patterns. Higher room rates at Santa Fe correlate with higher satisfaction scores. Direct bookings seem to generate more revenue than OTA bookings. Older guests might pay more. WiFi quality could influence willingness to pay premium rates."
+
+Maria sees where this is going.
+
+"ANOVA told me *whether* groups differ and *which* groups differ," Michael says. "But now I need to understand *relationships*. How much does WiFi score affect room rate? If I improve El Paso's WiFi by one point, how much more can I charge? What's the relationship between satisfaction and revenue? Between guest age and spending? Between booking channel and lifetime value?"
+
+He looks directly at David and Maria.
+
+"You've given me comparison tools, t-tests and ANOVA to compare groups. But business isn't just about groups being different. It's about relationships. It's about prediction. It's about building models that help me understand: if I change X, what happens to Y?"
+
+David glances at his notes. He knows exactly what Michael is asking for.
+
+"ANOVA told you that El Paso's WiFi is significantly worse," David explains. "But it can't tell you how WiFi scores relate to room rates or revenue. It can't quantify: 'For every one-point increase in WiFi score, room rates increase by $X.' It can't tell you whether the $2.1M WiFi investment will generate positive ROI through higher rates."
+
+"Precisely," Michael confirms. "I need to understand the relationships between variables, not just whether groups differ."
+
+Maria pulls up a scatter plot she had prepared, anticipating this question. Guest satisfaction on the x-axis, room rate on the y-axis. The points show a clear upward trend.
+
+"This looks like a relationship," she says. "As satisfaction increases, room rates increase. But how strong is this relationship? Can we quantify it? Can we predict room rates based on satisfaction? Can we build a model that includes WiFi scores, cleanliness, staff service, guest age, and booking channel all at once?"
+
+"That's exactly what I'm asking," Michael says.
+
+David closes his laptop. "What you're describing is regression analysis. That's our next toolkit."
+
+He draws on the whiteboard:
+
+```
+Statistical Journey
+
+Lecture 1 (TechFlow): 
+What happened?
+→ Descriptive Statistics
+
+Lecture 2 (PrecisionCast):
+What will happen?
+→ Probability
+
+Lecture 3 (BorderMed):
+What can we conclude about differences?
+→ Hypothesis Testing (t-tests)
+
+Lecture 4 (DesertVine):
+Are groups different? Which ones?
+→ ANOVA
+
+Lecture 5 (?):
+How do categorical variables relate?
+Are two factors independent or associated?
+→ Categorical Data Analysis (Chi-square)
+
+Lecture 6 (?):
+What is the relationship between variables?
+How much does X affect Y?
+Can we predict Y from X?
+→ Regression Analysis
+```
+
+"But before we get to regression," Maria interjects, "there's something else Michael needs to understand."
+
+She pulls up the DesertVine data again, this time showing the cross-tabulation of Booking Channel and Property.
+
+"Look at this," she says. "El Paso has 38% of bookings through OTA platforms, but Santa Fe only has 28%. Is that difference meaningful? Are certain properties more dependent on OTA channels? Is there a relationship between booking channel and property location?"
+
+David nods, understanding where she's going. "And look at Age Group versus Travel Purpose. Among business travelers, 63% are under 45. Among leisure travelers, only 40% are under 45. Is that association statistically significant?"
+
+Michael leans forward. "So we're talking about relationships between categorical variables?"
+
+"Exactly," Maria confirms. "ANOVA works when your outcome is continuous, satisfaction scores, revenue, WiFi ratings. But much of business data is categorical: yes/no, success/failure, Channel A/B/C, Business/Leisure."
+
+She continues, "Before we can build regression models that include these categorical factors, we need to understand how categorical variables relate to each other. That's chi-square analysis and categorical data methods."
+
+David adds to the whiteboard:
+
+```
+Question Evolution:
+
+ANOVA: Do satisfaction SCORES differ by PROPERTY?
+→ Continuous outcome, categorical predictor
+
+Chi-Square: Is BOOKING CHANNEL associated with PROPERTY?
+→ Categorical outcome, categorical predictor
+→ Is AGE GROUP independent of TRAVEL PURPOSE?
+→ Categorical × Categorical relationships
+
+Regression: How do WiFi, cleanliness, and age PREDICT room rate?
+→ Continuous outcome, multiple predictors (continuous + categorical)
+```
+
+"So the progression is logical," Michael observes. "First, compare groups with ANOVA. Then, understand how categorical variables relate to each other. Finally, build regression models that incorporate everything."
+
+"Precisely," David confirms. "Chi-square tests will help you answer questions like: Are Direct bookings more common at certain properties? Does guest age group relate to booking channel? Is repeat guest status independent of property location?"
+
+Maria pulls up another table. "And here's why it matters for your business decisions. Look at this: Among guests who booked Direct, 72% rated satisfaction 8 or higher. Among OTA bookings, only 58% rated satisfaction 8 or higher. Is that difference statistically significant? Or random variation?"
+
+"That's a categorical question," Michael realizes. "Booking channel, categorical. High satisfaction (8+) versus lower satisfaction, categorical. You're testing whether those two categorical variables are independent or associated."
+
+"And if they're significantly associated," David adds, "it might justify investing in your direct booking platform rather than paying OTA commissions. But first, we need statistical evidence that the association is real."
+
+Michael smiles. "So next week isn't regression. Next week is categorical data analysis."
+
+"Chi-square tests, odds ratios, relative risk," Maria confirms. "The statistics of 'yes versus no,' 'this category versus that category,' 'success versus failure.'"
+
+"And once we understand which categorical factors matter," David continues, "then we can include them in regression models to predict continuous outcomes like room rates and revenue."
+
+Michael smiles. "When can you start?"
+
+His CFO interrupts. "Michael, before they go, can I just say something?"
+
+Everyone turns.
+
+"Nine months ago, our reports were full of 'around' and 'roughly' and 'seems like.' Sarah Chen at TechFlow had the same problem. Robert Martinez at PrecisionCast had the same problem. Dr. Walsh at BorderMed had the same problem. And now us."
+
+She looks at David and Maria.
+
+"Every time, you've transformed vague observations into statistical precision. You've taught us that business intuition needs statistical rigor. That 'roughly the same' might cost millions. That differences need evidence, not hunches."
+
+She turns back to Michael.
+
+"Whatever they charge for the next analysis, it's worth it. Because every company they've worked with has made better decisions, avoided costly mistakes, and allocated resources based on evidence rather than guesses."
+
+Michael nods. "Agreed. Let's talk about categorical data analysis and then regression after that."
+
+As David and Maria pack up, Maria reflects on their journey.
+
+"Four companies. Four different questions. But the same pattern every time."
+
+"What pattern?" David asks.
+
+"They all had data," Maria explains. "TechFlow had Q4 revenue. PrecisionCast had defect rates. BorderMed had blood pressure measurements. DesertVine has satisfaction scores. Everyone has data."
+
+"But data isn't enough," David continues her thought.
+
+"Right. Data becomes actionable when you ask the right statistical question. TechFlow needed to *describe* performance. PrecisionCast needed to *predict* defects. BorderMed needed to *test* efficacy. DesertVine needed to *compare* properties."
+
+"And now Michael needs to understand *relationships* between categorical variables first," David adds. "Booking channel and property. Age group and travel purpose. Direct bookings and satisfaction levels. Those are all categorical associations that need chi-square analysis before we can build regression models."
+
+Maria looks at her notes on booking channels.
+
+"You know what's interesting? We've been working with categorical data all along. TechFlow had products A, B, C, D, categorical. PrecisionCast had defective versus good—categorical. BorderMed had treatment versus placebo, categorical. DesertVine has properties, booking channels, age groups, all categorical."
+
+"But we've been treating them as grouping variables for continuous outcomes," David observes. "Now we need to analyze the categorical variables themselves. How do they relate to each other? Are they independent or associated?"
+
+"And that's fundamentally different from ANOVA," Maria says. "ANOVA asks: 'Do continuous outcomes differ across categorical groups?' Chi-square asks: 'Do categorical variables relate to each other?'"
+
+"Exactly. It's the statistics of counts and proportions rather than means and variances," David confirms.
+
+Maria looks at the satisfaction versus room rate scatter plot still on screen.
+
+"But first, we need to understand the categorical relationships," she says. "Booking channels. Property locations. Age groups. Travel purposes. Are they independent? Or do they relate to each other in ways that matter?"
+
+David grins. "You're already thinking about the next analysis."
+
+"Nine months ago, I thought statistics was just calculating means and standard deviations," Maria admits. "Now I see it's a language for understanding the world. A framework for making better decisions. A way to transform uncertainty into insight."
+
+"And we still have categorical data analysis, regression, and business analytics integration ahead of us," David reminds her.
+
+"Good," Maria says. "Because every company we've helped has raised new questions. Better questions. Questions that require more sophisticated tools."
+
+"That's the beauty of statistics," David reflects. "Every answer generates new questions. Every question requires new tools. Every tool reveals new insights."
+
+As they leave DesertVine's office, Maria's phone buzzes. An email from Michael:
+
+> David and Maria,
+>
+> Your ANOVA analysis saved us from wasting $8M on unfocused renovations. The board approved focused $2.1M WiFi investment for El Paso based on your statistical evidence.
+>
+> But more importantly, you've changed how we think about decisions. No more "seems like" or "roughly." Show us the data. Run the analysis. Let evidence guide strategy.
+>
+> Ready for categorical data analysis when you are. I need to understand: Are booking channels associated with property location? Does guest age relate to travel purpose? Are Direct bookings really driving higher satisfaction?
+>
+> Then we'll tackle regression to predict room rates and revenue.
+>
+> —Michael
+
+Maria shows David the email.
+
+"Four companies down," she says. "Each one making better decisions because of statistics."
+
+"And each one raising questions that require the next statistical tool," David adds.
+
+They walk toward their car, already thinking about chi-square tests, about independence versus association, about analyzing categorical relationships.
+
+The statistical journey continues.
+
+But first, they need to document what they've learned about ANOVA—the tool that compares groups, identifies differences, and separates real patterns from random noise.
+
+::: callout-note
+## The ANOVA Mindset: Questions to Ask
+
+Before running ANOVA, ask:
+
+1. **Am I comparing means?** (If not, ANOVA isn't the right tool)
+2. **Do I have three or more groups?** (If only two groups, use t-test)
+3. **Is the outcome variable continuous?** (Satisfaction scores, revenue, time, etc.)
+4. **Are the groups independent?** (Different people/properties, not repeated measures)
+5. **Do I need to know which specific groups differ?** (Plan for post-hoc tests)
+6. **Am I analyzing multiple factors?** (Consider two-way ANOVA)
+7. **What business decision depends on this analysis?** (Always connect statistics to strategy)
+
+ANOVA answers: **Are groups different?**
+
+But it cannot answer:
+- How do categorical variables relate to each other? → **Chi-square tests** (Lecture 5)
+- What's the strength of association between categories? → **Chi-square, odds ratios** (Lecture 5)
+- How strong is the relationship between continuous variables? → **Regression** (Lecture 6)
+- Can we predict outcomes from multiple predictors? → **Regression** (Lecture 6)  
+- What's the effect size of each factor? → **Regression** (Lecture 6)
+
+When ANOVA shows groups differ, the next questions are often: **How do categorical factors relate to each other?** (Chi-square) and **How much do predictors affect outcomes?** (Regression). That's where the next two lectures begin.
+:::
+
+## Excel Implementation: Running ANOVA
+
+::: callout-note
+## Excel: One-Way ANOVA
+
+**Data Setup:**  
+- Column A: Property (El Paso, Tucson, Santa Fe, Albuquerque)  
+- Column B: Overall_Satisfaction  
+
+**Steps:**  
+1. Click **Data** → **Data Analysis** → **ANOVA: Single Factor**  
+   (If Data Analysis not visible: File → Options → Add-ins → Analysis ToolPak → Go → Check box)  
+2. Input Range: Select all data including headers  
+3. Check "Labels in First Row"  
+4. Alpha: 0.05  
+5. Output Range: Select where you want results  
+6. Click OK  
+
+**Output Includes:**  
+- Summary statistics for each group  
+- ANOVA table with F-statistic and p-value  
+
+**For Post-Hoc Tests:**  
+Excel doesn't provide built-in post-hoc tests. Use:  
+- Manual t-tests with Bonferroni correction, OR  
+- Statistical software (R, Python, SPSS, Minitab)  
+:::
+
+::: callout-note
+## Excel: Two-Way ANOVA
+
+**Data Setup:**  
+Must be in specific format with factors as rows and columns  
+
+**Steps:**  
+1. **Data** → **Data Analysis** → **ANOVA: Two-Factor With Replication**  
+   (if equal sample sizes per cell)  
+   OR  
+   **ANOVA: Two-Factor Without Replication**  
+   (if no interaction of interest)  
+2. Follow prompts for range and options  
+3. Click OK  
+
+**Note:** Excel's two-way ANOVA is limited. For unbalanced designs or complex models, use R, Python, or statistical software.  
+:::
+
+## Problem Sets
+
+### Problem Set 1: Hotel Renovation Decision
+
+DesertVine is considering a $1.5M renovation at Tucson Canyon Vista. Using the WiFi ANOVA results:
+
+**Calculate and Analyze:**  
+1. What is Tucson's mean WiFi score? How does it compare to El Paso and Santa Fe?  
+2. Would the Tukey HSD test show Tucson significantly different from El Paso or Santa Fe?  
+3. Based on ANOVA results alone, is there statistical justification for WiFi investment at Tucson?  
+4. What additional analyses would you recommend before approving the renovation?  
+5. Write a one-paragraph recommendation to Michael about Tucson's WiFi investment.
+
+### Problem Set 2: Cleanliness Initiative
+
+DesertVine's COO proposes a $400K cleanliness training program for Santa Fe, citing "concerns about cleanliness scores."
+
+Santa Fe cleanliness mean: 7.88  
+Overall cleanliness mean: 7.92  
+ANOVA for cleanliness: F(3, 308) = 1.52, p = 0.209  
+
+**Answer:**  
+1. Is Santa Fe's cleanliness significantly different from other properties?  
+2. What does the ANOVA p-value tell you about cleanliness differences?  
+3. Calculate how much Santa Fe's mean differs from the overall mean  
+4. Would you approve the $400K program based on these statistics? Why or why not?  
+5. What additional information would help make this decision?
+
+### Problem Set 3: Multiple Comparisons
+
+A competitor boutique hotel chain has six properties. They want to compare guest satisfaction across all properties.
+
+**Calculate and Explain:**  
+1. How many pairwise comparisons exist with 6 properties?  
+2. If each comparison uses α = 0.05, what is the probability of at least one false positive?  
+3. What is the Bonferroni-adjusted α for each comparison?  
+4. Why is one-way ANOVA preferred over multiple t-tests?  
+5. If ANOVA gives F(5, 594) = 3.42, p = 0.005, what should they do next?
+
+### Problem Set 4: Interaction Effects
+
+DesertVine analyzes satisfaction by Property and Season (Summer vs Winter).
+
+Summer Data:  
+- El Paso: 8.3, Tucson: 7.9, Santa Fe: 8.5, Albuquerque: 8.0  
+
+Winter Data:  
+- El Paso: 7.6, Tucson: 8.4, Santa Fe: 7.7, Albuquerque: 8.3  
+
+**Analyze:**  
+1. Does there appear to be a main effect of Property (averaging across seasons)?  
+2. Does there appear to be a main effect of Season (averaging across properties)?  
+3. Describe the interaction pattern you observe  
+4. Which property benefits most from winter? Which suffers most?  
+5. What business strategy might this interaction suggest?
+
+### Problem Set 5: ANOVA Assumptions
+
+Review this scenario:  
+- El Paso: n = 95, mean = 7.93, SD = 1.38  
+- Tucson: n = 88, mean = 8.15, SD = 1.41  
+- Santa Fe: n = 82, mean = 8.07, SD = 3.85  
+- Albuquerque: n = 47, mean = 8.16, SD = 1.14  
+
+**Answer:**  
+1. Check the homogeneity of variance assumption (ratio test)  
+2. Is the equal variance assumption violated?  
+3. What would you recommend: proceed with regular ANOVA, use Welch's ANOVA, or transform data?  
+4. How might the violation affect the F-test results?  
+5. What is the minimum sample size generally recommended for ANOVA when assumption violations exist?
+
+## Excel Functions Quick Reference
+
+::: {.callout-note collapse="true"}
+## Complete Excel ANOVA Guide
+
+**One-Way ANOVA:**
+
+```excel
+Data → Data Analysis → ANOVA: Single Factor
+```
+
+**Two-Way ANOVA:**
+
+```excel
+Data → Data Analysis → ANOVA: Two-Factor With Replication
+```
+
+**Manual Calculations (if needed):**
+
+```excel
+' Overall Mean
+=AVERAGE(all_data)
+
+' Group Mean  
+=AVERAGE(IF(Property=A2, Satisfaction))  (Array formula: Ctrl+Shift+Enter)
+
+' Sum of Squares Between
+=SUMPRODUCT(n_array, (group_means - grand_mean)^2)
+
+' Sum of Squares Total
+=DEVSQ(all_satisfaction_data)
+
+' F-statistic
+=MSB/MSW
+
+' F-critical value
+=F.INV.RT(alpha, df_between, df_within)
+
+' p-value
+=F.DIST.RT(F_calculated, df_between, df_within)
+```
+
+**Post-Hoc t-tests (Bonferroni):**
+
+```excel
+' Two-sample t-test p-value
+=T.TEST(group1_range, group2_range, 2, 2)
+
+' Compare to Bonferroni-adjusted alpha
+=0.05 / number_of_comparisons
+```
+
+**Checking Assumptions:**
+
+```excel
+' Standard deviation per group
+=STDEV.S(IF(Property=A2, Satisfaction))
+
+' Ratio of variances
+=MAX(SD_array) / MIN(SD_array)
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Glossary
+
+**Analysis of Variance (ANOVA)**: Statistical test comparing means across three or more groups simultaneously
+
+**Between-Group Variation (SSB)**: Variation in means between different groups; measures how much groups differ from overall mean
+
+**Bonferroni Correction**: Conservative adjustment to significance level when conducting multiple comparisons; divides α by number of tests
+
+**Degrees of Freedom (df)**: Number of independent pieces of information; for ANOVA: df_between = k-1, df_within = N-k
+
+**F-Distribution**: Probability distribution of F-statistic under null hypothesis; determined by two degrees of freedom parameters
+
+**F-Statistic**: Ratio of between-group variance to within-group variance; large values suggest groups differ
+
+**Homogeneity of Variance**: ANOVA assumption that all groups have equal population variances (also called homoscedasticity)
+
+**Interaction Effect**: Occurs when effect of one factor depends on level of another factor; unique to multi-way ANOVA
+
+**Kruskal-Wallis Test**: Non-parametric alternative to one-way ANOVA; doesn't assume normality
+
+**Main Effect**: In two-way ANOVA, the effect of one factor averaging across levels of the other factor
+
+**Mean Square Between (MSB)**: Between-group variance; SSB divided by df_between
+
+**Mean Square Within (MSW)**: Within-group variance; SSW divided by df_within; estimates error variance
+
+**Multiple Comparisons Problem**: Increased probability of false positives when conducting many hypothesis tests
+
+**One-Way ANOVA**: Compares means across levels of a single categorical factor
+
+**Omnibus Test**: Single test examining overall null hypothesis before specific comparisons; ANOVA is omnibus test for group differences
+
+**Post-Hoc Tests**: Follow-up pairwise comparisons conducted after significant ANOVA result; e.g., Tukey's HSD
+
+**Sum of Squares Between (SSB)**: Total squared deviations of group means from grand mean, weighted by sample sizes
+
+**Sum of Squares Total (SST)**: Total squared deviations of all observations from grand mean
+
+**Sum of Squares Within (SSW)**: Total squared deviations of observations from their group means; measures within-group variability
+
+**Tukey's Honestly Significant Difference (HSD)**: Post-hoc test controlling family-wise error rate; less conservative than Bonferroni
+
+**Two-Way ANOVA**: Analyzes effects of two categorical factors and their interaction on a continuous outcome
+
+**Welch's ANOVA**: Alternative to standard ANOVA that doesn't assume equal variances across groups
+
+**Within-Group Variation (SSW)**: Variation within each group; measures how much individual observations differ from their group mean
+:::
+
+------------------------------------------------------------------------
+
+*When comparing multiple groups, use ANOVA. When "roughly the same" might cost millions, use statistics. When decisions require evidence, not hunches, use the tools that distinguish signal from noise.*

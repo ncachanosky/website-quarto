@@ -1,0 +1,127 @@
+---
+title: "Introduction"
+subtitle: "Welcome to Quantitative Methods for Business"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: false
+---
+
+## Welcome
+
+Business decisions cost money. Sometimes millions of dollars. Sometimes careers. Sometimes both.
+
+The difference between a good decision and a bad one often comes down to how well you understand your data. Not whether you *have* data—everyone has spreadsheets full of numbers. The question is whether you can transform those numbers into insights that actually matter.
+
+"Revenue was around \$767,000."  
+"Customer satisfaction is pretty good."  
+"We had some outliers."  
+"Sales varied quite a bit."
+
+These vague statements appear in business reports every day. They sound informative. They feel data-driven. But they're worse than useless because they create the *illusion* of precision without delivering actual insight.
+
+Try setting a budget with "around \$767,000." Try defending an investment decision with "pretty good." Try forecasting next quarter's performance when all you know is "some outliers."
+
+You can't. And your competitors who *can* transform data into defensible decisions will eat your lunch.
+
+This course is about closing that gap. About replacing "around" with "exactly." About moving from vague impressions to statistical precision. About becoming the person in the room who can answer the question: "So what should we actually *do* about this?"
+
+## What You'll Learn
+
+This isn't a mathematics course, though we'll use math. It's not a software course, though we'll use Excel extensively. It's a decision-making course that happens to use quantitative methods.
+
+You'll learn to:
+
+**Replace vague language with statistical precision.** When someone says "sales varied quite a bit," you'll calculate the coefficient of variation and determine whether that variation is actually a problem or just normal business fluctuation. When they say "most customers are satisfied," you'll report exact percentiles and identify which customer segments need attention.
+
+**Look backward with descriptive statistics.** You'll master measures of location (mean, median, percentiles), variability (range, standard deviation, coefficient of variation), and distribution characteristics (skewness, outliers, correlations). You'll learn when to use each measure and, just as importantly, when *not* to use them.
+
+**Look forward with probability.** Descriptive statistics tell you what happened. Probability tells you what's likely to happen next. You'll calculate probabilities, assess test reliability using Bayes' theorem, make decisions using expected value, and model uncertainty with probability distributions.
+
+**Make better decisions with inferential statistics.** You'll use sample data to draw conclusions about populations, construct confidence intervals to quantify uncertainty, test hypotheses about differences between groups, and determine whether observed patterns are real signals or just random noise.
+
+**Analyze relationships with regression.** You'll model how variables relate to each other, forecast future values, identify which factors actually drive your outcomes (and which just correlate by coincidence), and build predictive models that executives can use for scenario planning.
+
+**Deploy analytics strategically.** In the final section, you'll integrate everything into a comprehensive analytical framework for solving real business problems—from defining the question to deploying the solution.
+
+Throughout, you'll develop a critical eye for data quality, statistical validity, and the gap between correlation and causation. You'll learn to spot misleading statistics, challenge questionable assumptions, and avoid the analytical traps that cost businesses millions every year.
+
+## How This Course Works: Following David and Maria
+
+You won't learn these concepts through abstract formulas and disconnected exercises. Instead, you'll follow two EMBA students—David and Maria—as they work through real business consulting cases.
+
+**David** is methodical and detail-oriented. When a client's report says "around \$767,000," David immediately calculates the exact mean: \$766,666.67. When someone claims two variables are "related," David wants to see the correlation coefficient and scatter plot. He's the person who catches calculation errors, spots unstated assumptions, and insists on precision. His favorite question: "Can you show me the actual numbers?"
+
+**Maria** is strategic and big-picture. She sees how statistical insights connect to business decisions. When David calculates a coefficient of variation of 76.8% for regional sales, Maria immediately translates that into action: "This says geographic strategy is a bigger priority than product portfolio restructuring." She's the person who transforms statistical analysis into executive recommendations. Her favorite question: "So what does this mean we should *do*?"
+
+Together, they're formidable. David ensures analytical rigor. Maria ensures business relevance. When they present to a CEO, David provides the statistical evidence and Maria explains the strategic implications.
+
+You'll see them work through increasingly complex cases:
+
+* **TechFlow Solutions**: A CEO demands precision to replace a vague Q4 marketing report with actionable insights.  
+* **PrecisionCast Industries**: A manufacturer needs probability analysis to decide whether to invest \$2 million in new equipment.  
+* **HealthTech Innovations**: A medical device company requires hypothesis testing to evaluate product quality improvements.  
+* **RetailOptima**: A retail chain uses regression analysis to optimize store performance across regions.
+
+Each case builds on the previous one. The statistics become more sophisticated. The business decisions become more consequential. And David and Maria's analytical toolkit keeps expanding.
+
+By the end, you'll be able to do what they do: walk into a meeting with messy data, apply the right statistical methods, and walk out with decisions that executives can actually act on.
+
+## A Note on How These Materials Were Created
+
+These course materials were developed through an extensive collaboration with Claude, an AI assistant created by Anthropic. This isn't a footnote or disclaimer—it's central to how this course works.
+
+**As a collaborative writing and development tool**, Claude helped structure the narrative flow, develop realistic business scenarios, ensure mathematical accuracy, and maintain consistency across all seven lectures. The cases you'll read, the dialogues between David and Maria, the progression from basic descriptive statistics to advanced analytics—all emerged from iterative conversations refining both pedagogical approach and technical content.
+
+**The pedagogical benefits were substantial.** Claude enabled rapid prototyping of different teaching approaches, testing various ways to explain complex concepts until finding versions that balanced rigor with accessibility. When a statistical concept seemed too abstract, Claude helped develop concrete business examples. When an example seemed too simplistic, Claude helped add realistic complexity. This iterative refinement—draft, critique, revise, test—would have been far more time-consuming without AI assistance.
+
+**Most importantly, this represents transparency about AI in educational materials.** You deserve to know how your learning resources are created. Rather than hiding AI involvement, we're acknowledging it explicitly. These materials weren't simply "generated by AI"—they emerged from sustained collaboration between human expertise in economics and statistics education and AI capabilities in writing, structuring, and refining content.
+
+As you progress through this course, you'll develop your own relationship with quantitative tools. Just as Excel is a tool that amplifies your analytical capabilities, AI tools like Claude can amplify your learning and professional work. Understanding both the power and limitations of these tools is part of becoming a sophisticated data-informed professional.
+
+## Course Philosophy: Statistics as a Professional Skill
+
+Many students approach statistics with anxiety. Maybe you had a bad experience with mathematics. Maybe you've convinced yourself you're "not a numbers person." Maybe you're here because it's required, not because you're excited about regression analysis.
+
+That's fine. Expected, even.
+
+But here's what you need to know: **Statistical thinking is fundamentally about asking better questions**, not about mathematical ability.
+
+When someone presents you with a vague report saying "sales varied quite a bit," you don't need advanced mathematics to ask: "Varied compared to what? How much variation is normal? Is this variation increasing over time?" Those are statistical questions, and they're really just good business questions.
+
+The math serves the questions. When you ask "is this variation normal?", you need to calculate standard deviation. When you ask "are these two products actually different or just random fluctuation?", you need hypothesis testing. The formulas aren't the point—they're tools that help you answer meaningful questions.
+
+This course treats statistics as a professional skill, like financial analysis or project management. You'll learn it the same way you learned those skills: through practice, feedback, and application to real problems. You won't memorize formulas; you'll use Excel to do the calculations. You won't prove theorems; you'll interpret results and make recommendations.
+
+**We're building three specific capabilities:**
+
+**First, the ability to spot statistical nonsense.** After this course, you'll never again accept "around \$767,000" in a financial report. You'll notice when someone cherry-picks data to support a predetermined conclusion. You'll catch misleading statistics in news articles and vendor presentations. You'll become allergic to vague language masquerading as data-driven analysis.
+
+**Second, the ability to perform your own analyses.** You'll be able to open Excel, load real data, calculate the right statistics, create meaningful visualizations, and draw defensible conclusions. No consultants required. No waiting for the analytics department. You'll be able to answer your own business questions.
+
+**Third, the ability to communicate statistical insights.** You'll learn to translate technical analysis into executive language. "The coefficient of variation is 76.8%" becomes "geographic strategy should be our priority because regional performance varies much more than product performance." You'll build the bridge between statistical precision and business action.
+
+The goal isn't to make you a statistician. It's to make you dangerous. Dangerous to competitors who make decisions based on gut feel. Dangerous to vendors who try to sell you solutions with misleading statistics. Dangerous to colleagues who think "we've always done it this way" is a data-driven argument.
+
+By the end of this course, you'll be the person executives want in the room when important decisions need to be made. Because you'll be the one who can answer the question that matters most: "What does the data actually say we should do?"
+
+## How to Succeed in This Course
+
+**Do the problem sets yourself.** You can't learn statistics by watching someone else do it. You have to calculate the means, construct the confidence intervals, run the regressions. The problem sets aren't busy work; they're where the learning actually happens.
+
+**Focus on interpretation, not just calculation.** Excel will calculate a correlation coefficient for you. Your job is to explain what it means and whether it matters. Always ask: "So what? What decision does this statistical result enable or inform?"
+
+**Connect concepts across lectures.** When you learn confidence intervals in Lecture 4, think back to standard deviation from Lecture 1. When you learn regression in Lecture 6, remember correlation from Lecture 1. Statistics isn't a collection of isolated techniques; it's an integrated analytical framework.
+
+**Engage with the cases actively.** When Sarah Chen asks "Should we discontinue Product D?", pause and think about what analysis you'd need to answer that question. When Robert Martinez faces a \$2 million equipment decision, consider what probabilities would change your recommendation. Treat these as real consulting engagements, not fictional stories.
+
+**Ask questions when concepts aren't clear.** Statistics builds on itself. If you don't understand standard deviation in Lecture 1, hypothesis testing in Lecture 5 will be torture. Get clarity early. Use office hours. Form study groups. Don't let confusion compound.
+
+**Above all, remember this**: Every formula you learn, every statistical test you master, every analytical technique you develop—they're all in service of making better business decisions. Keep that purpose in mind, and the statistics will make sense.
+
+Welcome to quantitative methods. Let's get started.
+
+---
+
+*Course materials developed through collaboration with Claude (Anthropic). All business cases and scenarios are fictional and created for pedagogical purposes. Statistical methods and formulas are standard and widely used in business analytics.*

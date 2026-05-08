@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.33">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Nicolas Cachanosky">
+
+<title>Quantitative Methods</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./lecture_01.html" rel="next">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-364982630eef5352dd1537128a8ed5cb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<meta name="twitter:title" content="Quantitative Methods">
+<meta name="twitter:description" content="">
+<meta name="twitter:image" content="david_maria.png">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Quantitative Methods</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools tools-end">
+    <a href="./Quantitative-Methods.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lecture_01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Descriptive Statistics</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lecture_02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Probability</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lecture_03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Interval Estimation and Hypothesis Testing</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lecture_04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">ANOVA: Analysis of Variance</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lecture_05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Categorical Data Analysis</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lecture_06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Statistical Foundations Review: From Description to Decision</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lecture_07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Regression Analysis: Introduction to Econometrics</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome"><span class="header-section-number">0.1</span> Welcome</a></li>
+  <li><a href="#what-youll-learn" id="toc-what-youll-learn" class="nav-link" data-scroll-target="#what-youll-learn"><span class="header-section-number">0.2</span> What You’ll Learn</a></li>
+  <li><a href="#how-this-course-works-following-david-and-maria" id="toc-how-this-course-works-following-david-and-maria" class="nav-link" data-scroll-target="#how-this-course-works-following-david-and-maria"><span class="header-section-number">0.3</span> How This Course Works: Following David and Maria</a></li>
+  <li><a href="#a-note-on-how-these-materials-were-created" id="toc-a-note-on-how-these-materials-were-created" class="nav-link" data-scroll-target="#a-note-on-how-these-materials-were-created"><span class="header-section-number">0.4</span> A Note on How These Materials Were Created</a></li>
+  <li><a href="#course-philosophy-statistics-as-a-professional-skill" id="toc-course-philosophy-statistics-as-a-professional-skill" class="nav-link" data-scroll-target="#course-philosophy-statistics-as-a-professional-skill"><span class="header-section-number">0.5</span> Course Philosophy: Statistics as a Professional Skill</a></li>
+  <li><a href="#how-to-succeed-in-this-course" id="toc-how-to-succeed-in-this-course" class="nav-link" data-scroll-target="#how-to-succeed-in-this-course"><span class="header-section-number">0.6</span> How to Succeed in This Course</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Quantitative Methods</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Nicolas Cachanosky </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="welcome" class="level2" data-number="0.1">
+<h2 data-number="0.1" class="anchored" data-anchor-id="welcome"><span class="header-section-number">0.1</span> Welcome</h2>
+<p>Business decisions cost money. Sometimes millions of dollars. Sometimes careers. Sometimes both.</p>
+<p>The difference between a good decision and a bad one often comes down to how well you understand your data. Not whether you <em>have</em> data—everyone has spreadsheets full of numbers. The question is whether you can transform those numbers into insights that actually matter.</p>
+<p>“Revenue was around $767,000.”<br>
+“Customer satisfaction is pretty good.”<br>
+“We had some outliers.”<br>
+“Sales varied quite a bit.”</p>
+<p>These vague statements appear in business reports every day. They sound informative. They feel data-driven. But they’re worse than useless because they create the <em>illusion</em> of precision without delivering actual insight.</p>
+<p>Try setting a budget with “around $767,000.” Try defending an investment decision with “pretty good.” Try forecasting next quarter’s performance when all you know is “some outliers.”</p>
+<p>You can’t. And your competitors who <em>can</em> transform data into defensible decisions will eat your lunch.</p>
+<p>This course is about closing that gap. About replacing “around” with “exactly.” About moving from vague impressions to statistical precision. About becoming the person in the room who can answer the question: “So what should we actually <em>do</em> about this?”</p>
+</section>
+<section id="what-youll-learn" class="level2" data-number="0.2">
+<h2 data-number="0.2" class="anchored" data-anchor-id="what-youll-learn"><span class="header-section-number">0.2</span> What You’ll Learn</h2>
+<p>This isn’t a mathematics course, though we’ll use math. It’s not a software course, though we’ll use Excel extensively. It’s a decision-making course that happens to use quantitative methods.</p>
+<p>You’ll learn to:</p>
+<p><strong>Replace vague language with statistical precision.</strong> When someone says “sales varied quite a bit,” you’ll calculate the coefficient of variation and determine whether that variation is actually a problem or just normal business fluctuation. When they say “most customers are satisfied,” you’ll report exact percentiles and identify which customer segments need attention.</p>
+<p><strong>Look backward with descriptive statistics.</strong> You’ll master measures of location (mean, median, percentiles), variability (range, standard deviation, coefficient of variation), and distribution characteristics (skewness, outliers, correlations). You’ll learn when to use each measure and, just as importantly, when <em>not</em> to use them.</p>
+<p><strong>Look forward with probability.</strong> Descriptive statistics tell you what happened. Probability tells you what’s likely to happen next. You’ll calculate probabilities, assess test reliability using Bayes’ theorem, make decisions using expected value, and model uncertainty with probability distributions.</p>
+<p><strong>Make better decisions with inferential statistics.</strong> You’ll use sample data to draw conclusions about populations, construct confidence intervals to quantify uncertainty, test hypotheses about differences between groups, and determine whether observed patterns are real signals or just random noise.</p>
+<p><strong>Analyze relationships with regression.</strong> You’ll model how variables relate to each other, forecast future values, identify which factors actually drive your outcomes (and which just correlate by coincidence), and build predictive models that executives can use for scenario planning.</p>
+<p><strong>Deploy analytics strategically.</strong> In the final section, you’ll integrate everything into a comprehensive analytical framework for solving real business problems—from defining the question to deploying the solution.</p>
+<p>Throughout, you’ll develop a critical eye for data quality, statistical validity, and the gap between correlation and causation. You’ll learn to spot misleading statistics, challenge questionable assumptions, and avoid the analytical traps that cost businesses millions every year.</p>
+</section>
+<section id="how-this-course-works-following-david-and-maria" class="level2" data-number="0.3">
+<h2 data-number="0.3" class="anchored" data-anchor-id="how-this-course-works-following-david-and-maria"><span class="header-section-number">0.3</span> How This Course Works: Following David and Maria</h2>
+<p>You won’t learn these concepts through abstract formulas and disconnected exercises. Instead, you’ll follow two EMBA students—David and Maria—as they work through real business consulting cases.</p>
+<p><strong>David</strong> is methodical and detail-oriented. When a client’s report says “around $767,000,” David immediately calculates the exact mean: $766,666.67. When someone claims two variables are “related,” David wants to see the correlation coefficient and scatter plot. He’s the person who catches calculation errors, spots unstated assumptions, and insists on precision. His favorite question: “Can you show me the actual numbers?”</p>
+<p><strong>Maria</strong> is strategic and big-picture. She sees how statistical insights connect to business decisions. When David calculates a coefficient of variation of 76.8% for regional sales, Maria immediately translates that into action: “This says geographic strategy is a bigger priority than product portfolio restructuring.” She’s the person who transforms statistical analysis into executive recommendations. Her favorite question: “So what does this mean we should <em>do</em>?”</p>
+<p>Together, they’re formidable. David ensures analytical rigor. Maria ensures business relevance. When they present to a CEO, David provides the statistical evidence and Maria explains the strategic implications.</p>
+<p>You’ll see them work through increasingly complex cases:</p>
+<ul>
+<li><strong>TechFlow Solutions</strong>: A CEO demands precision to replace a vague Q4 marketing report with actionable insights.<br>
+</li>
+<li><strong>PrecisionCast Industries</strong>: A manufacturer needs probability analysis to decide whether to invest $2 million in new equipment.<br>
+</li>
+<li><strong>HealthTech Innovations</strong>: A medical device company requires hypothesis testing to evaluate product quality improvements.<br>
+</li>
+<li><strong>RetailOptima</strong>: A retail chain uses regression analysis to optimize store performance across regions.</li>
+</ul>
+<p>Each case builds on the previous one. The statistics become more sophisticated. The business decisions become more consequential. And David and Maria’s analytical toolkit keeps expanding.</p>
+<p>By the end, you’ll be able to do what they do: walk into a meeting with messy data, apply the right statistical methods, and walk out with decisions that executives can actually act on.</p>
+<p><img src="david_maria.png" class="img-fluid"></p>
+</section>
+<section id="a-note-on-how-these-materials-were-created" class="level2" data-number="0.4">
+<h2 data-number="0.4" class="anchored" data-anchor-id="a-note-on-how-these-materials-were-created"><span class="header-section-number">0.4</span> A Note on How These Materials Were Created</h2>
+<p>These course materials were developed through an extensive collaboration with Claude, an AI assistant created by Anthropic. This isn’t a footnote or disclaimer—it’s central to how this course works.</p>
+<p><strong>As a collaborative writing and development tool</strong>, Claude helped structure the narrative flow, develop realistic business scenarios, ensure mathematical accuracy, and maintain consistency across all seven lectures. The cases you’ll read, the dialogues between David and Maria, the progression from basic descriptive statistics to advanced analytics—all emerged from iterative conversations refining both pedagogical approach and technical content.</p>
+<p><strong>The pedagogical benefits were substantial.</strong> Claude enabled rapid prototyping of different teaching approaches, testing various ways to explain complex concepts until finding versions that balanced rigor with accessibility. When a statistical concept seemed too abstract, Claude helped develop concrete business examples. When an example seemed too simplistic, Claude helped add realistic complexity. This iterative refinement—draft, critique, revise, test—would have been far more time-consuming without AI assistance.</p>
+<p><strong>Most importantly, this represents transparency about AI in educational materials.</strong> You deserve to know how your learning resources are created. Rather than hiding AI involvement, we’re acknowledging it explicitly. These materials weren’t simply “generated by AI”—they emerged from sustained collaboration between human expertise in economics and statistics education and AI capabilities in writing, structuring, and refining content.</p>
+<p>As you progress through this course, you’ll develop your own relationship with quantitative tools. Just as Excel is a tool that amplifies your analytical capabilities, AI tools like Claude can amplify your learning and professional work. Understanding both the power and limitations of these tools is part of becoming a sophisticated data-informed professional.</p>
+</section>
+<section id="course-philosophy-statistics-as-a-professional-skill" class="level2" data-number="0.5">
+<h2 data-number="0.5" class="anchored" data-anchor-id="course-philosophy-statistics-as-a-professional-skill"><span class="header-section-number">0.5</span> Course Philosophy: Statistics as a Professional Skill</h2>
+<p>Many students approach statistics with anxiety. Maybe you had a bad experience with mathematics. Maybe you’ve convinced yourself you’re “not a numbers person.” Maybe you’re here because it’s required, not because you’re excited about regression analysis.</p>
+<p>That’s fine. Expected, even.</p>
+<p>But here’s what you need to know: <strong>Statistical thinking is fundamentally about asking better questions</strong>, not about mathematical ability.</p>
+<p>When someone presents you with a vague report saying “sales varied quite a bit,” you don’t need advanced mathematics to ask: “Varied compared to what? How much variation is normal? Is this variation increasing over time?” Those are statistical questions, and they’re really just good business questions.</p>
+<p>The math serves the questions. When you ask “is this variation normal?”, you need to calculate standard deviation. When you ask “are these two products actually different or just random fluctuation?”, you need hypothesis testing. The formulas aren’t the point—they’re tools that help you answer meaningful questions.</p>
+<p>This course treats statistics as a professional skill, like financial analysis or project management. You’ll learn it the same way you learned those skills: through practice, feedback, and application to real problems. You won’t memorize formulas; you’ll use Excel to do the calculations. You won’t prove theorems; you’ll interpret results and make recommendations.</p>
+<p><strong>We’re building three specific capabilities:</strong></p>
+<p><strong>First, the ability to spot statistical nonsense.</strong> After this course, you’ll never again accept “around $767,000” in a financial report. You’ll notice when someone cherry-picks data to support a predetermined conclusion. You’ll catch misleading statistics in news articles and vendor presentations. You’ll become allergic to vague language masquerading as data-driven analysis.</p>
+<p><strong>Second, the ability to perform your own analyses.</strong> You’ll be able to open Excel, load real data, calculate the right statistics, create meaningful visualizations, and draw defensible conclusions. No consultants required. No waiting for the analytics department. You’ll be able to answer your own business questions.</p>
+<p><strong>Third, the ability to communicate statistical insights.</strong> You’ll learn to translate technical analysis into executive language. “The coefficient of variation is 76.8%” becomes “geographic strategy should be our priority because regional performance varies much more than product performance.” You’ll build the bridge between statistical precision and business action.</p>
+<p>The goal isn’t to make you a statistician. It’s to make you dangerous. Dangerous to competitors who make decisions based on gut feel. Dangerous to vendors who try to sell you solutions with misleading statistics. Dangerous to colleagues who think “we’ve always done it this way” is a data-driven argument.</p>
+<p>By the end of this course, you’ll be the person executives want in the room when important decisions need to be made. Because you’ll be the one who can answer the question that matters most: “What does the data actually say we should do?”</p>
+</section>
+<section id="how-to-succeed-in-this-course" class="level2" data-number="0.6">
+<h2 data-number="0.6" class="anchored" data-anchor-id="how-to-succeed-in-this-course"><span class="header-section-number">0.6</span> How to Succeed in This Course</h2>
+<p><strong>Do the problem sets yourself.</strong> You can’t learn statistics by watching someone else do it. You have to calculate the means, construct the confidence intervals, run the regressions. The problem sets aren’t busy work; they’re where the learning actually happens.</p>
+<p><strong>Focus on interpretation, not just calculation.</strong> Excel will calculate a correlation coefficient for you. Your job is to explain what it means and whether it matters. Always ask: “So what? What decision does this statistical result enable or inform?”</p>
+<p><strong>Connect concepts across lectures.</strong> When you learn confidence intervals in Lecture 4, think back to standard deviation from Lecture 1. When you learn regression in Lecture 6, remember correlation from Lecture 1. Statistics isn’t a collection of isolated techniques; it’s an integrated analytical framework.</p>
+<p><strong>Engage with the cases actively.</strong> When Sarah Chen asks “Should we discontinue Product D?”, pause and think about what analysis you’d need to answer that question. When Robert Martinez faces a $2 million equipment decision, consider what probabilities would change your recommendation. Treat these as real consulting engagements, not fictional stories.</p>
+<p><strong>Ask questions when concepts aren’t clear.</strong> Statistics builds on itself. If you don’t understand standard deviation in Lecture 1, hypothesis testing in Lecture 5 will be torture. Get clarity early. Use office hours. Form study groups. Don’t let confusion compound.</p>
+<p><strong>Above all, remember this</strong>: Every formula you learn, every statistical test you master, every analytical technique you develop—they’re all in service of making better business decisions. Keep that purpose in mind, and the statistics will make sense.</p>
+<p>Welcome to quantitative methods. Let’s get started.</p>
+<hr>
+<p><em>Course materials developed through collaboration with Claude (Anthropic). All business cases and scenarios are fictional and created for pedagogical purposes. Statistical methods and formulas are standard and widely used in business analytics.</em></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./lecture_01.html" class="pagination-link" aria-label="Descriptive Statistics">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Descriptive Statistics</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

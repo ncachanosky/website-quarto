@@ -1,0 +1,1798 @@
+---
+title: "Probability"
+subtitle: "Lecture 2"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: true
+    code-tools: true
+    fig-width: 10
+    fig-height: 6
+---
+
+## Learning Objectives {.unnumbered}
+
+By the end of this chapter, you will be able to:
+
+1.  ✅ Calculate and interpret basic and conditional probabilities  
+2.  ✅ Apply Bayes' theorem to evaluate test reliability and diagnostic accuracy  
+3.  ✅ Use expected value for decision-making under uncertainty  
+4.  ✅ Apply binomial distribution for discrete event modeling  
+5.  ✅ Apply normal distribution for continuous variable analysis and process capability assessment  
+6.  ✅ Make data-driven investment decisions using probability analysis
+
+## Introduction: The $2 Million Question
+
+It's 9:15 AM on April 2, 2025. Robert Martinez, CEO of PrecisionCast Industries, sits across from his quality control director in the executive conference room. On the table between them lies a Q1 2025 quality report and a vendor proposal for a **$2 million** casting machine.
+
+The vendor's pitch is compelling: "Our new Mark VII system will reduce your defect rate by up to 40%."
+
+Robert flips through the quality report. His company produces precision metal castings for aerospace and automotive clients, industries where defects aren't just expensive, they're catastrophic. Aerospace customers require 99.5% defect-free parts. His company is close, but not quite there.
+
+> "We produced around 50,000 units this quarter. We had roughly 1,000 defects, maybe a bit more. That's about 2% or so. Machine M3 seems to produce more defects than the others, but we haven't really quantified it. Our inspection tests are pretty good at catching problems, though they're not perfect..."
+
+Robert sets down the report. "So should I write a $2 million check?"
+
+His CFO speaks up. "The vendor says '**up to** 40% reduction.' What if it's only 20%? What's the expected return? How long to break even?"
+
+His quality director adds, "And what about Machine M3? If it's really the problem, maybe we just need $15,000 in maintenance instead of $2 million in new equipment."
+
+Robert looks at his VP of Operations. "Can you answer any of these questions from this report?"
+
+Silence.
+
+"I need numbers. Probabilities. Expected values. I need to know: if we produce 55,000 units next quarter, how many defects should we expect? What's the probability our inspection system catches them? What's the expected savings from different scenarios?"
+
+He slides the report back across the table. "Get me answers by end of week. Real answers, not 'around' and 'roughly' and 'pretty good.'"
+
+The quality control team realizes they lack the statistical expertise to transform their observations into actionable probability analysis. Following the success story they'd heard about TechFlow Solutions, they reach out to the EMBA program at The University of Texas at El Paso.
+
+Enter David and Maria, the same EMBA students who transformed TechFlow's vague Q4 report into statistical precision just three months ago. But this time, the challenge is different. TechFlow needed to understand *what happened*. PrecisionCast needs to predict *what will happen*.
+
+"Last time," David says, reviewing the PrecisionCast report, "we used descriptive statistics to look backward. We calculated means and standard deviations to describe Q4 performance. This time, we need probability to look forward, to predict Q2 defects, evaluate test reliability, and analyze investment decisions."
+
+Maria nods. "Same data, different questions. Instead of 'Product D *was* 1.2 standard deviations below mean,' now it's 'What's the *probability* Machine M3 produces a defect?' Instead of 'we *had* 993 defects,' it's 'how many defects should we *expect* next quarter?'"
+
+This chapter is about that transformation. From description to prediction. From past to future. From "what happened" to "what will happen."
+
+Welcome to probability. The mathematics of the future.
+
+::: callout-warning
+## The Cost of "Pretty Good"
+
+When TechFlow said "around $767,000," they couldn't set precise budgets. That's expensive.
+
+When PrecisionCast says "tests are pretty good," they might ship defective parts to aerospace customers. That's not just expensive, it's potentially catastrophic.
+
+In quality control, vague probability statements don't just cost money. They cost lives.
+
+**The fix**: Calculate exact probabilities. Quantify test reliability. Model expected outcomes.
+:::
+
+## From Descriptive Statistics to Probability
+
+Before diving into PrecisionCast's challenges, David and Maria review what they learned from TechFlow.
+
+### What We Learned from TechFlow (Descriptive Statistics)
+
+Three months ago, they transformed TechFlow's vague Q4 report by calculating:
+
+**Measures of Location:**  
+- Mean monthly revenue: $766,667 (not "around $767,000")  
+- Median customer satisfaction: 4.3/5  
+- 90th percentile order value: $425 (VIP threshold)  
+
+**Measures of Variability:**  
+- Product CV: 46.6%  
+- Regional CV: 76.8% (the bigger problem)  
+- IQR for customer orders: $135  
+
+**Measures of Distribution:**  
+- Product D z-score: -1.21 (monitor zone)  
+- Left-skewed satisfaction (most customers happy, few unhappy)  
+- 6 high-value customer outliers (B2B opportunity) 
+
+"These statistics described what happened in Q4," Maria explains. "They were backward-looking. Historical. They told Sarah Chen where her business *was*, not where it's *going*."
+
+### What PrecisionCast Needs (Probability)
+
+Robert Martinez has different questions:
+
+**Instead of:** "We had 993 defects in Q1"  
+**He needs:** "How many defects should we expect in Q2?"
+
+**Instead of:** "Machine M3 seems worse"  
+**He needs:** "What's the probability a unit from M3 is defective?"
+
+**Instead of:** "Tests are pretty good"  
+**He needs:** "If a test says 'defective,' what's the probability it really is?"
+
+**Instead of:** "We had some variation"  
+**He needs:** "What's the probability a batch exceeds our quality threshold?"
+
+"This is probability," David says. "We're converting historical frequencies into future predictions. The past becomes a model for the future."
+
+::: callout-note
+## Key Distinction: Descriptive Statistics vs. Probability
+
+**Descriptive Statistics (Lecture 1):**  
+*Past-focused*. "What happened?"  
+
+- We had 993 defects  
+- Mean was $575,000  
+- Product D was 1.2 SD below mean  
+
+**Probability (Lecture 2):**  
+*Future-focused*. "What will happen?"  
+
+- We expect 1,117 defects (±66)  
+- P(Defect) = 0.0203  
+- P(Product D < $300k) = 0.19
+
+**The Bridge:** Historical data (statistics) provides the foundation for probability models. We calculate past frequencies, then use them to predict future outcomes.
+:::
+
+## Basic Probability: Building the Foundation
+
+David pulls up PrecisionCast's Q1 2025 production data:  
+
+- Total units produced: 48,865  
+- Defective units: 993  
+- Good units: 47,872  
+
+"Let's start with the most basic question," he says. "What's the probability that a randomly selected unit is defective?"
+
+### Probability as Relative Frequency
+
+Maria calculates:
+
+$$
+\begin{aligned}
+\text{P(Defect)} &= \frac{\text{Number of defective units}}{\text{Total units}} \\[10pt]
+\text{P(Defect)} &= \frac{993}{48,865} \\[10pt]
+\text{P(Defect)} &= 0.0203
+\end{aligned}
+$$
+
+
+"So there's a 0.0203 probability (or 2.03%) that any randomly selected unit is defective."
+
+David adds the interpretation: "If we pick one unit at random from the production floor, there's a 2.03% chance it's defective. Or thinking about it differently: out of every 100 units produced, we expect about 2 to be defective."
+
+**The complement:**
+$$
+\begin{aligned}
+\text{P(Good)} &= 1 - \text{P(Defect)} \\[10pt]
+\text{P(Good)} &= 1 - 0.0203 \\[10pt]
+\text{P(Good)} &= 0.9797
+\end{aligned}
+$$
+
+"97.97% of units are good," Maria notes.
+
+::: callout-note
+## Definition: Probability as Relative Frequency
+
+For an event A:
+
+$$P(A) = \frac{\text{Number of times A occurred}}{\text{Total number of observations}}$$
+
+**Properties:**  
+
+- $0 \leq P(A) \leq 1$ (probabilities range from 0 to 1)  
+- $P(A) + P(\bar{A}) = 1$ (complement rule, where $\bar{A}$ means "not A")  
+- P(A) = 0 means impossible  
+- P(A) = 1 means certain  
+
+**Interpretation:** P(A) represents the long-run relative frequency. If P(Defect) = 0.0203, and we produce 100,000 units, we expect about 2,030 defects.
+
+---
+
+**Excel**
+```markdown
+=COUNTIF(Status,"Defective")/COUNT(Status)
+```
+:::
+
+### The Business Context Gap
+
+Robert reviews the calculation. "So we're at 97.97% defect-free. How does that compare to requirements?"
+Maria pulls up the aerospace specifications: "Aerospace customers require P(Good) ≥ 0.995, or 99.5% defect-free."
+David does the math:
+
+* Our rate: 97.97%  
+* Required: 99.5%  
+* Gap: 1.53 percentage points
+
+"At our annual production of 200,000 units," he explains, "that 1.53% gap represents about 3,000 additional defects compared to the aerospace standard. At $180 average rework cost, that's $540,000 in annual excess rework costs."
+Robert leans back. "Now we're talking business impact. That's the kind of number that justifies investment."
+
+::: callout-warning
+## Common Mistake: "Pretty Close" Isn't Close Enough
+
+**Wrong thinking:** "97.97% vs. 99.5%, we're only 1.5 points off. Pretty close."  
+
+**Reality:** That 1.5 percentage points represents:
+
+- 3,000 additional defects per year
+- $540,000 in excess rework costs
+- Potential loss of aerospace certifications
+- Risk of catastrophic failures in safety-critical applications
+
+**In quality control:** Small probability differences have massive business consequences.
+:::
+
+## Conditional Probability: Finding the Root Cause
+
+"Now the harder question," Robert says. "You said Machine M3 'seems worse.' Prove it."
+This requires conditional probability, the probability of an event given that another event has occurred.
+
+### Machine-Specific Defect Rates
+
+David analyzes each of PrecisionCast's five casting machines:
+
+| Machine | Units Produced | Defects | P(Defect \| Machine) |
+|:--------|:--------------:|:-------:|---------------------:|
+| M1      | 9,733          | 189     | 0.0194               |
+| M2      | 9,733          | 197     | 0.0202               |
+| **M3**  | **9,733**      | **227** | **0.0233**           |
+| M4      | 9,733          | 194     | 0.0199               |
+| M5      | 9,733          | 186     | 0.0191               |
+
+**Machine M3:** P(Defect | M3) = 227 / 9,733 = 0.0233 (2.33%)
+
+"Machine M3's defect rate is 2.33%," Maria explains. "Compare that to machines M1 and M5, which are around 1.9%. M3 is about 20% higher."
+
+::: callout-note
+## Definition: Conditional Probability
+
+The probability of event $A$ given that event $B$ has occurred:
+
+$$P(A∣B)=\frac{P(A∩B)}{P(B)} = \frac{\text{Number where both A and B occur}}{\text{Number where B occurs}}$$
+
+**Read as:** "Probability of A given B"
+
+**Interpretation:** We restrict our attention only to cases where $B$ occurred, then calculate the proportion where $A$ also occurs.
+
+**For PrecisionCast:**
+
+$$P(\text{Defect | M3}) = \frac{\text{Defects from M3}}{\text{Total units from M3}} = \frac{227}{9,733} = 0.0233$$
+
+---
+
+Excel
+```markdown
+=COUNTIFS(Machine,"M3",Status,"Defective")/COUNTIF(Machine,"M3")
+```
+:::
+
+### The Reverse Question: Where Do Defects Come From?
+
+Robert asks a different question: "If quality control finds a defect, what's the probability it came from Machine M3?"
+
+"That's the reverse conditional probability," David explains. "We're asking: P(M3 | Defect), not P(Defect | M3)."
+
+Maria calculates:
+
+$$
+\begin{align}
+\text{P(M3 | Defect)} &= \frac{\text{Defects from M3}}{\text{Total defects}} \\[10pt]
+\text{P(M3 | Defect)} &= 227 / 993 \\[10pt]
+\text{P(M3 | Defect)} &= 0.229 (22.9\%)
+\end{align}
+$$
+
+"So if we find a defect, there's a 22.9% probability it came from Machine M3."
+David creates a comparison:
+
+| Machine | P(Machine \| Defect) | % of Production | Interpretation     | 
+|:--------|:--------------------:|:---------------:|-------------------:|
+| M1      | 19.0%                | 20%             | Proportional       |
+| M2      | 19.8%                | 20%             | Proportional       |
+| **M3**  | **22.9%**            | **20%**         | **Overepresented** |
+| M4      | 19.5%                | 20%             | Proportional       |
+| M5      | 18.7%                | 20%             | Underepresented    |
+
+
+"Machine M3 produces 20% of units but contributes 22.9% of defects. It's punching above its weight, in the wrong direction."
+
+::: callout-warning
+## Critical Distinction: P(A|B) ≠ P(B|A)
+
+**These are DIFFERENT questions with DIFFERENT answers:**
+
+**Forward conditional:**
+P(Defect | M3) = 0.0233
+"What's the defect rate for M3?"
+
+**Reverse conditional:**
+P(M3 | Defect) = 0.2290
+"Where do defects come from?"
+
+**Why different?**
+The first asks about M3's output (9,733 units).
+The second asks about all defects (993 total).
+Different denominators → Different probabilities.
+
+**Classic example:**
+
+- P(Clouds | Rain) ≈ 0.95 (if it's raining, clouds are very likely)  
+- P(Rain | Clouds) ≈ 0.20 (if there are clouds, rain is less certain)
+
+These are obviously different!
+:::
+
+### The Business Decision
+
+"What should we do about M3?" Robert asks.
+
+David provides the analysis:
+
+**Statistical evidence:**
+
+* P(Defect | M3) = 0.0233 vs. peer average = 0.0193
+* 20% higher defect rate than comparable machines
+* Contributes 22.9% of defects from 20% of production
+
+**Business impact:**
+
+* Excess defects from M3: ~40 per quarter
+* Cost per defect: $180 average rework  
+* Quarterly excess cost: $7,200
+* Annual excess cost: $28,800
+
+**Recommendation:** "Schedule diagnostic maintenance on M3. Cost: $15,000. If we reduce M3's defect rate to peer average (0.0193), we eliminate $28,800 in annual rework costs. Payback period: 6.3 months."
+
+Robert makes a note: "Schedule M3 maintenance next week. This is the kind of targeted action I needed."
+
+Maria adds: "And this shows why conditional probability matters. Overall defect rate of 2.03% hides the fact that one machine is worse than the others. Without calculating P(Defect | Machine), we wouldn't know where to focus our efforts."
+
+## Bayes' Theorem: When Tests Aren't What They Seem
+
+Robert's next question hits harder: "Our inspection system has 95% sensitivity. If it says a part is defective, it is, right?"
+
+David and Maria exchange glances. This is where most people, including experienced managers, get probability wrong.
+
+"Let's find out," Maria says.
+
+### Understanding Test Characteristics
+
+PrecisionCast's inspection process has been evaluated on 2,000 units with known true status:
+
+Test Performance Metrics:
+
+* Sensitivity: 95% (If truly defective, 95% chance test detects it)
+* Specificity: 98% (If truly good, 98% chance test confirms it)
+
+"Those sound excellent," Robert says. "95% and 98%, both very high."
+
+"They are," David agrees. "But watch what happens."
+
+He creates a confusion matrix on the whiteboard:
+
+|               | **Test Positive** | **Test Negative** | **Totals**  |
+|--------------:|------------------:|------------------:|------------:|
+| **Defective** | 38 (TP)           | 2 (FN)            | **40**      |
+| **Good**      | 40 (FP)           | 1,920 (TN)        | **1,960**   |
+| **Totals**    | **78**            | **1,922**         | **2,000**   |
+
+Definitions:
+
+* True Positive (TP): Test says defective $\rightarrow$ truly is defective
+* False Negative (FN): Test says good $\rightarrow$ actually defective
+* False Positive (FP): Test says defective $\rightarrow$ actually good
+* True Negative (TN): Test says good $\rightarrow$ truly is good
+
+Calculate sensitivity and specificity:
+
+$$
+\begin{align}
+\text{Sensitivity} &= \text{P(Test+ | Defective)} = \frac{\text{TP}}{\text{TP + FN}} = \frac{38}{40} = 0.95 \\[10pt]
+\text{Specifity} &= \text{P(Test- | Good)} = \frac{\text{TN}}{\text{FP + TN}} = \frac{1,920}{1,960} = 0.98
+\end{align}
+$$
+
+::: callout-note
+## Definition: Test Performance Metrics
+
+**Sensitivity (True Positive Rate):**
+
+Probability that test detects the condition when it's truly present.  
+
+> "*If someone has the disease, what's the probability the test catches it?*"
+
+**Specificity (True Negative Rate):**
+
+Probability that test confirms absence when condition is truly absent.
+
+> "*If someone doesn't have the disease, what's the probability the test confirms they're healthy?*"
+
+**False Positive Rate:** 1 - Specificity  
+**False Negative Rate:** 1 - Sensitivity
+:::
+
+### The Critical Question: What Does a Positive Test Mean?
+
+"Here's the question that matters," David says. "A unit tests positive. What's the probability it's actually defective?"
+
+Robert thinks. "Well, sensitivity is 95%, so... 95%?"
+
+"That's what everyone thinks," Maria says. "But watch."
+
+She writes on the board:
+
+* What we want: P(Defective | Test+)
+* What we know: P(Test+ | Defective) = 0.95
+
+"These are different," David emphasizes. "One is the reverse of the other."
+
+**Direct calculation from the confusion matrix:**
+
+* P(Defective | Test+) = TP / (TP + FP)  
+* P(Defective | Test+) = 38 / (38 + 40)  
+* P(Defective | Test+) = 38 / 78  
+* P(Defective | Test+) = 0.487
+
+Robert stares at the number. "48.7%? You're telling me when the test says 'defective,' there's less than a 50% chance it's actually defective?"
+
+"Exactly," Maria confirms.
+
+### Bayes' Theorem: The Formula
+
+"Let me show you the general formula," David says. "This is Bayes' Theorem, one of the most important formulas in probability."
+
+$$
+\text{P(Defective | Test+)} = \frac{\text{P(Test+ | Defective)}\times \text{P(Defective)}}{\text{P(Test+)}}
+$$
+
+"Where P(Test+) is the total probability of getting a positive test from anyone, defective or good." Maria calculates the denominator:
+
+* P(Test+) = P(Test+ ∩ Defective) + P(Test+ ∩ Good)  
+* P(Test+) = P(Test+ | Defective) × P(Defective) + P(Test+ | Good) × P(Good)  
+* P(Test+) = 0.95 × 0.0203 + 0.02 × 0.9797  
+* P(Test+) = 0.0193 + 0.0196  
+* P(Test+) = 0.0389
+
+"So 3.89% of all units test positive."
+
+Now the full calculation:
+
+* P(Defective | Test+) = (0.95 × 0.0203) / 0.0389  
+* P(Defective | Test+) = 0.0193 / 0.0389  
+* P(Defective | Test+) = 0.496  
+
+"49.6%, essentially a coin flip."
+
+::: callout-note
+## Bayes' Theorem
+
+$$
+\begin{align}
+P(A|B)\times P(B) &= P(B|A)\times P(A) \\[10pt]
+P(A|B) &= \frac{P(B|A\times P(A))}{P(B)}
+\end{align}
+$$
+
+
+**Components:**
+
+* P(A∣B): Posterior probability (what we want)
+* P(B∣A): Likelihood (test performance)
+* P(A): Prior probability (base rate)
+* P(B): Total probability (normalizing constant)
+
+**What it does:** Converts P(B|A) into P(A|B), reverses the conditional probability.
+:::
+
+### Why Is PPV So Low? The Base Rate Problem
+
+"This seems wrong," Robert says. "95% sensitivity, 98% specificity, how do we get only 49.6% reliability?"
+
+David draws a tree diagram for 10,000 units:
+
+```{mermaid}
+%%| fig-width: 12
+%%| fig-height: 5
+
+graph LR
+    A["10,000 units"] --> B["203 Defective<br/>(2.03%)"]
+    A --> C["9,797 Good<br/>(97.97%)"]
+    
+    B --> D["193 Test+<br/>(TP: 95%)"]
+    B --> E["10 Test-<br/>(FN: 5%)"]
+    
+    C --> F["196 Test+<br/>(FP: 2%)"]
+    C --> G["9,601 Test-<br/>(TN: 98%)"]
+    
+    style A fill:#2c5f8d,stroke:#1a3a5c,stroke-width:3px,color:#fff
+    style B fill:#c0392b,stroke:#7f1d1d,stroke-width:2px,color:#fff
+    style C fill:#27ae60,stroke:#1e7e43,stroke-width:2px,color:#fff
+    style D fill:#d35400,stroke:#8b3a00,stroke-width:2px,color:#fff
+    style E fill:#e67e22,stroke:#b35c14,stroke-width:2px,color:#fff
+    style F fill:#f39c12,stroke:#c07c0a,stroke-width:2px,color:#000
+    style G fill:#229954,stroke:#196f3d,stroke-width:2px,color:#fff
+
+    D["193 Test+<br/>(95% sensitivity)<br/>✓ Correct Detection"]
+    F["196 Test+<br/>(2% false positive)<br/>⚠️ False Alarm"]
+```
+
+"Look at the positive tests," Maria points. "We get 193 true positives from defective units. But we also get 196 false positives from good units. The test generates nearly as many false alarms as real detections."
+
+"Why?" David explains. "Because defects are rare, only 2.03% of units. Even though the false positive rate is only 2%, there are so many good units (9,797) that 2% of them (196) is almost equal to 95% of the defective units (193)."
+
+Robert works through it: "So out of 389 positive tests, only 193 are true positives. That's 193/389 = 49.6%."
+
+"Exactly," Maria confirms. "This is called the base rate problem. When the condition is rare, even very accurate tests generate lots of false positives."
+
+::: callout-warning
+## The Base Rate Problem
+
+**The paradox:** High test accuracy ≠ High result reliability
+
+**Why:** When testing for rare conditions:
+
+- Small false positive rate × Large healthy population = Many false positives
+- High sensitivity × Small diseased population = Fewer true positives
+- Result: More false positives than true positives
+
+**PrecisionCast example:**
+
+- Only 2.03% defect rate (rare condition)
+- 2% false positive rate seems low
+- But 2% of 9,797 good units = 196 false alarms
+- 95% of 203 defective units = 193 true detections
+- 196 ≈ 193 → PPV ≈ 50%
+
+**Medical parallel:** Mammogram screening
+
+- Sensitivity: ~85%
+- Specificity: ~90%
+- Breast cancer prevalence: ~1%
+- PPV: Only ~8%
+- Most positive mammograms are false alarms
+
+**Key insight:** Test accuracy must be evaluated in context of base rate.
+:::
+
+### The Negative Test: Much More Reliable
+
+"What about negative tests?" Robert asks. "If a unit tests negative, how confident can we be it's actually good?"
+
+Maria calculates:
+
+* NPV = TN / (TN + FN)  
+* NPV = 1,920 / (1,920 + 2)  
+* NPV = 0.998  
+
+"99.8% confident," she says. "Negative tests are highly reliable. If it passes, you can trust it."
+
+David explains the asymmetry: "Negative tests are reliable because there are so few false negatives (10 out of 10,000) compared to true negatives (9,601 out of 10,000). When the test says 'good,' it's almost certainly right."
+
+### Business Implications
+
+Robert absorbs this. "So every positive test needs secondary verification?"
+
+"Exactly," David confirms. "Your current process probably scraps or reworks everything that tests positive. But half of those are false alarms, good parts being wasted."
+
+Maria adds the cost: "If you scrap 40 good parts per quarter at $150 each, that's $6,000 quarterly waste, or $24,000 annually."
+
+"What's the solution?" Robert asks.
+
+David provides three options:
+
+**Option 1: Two-stage testing**  
+
+* Any positive test gets re-tested with a different method.  
+* Cost: $10 per re-test × ~196 false positives/quarter = $1,960/quarter  
+* Savings: Reduces scrapping of good parts by 90%  
+* Net benefit: ~$20,000 annually
+
+**Option 2: Improve specificity**  
+
+* Invest in higher-precision inspection equipment.  
+* Target: Increase specificity from 98% to 99.5%  
+* Result: PPV improves from 49.6% to 79.2%  
+* Cost: $150,000 in new equipment  
+* Payback: ~6 years  
+
+**Option 3: Accept and adjust**  
+
+* Keep current system but change decision rule.  
+* Instead of: Positive test → Automatic scrap  
+* Use: Positive test → Manual expert inspection  
+* Cost: Minimal  
+* Result: Eliminates waste from false positives  
+
+"Option 1 or 3," Robert decides immediately. "Two-stage testing or expert review. Both are no-brainers compared to $150k in new equipment."
+
+Maria makes a note: "And this is why Bayes' theorem matters. Without it, you'd never realize that 95% sensitivity doesn't mean 95% reliability. You'd keep wasting money on false positives without knowing it."
+
+::: callout-tip
+## Business Applications of Bayes' Theorem
+
+**Quality Control:**
+
+- Evaluate reliability of inspection systems
+- Determine when secondary testing is cost-effective
+- Optimize balance between false positives and false negatives
+
+**Medical Testing:**
+
+- Interpret diagnostic test results
+- Decide when to order confirmatory tests
+- Communicate risk to patients accurately
+
+**Fraud Detection:**
+
+- When fraud flag triggers, probability it's real fraud
+- Balance between catching fraud and annoying legitimate customers
+- Optimize investigation resources
+
+**Security Screening:**
+
+- Airport security: When alarm sounds, probability of actual threat
+- Network intrusion: When alert fires, probability of real attack
+- Spam filtering: When email flagged, probability it's actually spam
+
+**Key principle:** Test accuracy (sensitivity/specificity) ≠ Result reliability (PPV/NPV). Always consider base rates.
+:::
+
+## Expected Value: Planning Under Uncertainty
+
+"Alright," Robert says, "now let's talk about Q2. We're planning to produce 55,000 good units. How many defects should we expect?"
+
+"This is where probability becomes forecasting," David says. "We use expected value."
+
+### Expected Defects
+
+Maria starts with the basic formula:
+
+$$E(X) = n \times p$$
+
+Where:
+
+* $n$ = number of trials (units produced)  
+* $p$ = probability of detect  
+* $E(X)$ = Expected number of defects
+
+For Q2:
+
+* E(Defects) = 55,000 × 0.0203  
+* E(Defects) = 1,117 defects
+
+"So we should expect about 1,117 defective units in Q2."
+
+"But there's variability around that," David adds. "The actual number won't be exactly 1,117."
+
+He calculates the standard deviation:
+
+* Variance = n × p × (1-p)  
+* Variance = 55,000 × 0.0203 × 0.9797  
+* Variance = 1,094  
+
+SD = √1,094 = 33 defects
+
+"So 1,117 ± 66 defects (±2 SD) gives us a realistic range: [1,051, 1,183]."
+
+::: callout-note
+## Expected Value and Variance
+
+**For Binomial (counting successes in n trials):**
+
+**Expected value:**
+$$E(X)=n \times p$$
+
+**Variance:**
+$$Var(X) = n \times p \times (1−p)$$
+
+Standard deviation:
+
+$$SD(X) = \sqrt{n \times p \times (1-p)}$$
+
+**Interpretation:**
+
+- E(X): The long-run average
+- SD(X): Typical deviation from expected value
+- Range E(X) ± 2SD covers ~95% of possible outcomes
+
+**Connection to Lecture 1:** This is the same standard deviation concept, now applied to future predictions instead of past data.
+
+---
+
+**Excel**
+```markdown
+=n*p              ' Expected value
+=SQRT(n*p*(1-p))  ' Standard deviation
+```
+:::
+
+### Expected Cost
+
+"How much should we budget for rework?" Robert asks.
+
+"Different defect types have different costs," Maria notes. She pulls up the breakdown:
+
+| **Defect Type** | **Probability** | **Cost per Unit** | **Weighted Cost** |
+|:----------------|----------------:|------------------:|------------------:|
+| Porosity        | 0.401           | $180              | $72.18            |
+| Cracks          | 0.250           | $250              | $62.50            |
+| Dimensional     | 0.200           | $150              | $30.00            |
+| Surface         | 0.149           | $120              | $17.88            |
+
+"Expected cost per defect is the weighted average:"
+
+* E(Cost per Defect) = Σ [P(Type) × Cost]  
+* E(Cost per Defect) = 0.401×$180 + 0.250×$250 + 0.200×$150 + 0.149×$120  
+* E(Cost per Defect) = $72.18 + $62.50 + $30.00 + $17.88  
+* E(Cost per Defect) = $182.56
+
+"Now total expected cost:"
+
+* E(Total Cost) = E(Defects) × E(Cost per Defect)  
+* E(Total Cost) = 1,117 × $182.56  
+* E(Total Cost) = $203,920  
+
+David adds a safety margin: "Budget $204,000 for rework, with an additional $30,000 buffer for the ±2SD range. That gives you $234,000 total, enough to cover 95% of likely scenarios."
+
+Robert makes a note. "This is exactly what I needed. Not 'maybe 1,000 to 1,500 defects', a specific number with a confidence range."
+
+::: callout-note
+## Expected Value with Different Outcomes
+
+**General formula:**
+
+$$E(X) = \sum_{i}^{n} X_i P(X_i)$$
+
+
+Where $X_i$​ represents each possible outcome and $P(X_i)$ its probability.
+
+**Application:** When outcomes have different values (costs, revenues, returns), calculate weighted average using probabilities as weights.
+
+**PrecisionCast example:**
+
+- Four defect types with different costs
+- Each has different probability
+- Expected cost = probability-weighted average
+
+**Business uses:**
+
+- Portfolio returns (different investments, different probabilities)
+- Project outcomes (success/failure scenarios with different payoffs)
+- Insurance claims (different claim amounts, different frequencies)
+- Sales forecasts (different demand levels, different probabilities)
+
+---
+
+**Excel**
+```markdown
+=SUMPRODUCT(values_range, probabilities_range)
+```
+:::
+
+## Capacity Planning
+
+"One more thing," Maria says. "If you need to deliver 50,000 good units, how many should you actually produce?"
+
+She sets up the equation:
+
+Good units = Total production × P(Good)
+50,000 = Total production × 0.9797
+
+Total production = 50,000 / 0.9797
+Total production = 51,035 units
+
+"You need to produce 51,035 units to guarantee 50,000 good ones. That's a 2.07% buffer for defects."
+
+Robert appreciates the precision. "So if a customer orders 50,000 units, I know to schedule 51,035 in production. This prevents shortfalls and costly rush orders."
+
+::: callout-tip
+## Business Applications of Expected Value
+
+**Production Planning:**
+
+- Expected defects → Production capacity buffer
+- Expected rework costs → Budget allocation
+- Expected scrap → Material ordering
+
+**Inventory Management:**
+
+- Expected demand → Safety stock levels
+- Expected lead time → Reorder points
+- Expected shortages → Service level targets
+
+**Financial Forecasting:**
+
+- Expected revenue = Σ (Scenario revenue × Probability)
+- Expected costs with probabilistic drivers
+- Expected profit accounting for uncertainty
+
+**Risk Assessment:**
+
+- Expected loss = Severity × Probability
+- Expected insurance payout
+- Expected value of perfect information
+
+**Key insight:** Expected value converts probability distributions into single actionable numbers for planning.
+:::
+
+## Binomial Distribution: Batch Quality Control
+
+Robert presents a new challenge: "We inspect parts in batches of 100. Our policy is that a batch passes if it contains 3 or fewer defects. What percentage of batches should we expect to pass?"
+
+"This is a binomial distribution problem," David says. "We're counting the number of defects in a fixed number of trials."
+
+### Understanding the Binomial
+
+"The binomial distribution applies when:" Maria lists the conditions:
+
+1. Fixed number of trials: n = 100 units per batch
+2. Two outcomes: Each unit is either defective or good
+3. Constant probability: p = 0.0203 for each unit
+4. Independent trials: One unit's status doesn't affect another
+
+"When these conditions hold, the number of defects follows a binomial distribution."
+
+::: callout-note
+## Binomial Distribution
+Conditions:
+
+1. Fixed number of trials (n)
+2. Each trial has two outcomes (success/failure)
+3. Constant probability of success (p)
+4. Trials are independent
+
+**Parameters:**
+
+- $n$ = number of trials
+- $p$ = probability of success on each trial
+
+**Probability mass function:**
+
+$$P(X=k) = (n k) p^k (1-p)^{n-k}$$
+
+Where $(n k) = \frac{n!}{k! (n-k)!}$ is the binomial coefficient.
+
+**Expected value:**
+
+$$E(X) = n \times p$$
+
+**Variance:**
+
+$$Var(X) = n \times p \times (1-p)$$
+
+**Standard deviation:**
+
+$$SD(X) = \sqrt{n \times p \times (1-p)}​$$
+
+---
+
+**Excel**
+```markdown
+=BINOM.DIST(k, n, p, cumulative)
+
+Where:
+- k = number of successes
+- n = number of trials  
+- p = probability of success
+- cumulative = TRUE for P(X ≤ k), FALSE for P(X = k)
+```
+:::
+
+### Expected Defects per Batch
+
+David calculates:
+
+* E(Defects per batch) = n × p  
+* E(Defects per batch) = 100 × 0.0203  
+* E(Defects per batch) = 2.03 defects  
+
+"So on average, a batch contains about 2 defects."
+
+The standard deviation:
+
+* SD = √[n × p × (1-p)]  
+* SD = √[100 × 0.0203 × 0.9797]  
+* SD = √1.989  
+* SD = 1.41 defects  
+
+"Most batches will contain between 0 and 5 defects (within ±2SD of the mean)."
+
+### Probability of Passing
+
+"Now for the actual question," Maria says. "What's P(Defects ≤ 3)?"
+
+This requires summing individual probabilities:
+
+P(Pass) = P(0 defects) + P(1 defect) + P(2 defects) + P(3 defects)
+
+Using the binomial formula (or Excel):
+
+P(0) = 0.1286
+P(1) = 0.2665
+P(2) = 0.2734
+P(3) = 0.1850
+
+P(Pass) = 0.1286 + 0.2665 + 0.2734 + 0.1850
+P(Pass) = 0.8535
+
+"85.35% of batches should pass," David announces.
+
+"Which means 14.65% fail," Robert notes. "That's roughly 1 in 7 batches requiring rework or scrapping."
+
+## Comparing to Observed Data
+
+Maria pulls up actual Q1 batch data from 488 batches:
+
+| **Defects in Batch** | **Observed Count** | **Obsered %** | **Expected %** |
+|:---------------------|:------------------:|:-------------:|---------------:|
+| 0                    | 66                 | 13.5%         | 12.9%          |
+| 1                    | 133                | 27.3%         | 26.7%          |
+| 2                    | 140                | 28.7%         | 27.3%          |
+| 3                    | 91                 | 18.6%         | 18.5%          |
+| 4+                   | 58                 | 11.9%         | 14.5%          |
+
+"The observed distribution matches the theoretical model very closely," she notes. "This validates our probability assumptions."
+
+::: callout-tip
+## Business Applications of Binomial Distribution
+
+**Quality Control:**
+
+- Batch acceptance/rejection decisions
+- Sample inspection plans
+- Process capability when counting defects
+
+**Customer Service:**
+
+- Number of complaints in fixed time period
+- Call abandonment rates
+- Service failures per day
+
+**Sales:**
+
+- Number of conversions from fixed leads
+- Close rates from sales calls
+- Response rates to marketing campaigns
+
+**Operations:**
+
+- Equipment failures in production run
+- Order errors per shift
+- On-time deliveries per week
+
+**Key insight:** When counting successes/failures in a fixed number of independent trials with constant probability, use binomial distribution.
+:::
+
+### Threshold Sensitivity Analysis
+
+Robert asks: "What if we change our acceptance threshold? Say we only accept batches with 2 or fewer defects?"
+
+David recalculates:
+
+* P(Defects ≤ 2) = P(0) + P(1) + P(2)  
+* P(Defects ≤ 2) = 0.1286 + 0.2665 + 0.2734  
+* P(Defects ≤ 2) = 0.6685  
+
+"Only 66.85% of batches would pass. You'd reject a third of production."
+
+"And if we're more lenient—say 4 defects?"
+
+* P(Defects ≤ 4) = 0.8535 + P(4)  
+* P(Defects ≤ 4) = 0.8535 + 0.0947  
+* P(Defects ≤ 4) = 0.9482  
+
+"94.82% pass rate."
+
+Maria creates a summary table:
+
+| **Threshold** | **Pass Rate** | **Fail Rate** | **Interpretation**           |
+|:--------------|--------------:|--------------:|-----------------------------:|
+| $\leq$ 2      | 66.9%         | 33.1%         | Too strict (high rejection)  |
+| $\leq$ 3      | 85.4%         | 14.6%         | Current policy (balanced)    |
+| $\leq$ 4      | 94.8%         | 5.3%          | More lenient (low rejection) |
+
+"Current threshold of 3 seems reasonable," Robert decides. "Catches the worst batches without excessive rejection."
+
+## Normal Distribution: Dimensional Quality
+
+"Let's talk about dimensions," Robert says. "Our aerospace parts must be 2.500 inches ± 0.001 inches. What percentage of our parts meet specification?"
+
+This requires the normal distribution (used for continuous measurements rather than discrete counts.)
+
+### The Normal Distribution Setup
+
+David explains: "When measuring continuous variables like dimensions, weights, or times, we typically use the normal distribution. It's characterized by two parameters: mean (μ) and standard deviation (σ)."
+
+Maria pulls up the dimensional data from 500 measurements:
+
+* Sample mean: $\hat{\mu}$ = 2.500004 inches
+* Sample standard deviation: $\hat{\sigma}$ = 0.000401 inches
+* Specification: 2.500 ± 0.001 inches (range: 2.499 to 2.501)
+
+::: callout-note
+## Normal Distribution
+
+**Notation:** $X \sim N(\mu, \sigma^2)$
+
+**Parameters:**
+
+- $\mu$ = mean (center of distribution)
+- $\sigma$ = standard deviation (spread)
+
+**Properties:**
+
+- Bell-shaped, symmetric around μ
+- About 68% of data within μ ± σ
+- About 95% within μ ± 2σ
+- About 99.7% within μ ± 3σ
+
+**Probability density function:**
+
+$$f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}$$
+
+**Cumulative distribution function:**
+
+$$P(X \leq x) = \Phi\left(\frac{x-\mu}{\sigma}\right)$$
+
+Where Φ is the standard normal CDF.
+
+---
+
+**Excel**
+
+```markdown
+=NORM.DIST(x, mean, sd, TRUE)    ' Cumulative probability  
+=NORM.DIST(x, mean, sd, FALSE)   ' Probability density
+```
+:::
+
+### Calculating Probability Within Specification
+
+"We need P(2.499 < X < 2.501)," David says.
+
+First, standardize using z-scores:
+
+**Lower limit:**  
+
+* z_lower = (2.499 - 2.500004) / 0.000401  
+* z_lower = -0.001004 / 0.000401  
+* z_lower = -2.50  
+
+**Upper limit:**  
+
+* z_upper = (2.501 - 2.500004) / 0.000401  
+* z_upper = 0.000996 / 0.000401  
+* z_upper = 2.48
+
+From standard normal table (or Excel):  
+
+* P(Z < 2.48) = 0.9934  
+* P(Z < -2.50) = 0.0062  
+
+Therefore:  
+
+* P(Within spec) = P(Z < 2.48) - P(Z < -2.50)  
+* P(Within spec) = 0.9934 - 0.0062  
+* P(Within spec) = 0.9872  
+
+"98.72% of parts meet specification," Maria announces.
+
+::: callout-note
+## Standard Normal Distribution and Z-Scores
+
+Standardization (Z-score):
+
+$$z = \frac{x - \mu}{\sigma}$$
+​
+Converts any normal distribution to standard normal: $$Z \sim N(0, 1)$$
+
+Why standardize?
+
+- Enables use of standard normal tables
+- Allows comparison across different scales
+- Simplifies probability calculations
+
+**Connection to Lecture 1:** Same z-score concept used to identify outliers, now used to calculate probabilities under the normal curve.
+
+---
+
+**Excel**
+```markdown
+=NORM.S.DIST(z, TRUE)      ' Standard normal CDF  
+=NORM.S.INV(probability)   ' Inverse: find z for given probability
+```
+:::
+
+## Process Capability Analysis
+
+"How does 98.72% compare to what we need?" Robert asks.
+
+"Aerospace standard is 99.5%," David reminds him. "You're short by 0.78 percentage points."
+
+Maria introduces Process Capability Index (Cpk):
+
+$$C_{pk} = \min\left[\frac{\text{USL} - \mu}{3\sigma}, \frac{\mu - \text{LSL}}{3\sigma}\right]$$
+
+Where:
+
+* USL = Upper Specification Limit (2.501)
+* LSL = Lower Specification Limit (2.499)
+* μ = Process mean (2.500004)
+* σ = Process standard deviation (0.000401)
+
+Calculate:
+
+Upper capability:
+
+* (2.501 - 2.500004) / (3 × 0.000401) = 0.000996 / 0.001203 = 0.828
+
+Lower capability:
+
+* (2.500004 - 2.499) / (3 × 0.000401) = 0.001004 / 0.001203 = 0.835
+
+Then: 
+
+* Cpk = min(0.828, 0.835) = 0.828
+
+::: callout-note
+## Process Capability Index (Cpk)
+
+**Formula:**
+
+$$C_{pk} = \min\left[\frac{USL - \mu}{3\sigma}, \frac{\mu - LSL}{3\sigma}\right]$$
+
+**Interpretation:**
+
+- Cpk < 1.0: Process not capable
+- Cpk = 1.0-1.33: Marginally capable
+- Cpk ≥ 1.33: Capable process (industry standard)
+- Cpk ≥ 1.67: Good process capability
+- Cpk ≥ 2.0: Six Sigma process
+
+**What it measures:** How much room exists between process variation and specification limits, in units of standard deviations.
+
+**Rule of thumb:** Cpk = 1.33 means process spread (6σ) uses 75% of specification width, leaving 25% safety margin.
+
+**For PrecisionCast:**
+
+Cpk = 0.828 < 1.0 → Process not capable
+
+Current spread exceeds specification limits
+:::
+
+"Your Cpk of 0.83 is below the minimum of 1.0," David explains. "You need process improvement."
+
+"What would it take to achieve Cpk = 1.33?" Robert asks.
+
+Let $\sigma_R$ be the required SD. Maria calculates:
+
+Required: Cpk = 1.33
+
+$$
+\begin{align}
+\frac{\text{USL} - \mu}{3 \sigma_R} &= 1.33 \\[10pt]
+\sigma_R &= \frac{\text{USL} - \mu}{3 \times 1.33} \\[10pt]
+\sigma_R &= \frac{2.501 - 2.500004}{3.99} \\[10pt]
+\sigma_R &= 0.00250 \text{ inches}
+\end{align}
+$$
+
+
+"You need to reduce your standard deviation from 0.000401 to 0.000250, a 38% reduction in variability."
+
+### Tail Probabilities
+
+"How many parts exceed the upper limit?" Robert asks.
+
+* P(X > 2.501) = 1 - P(Z < 2.48)  
+* P(X > 2.501) = 1 - 0.9934  
+* P(X > 2.501) = 0.0066
+
+"About 0.66% of parts, roughly 1 in 152, exceed the upper limit."
+
+At 200,000 annual production:
+
+* Expected rejects = 200,000 × 0.0066 = 1,320 parts  
+* Cost at $180/part = $237,600 annually
+
+"Similarly, 0.62% fall below the lower limit, costing another $223,000 annually. Total out-of-spec cost: about $460,000 per year."
+
+::: callout-tip
+## Business Applications of Normal Distribution
+
+**Quality Control:**
+
+- Dimensional tolerances and specifications
+- Process capability analysis (Cpk)
+- Control charts and variation monitoring
+
+**Operations:**
+
+- Lead time variability
+- Production time forecasting
+- Equipment performance metrics
+
+**Financial Analysis:**
+
+- Investment returns (often approximately normal)
+- Risk assessment (Value at Risk)
+- Revenue forecasting with uncertainty
+
+**Reliability Engineering:**
+
+- Time to failure (when log-normal)
+- Maintenance scheduling
+- Warranty cost estimation
+
+**Key insight:** Many continuous measurements in business (dimensions, times, weights, temperatures) follow approximately normal distributions, making this the most widely used distribution.
+:::
+
+## The Investment Decision: Bringing It All Together
+
+Robert returns to the original question: "Should I invest $2 million in the new casting machine?"
+
+David and Maria now have all the probability tools to answer definitively.
+
+The vendor claims "up to 40% defect reduction," but there's uncertainty. David constructs three scenarios:
+
+| **Scenario** | **Defect Reduction** | **Probability** | **New Defect Rate** |
+|:-------------|:--------------------:|:---------------:|---------------------|
+| Best         | 40%                  | 0.20            | 0.0122 (1.22%)      |
+| Expected     | 30%                  | 0.50            | 0.0142 (1.42%)      |
+| Worst        | 20%                  | 0.30            | 0.0162 (1.62%)      |
+
+
+"These probabilities come from industry data on similar equipment upgrades," Maria explains.
+
+### Calculate Expected Savings
+
+For each scenario, calculate annual savings:
+
+**Current cost:**
+
+* Annual production: 200,000 units  
+* Defect rate: 0.0203  
+* Expected defects: 4,060  
+* Rework cost: $182.56 per defect  
+* Annual rework cost: $741,194
+
+**Best case (40% reduction):**
+
+* New defects: 200,000 × 0.0122 = 2,440
+* New cost: 2,440 × $182.56 = $445,446
+* Savings: $741,194 - $445,446 = $295,748
+
+**Expected case (30% reduction):**
+
+* New defects: 200,000 × 0.0142 = 2,840
+* New cost: 2,840 × $182.56 = $518,470
+* Savings: $741,194 - $518,470 = $222,724
+
+**Worst case (20% reduction):**
+
+* New defects: 200,000 × 0.0162 = 3,240
+* New cost: 3,240 × $182.56 = $591,494
+* Savings: $741,194 - $591,494 = $149,700
+
+### Expected Value of Investment
+
+Now calculate the probability-weighted expected savings:
+
+* E(Savings) = Σ [P(Scenario) × Savings(Scenario)]
+* E(Savings) = 0.20 × $295,748 + 0.50 × $222,724 + 0.30 × $149,700
+* E(Savings) = $59,150 + $111,362 + $44,910
+* E(Savings) = $215,422
+
+"Expected annual savings: $215,422"
+
+**Payback period:**
+
+* Payback = Investment / Annual Savings
+* Payback = $2,000,000 / $215,422
+* Payback = 9.3 years
+
+::: callout-warning
+## Investment Analysis Red Flags
+
+Industry benchmarks for equipment investment:
+
+- Excellent: < 3 years payback
+- Acceptable: 3-5 years
+- Questionable: 5-7 years
+- Poor: 7-10 years
+- Reject: > 10 years
+
+Why?
+
+- Equipment life: 10-12 years typical
+- Technology obsolescence risk
+- Opportunity cost of capital
+- Maintenance and upgrade costs not included
+
+**PrecisionCast result:**
+9.3 years payback → **REJECT** ⚠️
+:::
+
+**The Recommendation**
+
+David presents the analysis to Robert:
+
+"Expected payback of 9.3 years far exceeds your typical 3-5 year requirement. The machine would barely pay for itself before becoming obsolete."
+
+Maria adds the risk assessment: "And that's assuming the expected case. There's a 30% probability of the worst case, which extends payback to 13.4 years, longer than the equipment's useful life."
+
+"What about the best case?" Robert asks.
+
+"20% probability," David responds. "Best case payback is 6.8 years, still too long by your standards."
+
+**Alternative Investments**
+
+"Instead," Maria suggests, "consider lower-cost improvements with better returns:"
+
+| **Investment**         | **Cost**    | **Annual Savings** | **Payback** | **Risk** |
+|:-----------------------|------------:|-------------------:|------------:|----------|
+| Machine M3 maintenance | $15,000     | $28,800            | 0.5 years   | Low      |
+| Process optimization   | $50,000     | $100,000           | 0.5 years   | Low      |
+| Two-stage testing      | $25,000     | $24,000            | 1.0 years   | Low      |
+| Training program       | $30,000     | $45,000            | 7.0 years   | Medium   |
+
+"For $120,000 (6% of the machine cost) you get $198,000 in annual savings. Payback in 7 months instead of 9 years."
+
+Robert makes his decision: "We're not buying the machine. Proceed with the alternative improvements. Schedule M3 maintenance next week, implement two-stage testing within 30 days, and develop the process optimization plan."
+
+He looks at the vendor proposal and sets it aside. "This is exactly why I needed probability analysis. The vendor gave me marketing language, 'up to 40%', and I almost spent $2 million on a bad investment. Expected value analysis saved us from a major mistake."
+
+::: callout-tip
+## Decision-Making Under Uncertainty
+
+**Framework:**
+
+1. Identify scenarios with different outcomes
+2. Assign probabilities to each scenario
+3. Calculate payoffs for each scenario
+4. Compute expected value = Σ [P(scenario) × Payoff(scenario)]
+5. Compare alternatives using expected values
+6. Consider risk (not just expected value)
+
+**PrecisionCast application:**
+
+- Three defect reduction scenarios
+- Probabilities from industry data
+- Calculated savings for each
+- Expected value: $215,422
+- Compared to alternatives: $197,800 with lower risk
+- Decision: Choose alternatives
+
+**Key insight:** "Up to 40%" means nothing without probabilities. Expected value forces rigorous thinking about likelihoods and outcomes.
+:::
+
+## From Description to Prediction: The Full Journey
+
+Robert reviews both reports, the original vague analysis and David and Maria's probability-based revision.
+
+"Three months ago," he says, "Sarah Chen at TechFlow faced the same problem you two solved for her. Her marketing team gave her vague descriptions. You gave her statistical precision."
+
+He holds up his original quality report. "My team gave me the same vague language. 'Around 2%,' 'pretty good tests,' 'seems worse.' I couldn't make decisions with that."
+
+Then the revised report. "Now I have probabilities, expected values, confidence intervals. I can forecast Q2 defects within ±66 units. I know Machine M3 has a 20% higher defect rate. I know my inspection system has only 50% positive predictive value. And I just avoided a $2 million mistake."
+
+Maria summarizes the transformation:
+Original Report → Probability Analysis:
+
+| **Vague Statement**         | **Precise Probability**                 |
+|:----------------------------|:----------------------------------------|
+| "around 2% defects"         | P(Defect) = 0.0203 exactly              |
+| "M3 seems worse"            | P(Defect | M3) = 0.0233 vs 0.0193 peers |
+| "tests are pretty good"     | PPV = 49.6% (coin flip reliability)     |
+| "maybe 1,000-1,500 defects" | E(Defects) = 1,117 ± 66 (95% CI)        |
+| "defects seem to cluster"   | Binomial: P(Batch pass) = 85.4%         |
+| "near spec limits"          | 98.72% within spec (Cpk = 0.83)         |
+| "up to 40% reduction"       | E(Savings) = $215k, 9.3 year payback    |
+
+
+"Every decision is now quantified," David adds. "That's the power of probability."
+
+## Chapter Summary: The Probability Toolkit
+
+Six days after receiving PrecisionCast's request, David and Maria present their final report. Gone are the phrases "around," "seems," and "pretty good."
+
+**In their place:**
+
+**Basic Probability:**
+
+* P(Defect) = 0.0203 (2.03% vs. 99.5% aerospace requirement)
+* Gap: 1.53 percentage points = $540,000 annual excess cost
+* P(Good) = 0.9797 (97.97% yield)
+
+**Conditional Probability:**
+
+* P(Defect | M3) = 0.0233 (20% higher than peers)
+* P(M3 | Defect) = 0.229 (M3 contributes 22.9% of defects from 20% of production)
+* Recommendation: $15,000 maintenance, $28,800 annual savings, 6-month payback
+
+**Bayes' Theorem:**
+
+* Sensitivity: 95%, Specificity: 98%
+* PPV: 49.6% (positive tests only 50% reliable)
+* NPV: 99.8% (negative tests highly reliable)
+* Recommendation: Implement two-stage testing for positives
+
+**Expected Value:**
+
+* E(Q2 Defects) = 1,117 ± 66
+* E(Rework Cost) = $203,920
+* Production buffer: 51,035 units needed for 50,000 good units
+
+**Binomial Distribution:**
+
+* E(Defects per batch) = 2.03 ± 1.41
+* P(Batch passes with ≤3 defects) = 85.4%
+* Current threshold (3 defects) is optimal
+
+**Normal Distribution:**
+
+* P(Within spec) = 98.72% (short of 99.5% requirement)
+* Cpk = 0.83 < 1.0 (process not capable)
+* Need 38% reduction in variation to achieve Cpk = 1.33
+* Out-of-spec cost: $460,000 annually
+
+**Investment Decision:**
+
+* Expected savings: $215,422 annually
+* Payback: 9.3 years → DO NOT INVEST
+* Alternative improvements: $120,000 cost, $197,800 savings, 0.6-year payback
+
+Robert reads through the analysis. Every claim is specific. Every probability is calculated. Every recommendation is defensible.
+"This," he says, "is a report I can act on. And more importantly, it's a report that just saved my company from a terrible investment."
+
+::: callout-tip
+## Key Takeaways: Your Probability Toolkit
+
+**Basic Probability:** Converts frequencies to predictions
+
+* P(Event) = Count/Total
+* Enables future forecasting from historical data
+* Foundation for all other probability concepts
+
+**Conditional Probability:** Reveals hidden patterns
+
+* P(A|B) asks "given B, what's P(A)?"
+* Identifies root causes (which machine causes defects?)
+* Enables targeted interventions
+
+**Bayes' Theorem:** Reverses conditional probabilities
+
+* Converts P(Test+|Disease) to P(Disease|Test+)
+* Critical for medical testing, quality control, fraud detection
+* Reveals counterintuitive results (95% accuracy ≠ 95% reliability)
+
+**Expected Value:** Quantifies "what to expect"
+
+* E(X) = weighted average of outcomes
+* Enables capacity planning, budgeting, forecasting
+* Framework for decision-making under uncertainty
+
+**Binomial Distribution:** Models discrete counts
+
+* Number of defects, successes, failures in fixed trials
+* Batch quality control, acceptance sampling
+* When counting successes/failures
+
+**Normal Distribution:** Models continuous measurements
+
+* Dimensions, times, weights, temperatures
+* Process capability analysis (Cpk)
+* Most widely used distribution in business
+
+**Decision Framework:**
+
+* Identify scenarios
+* Assign probabilities
+* Calculate expected values
+* Compare alternatives
+* Choose optimal action
+:::
+
+## Connecting the Lectures: A Student's Journey
+
+David and Maria sit in the EMBA lounge, reflecting on their statistical journey.
+"Remember three months ago?" Maria says. "TechFlow's Sarah Chen asked: 'What happened in Q4?' We learned descriptive statistics to answer that."
+
+David nods. "We calculated means to show typical performance. Standard deviations to measure consistency. Z-scores to identify outliers. Everything was backward-looking, describing the past."
+
+"Then," Maria continues, "PrecisionCast's Robert Martinez asked: 'What will happen in Q2?' We needed probability to answer that."
+
+"Same mathematical concepts," David observes, "but different applications. The mean of historical defects becomes P(Defect) for future predictions. The standard deviation of past variation becomes the standard deviation of expected outcomes. Z-scores that identified historical outliers now calculate probabilities under the normal curve."
+
+"But we're still missing something," David says. "Both TechFlow and PrecisionCast data were samples. TechFlow's Q4 data was a sample of their overall business performance. PrecisionCast's Q1 data was a sample of their production process."
+
+"Right," Maria agrees. "We're treating sample statistics as if they're population parameters. We say P(Defect) = 0.0203 based on 48,865 units. But what about all future production, millions of units over years? What's the true defect probability of the process itself?"
+
+"And how confident are we in our estimates?" David adds. "When we forecast 1,117 ± 66 defects, that ±66 came from the binomial formula. But what if our estimate of p = 0.0203 is itself uncertain? How do we account for sampling error?"
+
+They both realize the next step in their journey.
+
+"We need statistical inference," Maria says. "Confidence intervals to quantify our uncertainty. Hypothesis tests to make decisions. Sampling distributions to understand how sample statistics behave."
+
+"That's **Lecture 3**," David confirms.
+
+Their journey continues. From describing the past, to predicting the future, to quantifying uncertainty in those predictions.
+
+---
+
+**Final thought:** In Lecture 1, you learned that "around $767,000" isn't good enough, you need $766,667 exactly. In Lecture 2, you learned that "tests are pretty good" isn't good enough, you need PPV = 49.6% precisely. In Lecture 3, you'll learn that point estimates aren't good enough either, you need confidence intervals to quantify your uncertainty.
+
+The journey from vague to precise to probabilistic to inference-based represents the full arc of statistical thinking in business.
+
+---
+
+::: {.callout-note appearance="minimal"}
+*Probability transforms data into predictions. Master it, and you can forecast demand, evaluate investments, and make decisions under uncertainty. But remember: probabilities are only as good as the data behind them. Next, we'll learn how to quantify that uncertainty through statistical inference.*
+:::
+
+---
+
+## Practice Problems
+
+Now it's your turn to apply probability analysis.
+
+These problems use both the PrecisionCast dataset and new scenarios. Work through them in Excel, showing your calculations and interpreting results in business context.
+
+🔢 Download the dataset: Get `PrecisionCast_Q1_2025.xlsx` from Blackboard before starting.
+
+::: {.callout-note collapse="true"}
+## About This Dataset
+Dataset structure:
+
+- Sheet 1: Production Data (48,865 units)
+- Sheet 2: Machine Performance (5 machines)
+- Sheet 3: Inspection Results (2,000 test validations)
+- Sheet 4: Defect Types (993 defects categorized)
+- Sheet 5: Batch Data (488 batches of 100 units)
+- Sheet 6: Dimensional Measurements (500 precision measurements)
+
+**Realism:** Values reflect actual precision casting industry patterns
+
+**Completeness:** No missing values for easier learning
+
+**Note:** Some sheets contain more data than discussed in the chapter—explore them for additional insights!
+:::
+
+### Problem Set 1: Basic and Conditional Probability
+
+Given PrecisionCast's Q1 production data:
+- Total units: 48,865
+- Defective: 993
+- Good: 47,872
+
+**Calculate:**
+
+1. P(Defect) and P(Good)—verify they sum to 1.0
+2. If aerospace requirement is P(Good) ≥ 0.995, what's the gap?
+3. At 200,000 annual production, how many excess defects does this gap represent?
+4. Calculate P(Defect | Machine) for all five machines
+5. Which machine has the highest conditional defect probability?
+6. Calculate P(Machine | Defect) for all five machines
+7. Does any machine contribute disproportionately to defects?
+8. If you could only fix one machine, which should it be and why?
+
+---
+
+### Problem Set 2: Bayes' Theorem and Test Reliability
+
+A diagnostic test for cracks in castings has:
+- Sensitivity: 92%
+- Specificity: 97%
+- Base rate of cracks: 3.5% of all parts
+
+**Calculate:**
+
+1. Create a confusion matrix for 10,000 tested parts
+2. How many true positives? False positives? False negatives? True negatives?
+3. Calculate PPV: P(Crack | Test+)
+4. Calculate NPV: P(No Crack | Test-)
+5. If a part tests positive, should you automatically scrap it? Why or why not?
+6. How would PPV change if specificity improved to 99%?
+7. For a production run where you test 5,000 parts, how many false alarms should you expect?
+8. Write a one-paragraph recommendation about whether to implement two-stage testing for positive results.
+
+---
+
+### Problem Set 3: Expected Value Analysis
+
+PrecisionCast is planning Q3 production of 60,000 units with P(Defect) = 0.0203.
+
+**Calculate:**
+
+1. Expected number of defects in Q3
+2. Standard deviation of expected defects
+3. 95% confidence range (E ± 2SD)
+4. Expected rework cost using the defect type distribution from the chapter
+5. How many total units should be produced to guarantee 60,000 good units?
+6. If rework capacity is limited to 1,200 defects per quarter, what's the probability production exceeds this capacity? (Hint: Use normal approximation to binomial)
+
+---
+
+### Problem Set 4: Binomial Distribution
+
+PrecisionCast uses batches of 150 units (not 100 as in the chapter). The company considers a batch acceptable if it contains 4 or fewer defects.
+
+**Calculate:**
+
+1. Expected defects per batch of 150
+2. Standard deviation of defects per batch
+3. P(Batch passes) = P(Defects ≤ 4)
+4. If 500 batches are produced in a quarter, how many should pass?
+5. What pass threshold (number of defects) would give a 90% pass rate?
+6. What pass threshold would give a 95% pass rate?
+7. Compare the tradeoffs: Which threshold would you recommend?
+
+---
+
+### Problem Set 5: Normal Distribution and Process Capability
+
+A different critical dimension has specification 1.250 ± 0.002 inches. Sample measurements (n=400) show:
+- Mean: 1.25015 inches
+- Standard deviation: 0.00085 inches
+
+**Calculate:**
+
+1. P(Within specification limits)
+2. P(Exceeds upper limit)
+3. P(Below lower limit)
+4. Calculate Cpk
+5. Is this process capable (Cpk ≥ 1.33)?
+6. What standard deviation would be needed to achieve Cpk = 1.33?
+7. At 200,000 annual production, how many parts fall outside specifications?
+8. If out-of-spec parts cost $200 each to scrap, what's the annual cost?
+
+---
+
+### Problem Set 6: Investment Decision Analysis
+
+PrecisionCast is considering a $500,000 process improvement program. Industry data suggests three scenarios:
+
+| Scenario    | Defect Reduction | Probability |
+|:------------|:----------------:|------------:|
+| Optimistic  | 35%              | 0.25        |
+| Expected    | 25%              | 0.50        |
+| Pessimistic | 15%              | 0.25        |
+
+Current annual rework cost is $741,194 (from chapter).
+
+**Calculate:**
+
+1. New defect rate for each scenario
+2. Annual savings for each scenario
+3. Expected annual savings (probability-weighted)
+4. Payback period
+5. Should PrecisionCast invest? Defend your answer.
+6. What's the probability of achieving payback within 3 years if the company requires at least $166,667 in annual savings?
+7. Compare this investment to the $2M machine from the chapter—which is better?
+
+---
+
+### Problem Set 7: Comprehensive Analysis Challenge
+
+**Scenario:** PrecisionCast launches a new product line. Initial production run of 5,000 units shows:
+- 145 defects
+- Machine allocation: M1 (1,000 units, 25 defects), M2 (1,000 units, 28 defects), M3 (1,000 units, 35 defects), M4 (1,000 units, 30 defects), M5 (1,000 units, 27 defects)
+- Inspection test: Sensitivity 90%, Specificity 96%
+
+**Your task:** Write a 2-page executive report addressing:
+
+1. What's the defect probability for this new product?
+2. How does it compare to the existing 2.03% rate?
+3. Which machine should be investigated first?
+4. If you test 500 units, how many false positives should you expect?
+5. What's PPV for this test with this defect rate?
+6. For Q2 production of 25,000 units, forecast expected defects with 95% confidence range
+7. Should the company proceed with this product line or investigate further? Provide statistical justification.
+
+## Excel Functions Quick Reference
+
+::: {.callout-note collapse="true"}
+
+## Complete Excel Function Guide for Probability
+
+**Basic Probability:**
+```markdown
+`=COUNTIF(range, criteria)/COUNT(range)  ' Simple probability`
+`=COUNTIFS(range1, criteria1, range2, criteria2)/COUNTIF(range1, criteria1)  ' Conditional probability`
+```
+
+**Binomial Distribution**
+```markdown
+`=BINOM.DIST(k, n, p, cumulative)`
+k = number of successes
+n = number of trials
+p = probability of success
+cumulative = TRUE for P(X ≤ k), FALSE for P(X = k)
+
+Examples:
+`=BINOM.DIST(3, 100, 0.0203, TRUE)  ' P(X ≤ 3)`
+  =BINOM.DIST(2, 100, 0.0203, FALSE)  ' P(X = 2 exactly)
+```
+
+**Expected Value and Variance (Binomial)**
+```markdown
+`=n*p`  ' Expected value
+`=SQRT(n*p*(1-p))`  ' Standard deviation
+```
+
+**Normal Distribution**
+```markdown
+=NORM.DIST(x, mean, sd, cumulative)
+' cumulative = TRUE for P(X ≤ x), FALSE for density
+
+' Examples:
+`=NORM.DIST(2.501, 2.500004, 0.000401, TRUE)`  ' P(X ≤ 2.501)
+`=NORM.DIST(2.501, 2.500004, 0.000401, TRUE) - NORM.DIST(2.499, 2.500004, 0.000401, TRUE)`  ' P(2.499 < X < 2.501)
+```
+
+**Standard Normal (Z-scores)**
+```markdown
+`=NORM.S.DIST(z, TRUE)`  ' P(Z ≤ z)
+`=NORM.S.INV(probability)`  ' Find z for given probability
+
+' Calculate z-score:
+`=(x - mean)/sd`
+```
+
+**Inverse Functions (find x for given probability):**
+```markdown
+`=NORM.INV(probability, mean, sd)`  ' Find x where P(X ≤ x) = probability
+`=BINOM.INV(n, p, probability)`  ' Find k where P(X ≤ k) ≥ probability
+```
+
+**Expected Value with Different Outcomes:**
+```markdown
+`=SUMPRODUCT(values_range, probabilities_range)`
+' Example: `=SUMPRODUCT(B2:B5, C2:C5)` where B2:B5 are outcomes and C2:C5 are probabilities
+```
+
+**Process Capability (Cpk):**
+```markdown
+`=MIN((USL-mean)/(3*sd), (mean-LSL)/(3*sd))`
+```
+:::
+
+::: {.callout-note collapse="true"}
+## Glossary
+
+**Base Rate:** The underlying prevalence or probability of a condition in the population; critically affects interpretation of test results
+
+**Bayes' Theorem:** Formula for calculating reverse conditional probabilities; converts P(B|A) to P(A|B)
+
+**Binomial Distribution:** Probability distribution for counting successes in fixed number of independent trials with constant probability
+
+**Complement Rule:** P(not A) = 1 - P(A); probabilities of an event and its complement sum to 1
+
+**Conditional Probability:** P(A|B) = probability of A given that B has occurred; restricts sample space to cases where B is true
+
+**Cpk (Process Capability Index):** Measures how well a process fits within specification limits; Cpk ≥ 1.33 indicates capable process
+
+**Expected Value:** Probability-weighted average of all possible outcomes; E(X) = Σ x·P(x)
+
+**False Negative:** Test says negative when condition is actually present; missed detection
+
+**False Positive:** Test says positive when condition is actually absent; false alarm
+
+**Negative Predictive Value (NPV):** P(No Disease | Test-); if test is negative, probability person is truly healthy
+
+**Normal Distribution:** Continuous probability distribution with bell-shaped curve; characterized by mean (μ) and standard deviation (σ)
+
+**Positive Predictive Value (PPV):** P(Disease | Test+); if test is positive, probability person truly has disease
+
+**Prior Probability:** Initial probability before new evidence; also called base rate
+
+**Sensitivity:** P(Test+ | Disease); true positive rate; probability test detects condition when present
+
+**Specificity:** P(Test- | No Disease); true negative rate; probability test confirms absence when truly absent
+
+**Standard Normal Distribution:** Normal distribution with μ=0 and σ=1; used via z-score standardization
+
+**Z-Score:** Standardized value showing how many standard deviations an observation is from the mean; z = (x-μ)/σ
+:::

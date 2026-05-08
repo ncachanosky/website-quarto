@@ -22,5 +22,58 @@
   },
   "slides/milei/index.qmd": {
     "index.html": "3eb4dd06"
+  },
+  "pages/lecture_notes/QMB-5311/lecture_1/index.qmd": {
+    "index.html": "360c6e2c"
+  },
+  "pages/lecture_notes/QMB-5311/index.qmd": {
+    "index.html": "b2b80421",
+    "index.tex": "3bb27a1b",
+    "index.epub": "7d7033b2"
+  },
+  "pages/lecture_notes/QMB-5311/lecture_01.qmd": {
+    "lecture_01.html": "7fd8f92f"
+  },
+  "pages/lecture_notes/QMB-5311/lecture_01/lecture_01 copy.qmd": {
+    "lecture_01 copy.html": "b7901ab6"
+  },
+  "pages/lecture_notes/QMB-5311/lecture_01/lecture_01.qmd": {
+    "lecture_01.html": "edeee582"
+  },
+  "lecture_notes/QMB-5311/index.qmd": {
+    "index.html": "63cd0e3c"
+  },
+  "lecture_notes/QMB-5311/lecture_01.qmd": {
+    "lecture_01.html": "152e14fc"
+  },
+  "lecture-notes/QMB-5311/index.qmd": {
+    "index.html": "0518fa60"
+  },
+  "lecture-notes/QMB-5311/lecture_01.qmd": {
+    "lecture_01.html": "108878e3"
+  },
+  "lecture-notes/QMB-5311/lecture_02.qmd": {
+    "lecture_02.html": "d5e10058"
+  },
+  "lecture-notes/QMB-5311/lecture_03.qmd": {
+    "lecture_03.html": "759b613f"
+  },
+  "lecture-notes/QMB-5311/lecture_04.qmd": {
+    "lecture_04.html": "bbdc4682"
+  },
+  "lecture-notes/QMB-5311/lecture_05.qmd": {
+    "lecture_05.html": "11a0fe85"
+  },
+  "lecture-notes/QMB-5311/lecture_06.qmd": {
+    "lecture_06.html": "7487781f"
+  },
+  "lecture-notes/QMB-5311/lecture_07.qmd": {
+    "lecture_07.html": "4cabf9f3"
+  },
+  "lecture-notes/QMB-5311/00_introduction.qmd": {
+    "00_introduction.html": "fdea8619"
+  },
+  "lecture-notes/QMB-5311/introduction.qmd": {
+    "introduction.html": "e4bd6026"
   }
 }

@@ -1,10 +1,13 @@
 /* ================================
-   UTEP Brand Colors
+   EO Brand Colors
    ================================ */
 :root {
-  --utep-blue: #041E42;   /* UTEP Blue */
-  --utep-orange: #FF8200; /* UTEP Orange */
-  --utep-silver: #B1B3B3; /* UTEP Silver */
+  --eo-dark: #36454F;     /* EO Dark Blue-Gray */
+  --eo-copper: #B87333;   /* EO Copper */
+  --eo-green: #87A96B;    /* EO Sage Green */
+  --eo-blue: #5B9BD5;     /* EO Blue */
+  --eo-coral: #D4745E;    /* EO Coral */
+  --eo-purple: #8E7AB5;   /* EO Purple */
   --background-color: #ffffff;
   --text-color: black;
 }
@@ -12,7 +15,7 @@
 /* Dark mode overrides */
 [data-bs-theme="dark"] {
   --background-color: #121212;
-  --text-color: var(--utep-silver);
+  --text-color: #B1B3B3;
 }
 
 /* Smooth transitions for theme changes */
@@ -26,9 +29,9 @@ html, body, a, a:hover {
    Navbar
    ================================ */
 
-/* Keep navbar UTEP Blue in both modes */
+/* Keep navbar EO Dark in both modes */
 .navbar {
-  background-color: var(--utep-blue) !important;
+  background-color: var(--eo-dark) !important;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   min-height: 60px;
@@ -50,12 +53,12 @@ html, body, a, a:hover {
 
 /* Hover color for navbar links */
 .navbar a.nav-link:hover {
-  color: var(--utep-orange) !important;
+  color: var(--eo-copper) !important;
 }
 
-/* Dropdown menu background to match navbar dark blue */
+/* Dropdown menu background to match navbar */
 .navbar .dropdown-menu {
-  background-color: #041E42 !important;
+  background-color: #36454F !important;
   border: none !important;
   box-shadow: 0 4px 8px rgba(0,0,0,0.15);
   transform: translateY(10px);
@@ -69,10 +72,10 @@ html, body, a, a:hover {
   transform: translateY(0);
 }
 
-/* Dropdown menu links hover - UTEP orange */
+/* Dropdown menu links hover - EO Copper */
 .navbar .dropdown-menu a.dropdown-item:hover,
 .navbar .dropdown-menu a.dropdown-item:focus {
-  color: #FF8200 !important;
+  color: #B87333 !important;
   background-color: transparent !important;
 }
 
@@ -80,7 +83,7 @@ html, body, a, a:hover {
    Typography
    ================================ */
 body {
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Open Sans', sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
   line-height: 1.6;
@@ -92,7 +95,9 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: var(--utep-blue);
+  color: var(--eo-dark);
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-weight: 700;
 }
 
 /* ================================
@@ -100,11 +105,11 @@ h1, h2, h3, h4, h5, h6 {
    ================================ */
 a {
   text-decoration: none;
-  color: var(--utep-blue);
+  color: var(--eo-dark);
   transition: color 0.3s ease-in-out;
 }
 a:hover {
-  color: var(--utep-orange);
+  color: var(--eo-copper);
 }
 
 /* ================================
@@ -115,17 +120,17 @@ a:hover {
 a.button-link {
   display: inline-block;
   padding: 0.2rem 0.4rem;
-  color: var(--utep-blue);
-  border: 2px solid var(--utep-blue);
+  color: var(--eo-dark);
+  border: 2px solid var(--eo-dark);
   border-radius: 6px;
   font-size: 14px;
   background-color: transparent;
   transition: all 0.3s ease-in-out;
 }
 a.button-link:hover {
-  background-color: var(--utep-orange);
+  background-color: var(--eo-copper);
   color: white;
-  border-color: var(--utep-orange);
+  border-color: var(--eo-copper);
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -141,6 +146,6 @@ a.button-link:hover {
 
 #about .links a:hover,
 #about .links a:hover svg {
-  color: var(--utep-orange) !important;
-  fill: var(--utep-orange) !important; /* For SVG icons */
+  color: var(--eo-copper) !important;
+  fill: var(--eo-copper) !important; /* For SVG icons */
 }

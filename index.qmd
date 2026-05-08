@@ -15,9 +15,9 @@ about:
   image: files/headshot.jpg
   links:
     - icon: envelope
-      href: ncachanosky@utep.edu
+      href: mailto:ncachanosky@utep.edu
     - text: CV
-      href: /files/cv.pdf
+      href: files/cv.pdf
     - icon: github
       href: https://github.com/ncachanosky
     - icon: linkedin
@@ -26,14 +26,14 @@ about:
       href: https://x.com/n_cachanosky
 
 comments: false
-
 ---
+
 :::{#about}
 :::{style="text-align: justify"}
 
 ## Welcome!
 
-I’m an Associate Professor of Economics and the Director of the [Center for Free Enterprise](https://www.utep.edu/business/c4fe/) at [The University of Texas at El Paso](https://www.utep.edu/). I’m also a Senior Fellow at the [American Institute for Economic Research](https://aier.org/) nd a Fellow at the [UCEMA Friedman-Hayek Center for the Study of a Free Society](https://ucema.edu.ar/friedman-hayek-center).
+I’m an Associate Professor of Economics and the Director of the [Center for Free Enterprise](https://www.utep.edu/business/c4fe/) at [The University of Texas at El Paso](https://www.utep.edu/). I’m also a Senior Fellow at the [American Institute for Economic Research](https://aier.org/) and a Fellow at the [UCEMA Friedman-Hayek Center for the Study of a Free Society](https://ucema.edu.ar/friedman-hayek-center).
 
 Along with [João P. Bastos](https://jpmvbastos.com/), I’m the editor of [Public Choice in Latin America](https://publicchoicelatinamerica.substack.com/). I also serve as an Associate Editor of the Southern Economic Journal. Previously, I was president of the Association of Private Enterprise Education (APEE) and a director of The Mont Pelerin Society (MPS).
 

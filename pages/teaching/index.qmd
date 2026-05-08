@@ -1,0 +1,20 @@
+---
+title: Teaching
+
+comments: false
+
+---
+
+The links below lead to open-access reading companions for courses I teach at The University of Texas at El Paso. Each book is written specifically for the course. All materials are freely available and updated regularly.
+
+## Undergraduate Courses
+
+**[Money, Institutions, and Markets](https://ncachanosky.github.io/ECON-3320-online/)**
+ECON 3320 – Money and Banking
+An institutions-first treatment of monetary and financial economics, from the nature of money and the history of competitive banking through bond pricing, the yield curve, and derivatives. Seven chapters covering the full semester in an accelerated online format.
+
+## MBA Courses
+
+**[Decisions Under Uncertainty: Quantitative Methods for Business](https://ncachanosky.github.io/XQMB-5311/)**
+XQMB 5311 – Statistics for Business
+A decision-first introduction to statistics for Executive MBA students, from descriptive analysis and probability through hypothesis testing, ANOVA, and regression. Seven chapters built around real business consulting cases, with every method introduced through a problem where imprecise analysis has measurable consequences.

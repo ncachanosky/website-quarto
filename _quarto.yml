@@ -1,5 +1,7 @@
 project:
   type: website
+  resources:
+    - files/cv.pdf
 
 website:
   title: "Nicolas Cachanosky"
@@ -19,7 +21,9 @@ website:
         text: Publications
       - href: /pages/books
         text: Books
-      - text: Blogs
+      - href: /lecture-notes/QMB-5311/index.html
+        text: Teaching
+      - text: /teaching
         menu:
           - text: Economic Order
             href: https://economicorder.substack.com/
@@ -40,5 +44,5 @@ format:
     css: styles.css
     toc: true
     font:
-      family: Roboto Condensed
+      family: Open Sans
       source: google

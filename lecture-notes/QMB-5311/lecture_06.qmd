@@ -1,0 +1,999 @@
+---
+title: "Statistical Foundations Review: From Description to Decision"
+subtitle: "Lecture 6"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: true
+    code-tools: true
+    fig-width: 10
+    fig-height: 6
+---
+
+## Learning Objectives {.unnumbered}
+
+By the end of this review session, you will be able to:
+
+1. ✅ Explain when to use each statistical method covered in Lectures 1-5  
+2. ✅ Identify common interpretation errors and how to avoid them  
+3. ✅ Recognize the progression from description to prediction to inference to comparison  
+4. ✅ Understand how these foundational concepts prepare you for econometric analysis  
+5. ✅ Apply appropriate statistical thinking to business decision-making
+
+## Introduction: The Journey Back to Campus
+
+After ten months in the field conducting statistical consulting for five companies, David Martinez and Maria Rodriguez return to the EMBA program at The University of Texas at El Paso. The lecture hall buzzes with anticipation as their cohort gathers for this special review session.
+
+"Welcome back, David and Maria," the professor says warmly. "Your classmates have been following your work through the course materials. Today, we want to hear directly from you. What did you learn out there? What mistakes did you almost make? And most importantly, what advice would you give to future consultants?"
+
+David and Maria exchange a glance. They've prepared for this presentation carefully, knowing their peers will ask tough questions. This isn't just a victory lap—it's an opportunity to crystallize the lessons they've learned through trial, error, and occasionally painful realizations.
+
+"Let's start at the beginning," Maria says, pulling up their first slide. "Five companies. Five different statistical challenges. One connecting thread: the difference between doing calculations and doing statistics right."
+
+::: callout-note
+## The Five Cases at a Glance
+
+| **Company** | **Industry** | **Challenge** | **Statistical Focus** | **Key Learning** |
+|:---|:---|:---|:---|:---|
+| TechFlow Solutions | Consumer Electronics | Vague Q4 performance report | Descriptive Statistics | Precision replaces vagueness |
+| PrecisionCast Industries | Manufacturing | "Pretty good" quality estimates | Probability | Quantify uncertainty |
+| BorderMed Pharmaceuticals | Clinical Trials | Overconfident drug claims | Statistical Inference | Acknowledge what you don't know |
+| DesertVine Hospitality | Hotel Chain | Misinterpreted satisfaction data | ANOVA | Multiple comparisons require care |
+| PixelPerfect Marketing | Digital Advertising | Correlation confused with causation | Categorical Data Analysis | Association ≠ causation |
+:::
+
+A hand shoots up from the back row. "Before we dive into each case," asks Jennifer, an EMBA student specializing in supply chain, "can you explain the big picture? How do these five topics connect?"
+
+## The Statistical Progression: A Framework for Business Analysis
+
+David nods. "Great question. We didn't see it at first either. We thought each company was a separate problem. But about halfway through the BorderMed case, we realized these weren't five different statistical methods—they were five stages of the same analytical journey."
+
+He projects a diagram on the screen:
+
+```
+THE STATISTICAL JOURNEY
+
+STAGE 1: DESCRIPTION
+├─ Question: "What happened?"
+├─ Tool: Descriptive Statistics
+├─ Output: Precise measurements of past data
+└─ Example: "Q4 mean revenue was $766,667 with SD = $40,825"
+
+STAGE 2: PREDICTION  
+├─ Question: "What will happen?"
+├─ Tool: Probability
+├─ Output: Quantified forecasts and risks
+└─ Example: "Expected Q2 defects = 1,117 ± 66 (95% range)"
+
+STAGE 3: INFERENCE
+├─ Question: "What can we conclude?"
+├─ Tool: Hypothesis Testing & Confidence Intervals
+├─ Output: Population estimates from samples
+└─ Example: "True drug effect: 10.6 to 14.2 mmHg (95% CI)"
+
+STAGE 4: COMPARISON
+├─ Question: "Which groups differ?"
+├─ Tool: ANOVA
+├─ Output: Systematic comparison across multiple groups
+└─ Example: "Property differences exist (F=4.89, p=0.003)"
+
+STAGE 5: ASSOCIATION
+├─ Question: "What relates to what?"
+├─ Tool: Chi-Square & Categorical Analysis
+├─ Output: Relationships between categorical variables
+└─ Example: "Channel and conversion are associated (χ²=42.87, p<0.001)"
+```
+
+Maria continues the explanation. "Each stage builds on the previous one. You can't do probability without understanding variability from descriptive statistics. You can't do inference without probability distributions. And you can't properly interpret ANOVA or chi-square without understanding hypothesis testing."
+
+"But here's what we learned the hard way," David adds. "You also can't skip stages. When DesertVine's original analyst went straight to ANOVA without checking descriptive statistics first, they missed the fact that one property had only 47 guests—way too small for reliable conclusions."
+
+Carlos, an operations manager in the cohort, raises his hand. "You mentioned mistakes you almost made. Can you walk us through those? That's what I really want to learn—what to watch out for."
+
+## Lecture 1 Review: Descriptive Statistics—Precision Over Vagueness
+
+Maria takes this one. "TechFlow was our wake-up call. They handed us a marketing report that said things like 'around $767,000' and 'somewhere in the middle.' At first, we thought, 'What's wrong with that? We get the general idea.'"
+
+"But then Sarah Chen, their CEO, asked us: 'Should I discontinue Product D? Should I expand in Asia-Pacific? Should I hire more customer service staff?' And we realized—you can't make decisions with vague statistics."
+
+### The Core Lesson: Descriptive Statistics Tell You *Exactly* What Happened
+
+David pulls up the TechFlow dashboard:
+
+**Before Our Analysis** (❌):  
+"Revenue was around $767,000. Most days were somewhere in the middle range. Some outliers on both ends."
+
+**After Our Analysis** (✓):  
+
+- Mean monthly revenue: $766,667  
+- Median monthly revenue: $780,000  
+- Standard deviation: $40,825 (CV: 5.3%—highly consistent)  
+- Product D: z-score = -1.21 (statistical underperformer)  
+- Regional CV: 76.8% (geography varies more than products)  
+- Customer satisfaction: median 4.3/5 (left-skewed distribution)
+
+"Every number is precise," Maria emphasizes. "But more importantly, every number *means* something for business decisions."
+
+### A Student's Question: "When Do I Use Mean vs. Median?"
+
+Sarah, an accountant in the class, raises her hand. "I'm still confused about when to use mean versus median. Can you explain that?"
+
+Maria lights up. "This was actually one of our first major realizations. The answer is: it depends on the distribution shape."
+
+She projects a comparison:
+
+**Use MEAN when:**  
+
+- Distribution is roughly symmetric  
+- No extreme outliers  
+- You want to account for every data point's value  
+- Example: TechFlow's monthly revenue (symmetric, no outliers)
+
+**Use MEDIAN when:**  
+
+- Distribution is skewed  
+- Outliers present  
+- You want the "typical" value that represents most cases  
+- Example: TechFlow's response times (right-skewed: most fast, some very slow)
+
+"Here's the mistake we almost made," David admits. "TechFlow's satisfaction scores had mean = 4.1 and median = 4.3. We almost reported the mean in our executive summary. But then we looked at the distribution—it was left-skewed. Most customers rated 4-5, but a few unhappy customers dragged the mean down."
+
+"If we'd reported mean = 4.1, Sarah would think typical satisfaction was lower than it actually is. The median of 4.3 better represents the typical customer experience. And those few unhappy customers? They become a separate analysis: 'Who are they and why are they churning?'"
+
+### Common Pitfalls in Descriptive Statistics
+
+Maria clicks to the next slide, titled "Mistakes We Almost Made—And How We Caught Them."
+
+**Pitfall 1: Treating Standard Deviation as a Nuisance**
+
+"At first, we calculated standard deviations because the assignment required it," Maria admits. "We didn't *get* why it mattered. Then Sarah asked: 'How consistent are we month-to-month?' That's when it clicked."
+
+"SD tells you consistency. TechFlow's monthly revenue had SD = $40,825 on mean = $766,667. That's a coefficient of variation of 5.3%. Translation: very consistent, easy to forecast. Their product portfolio? CV = 46.6%. Translation: huge variability, each product needs individual strategy."
+
+**Pitfall 2: Ignoring Outliers**
+
+"The original TechFlow report said 'some outliers on both ends,'" David recalls. "They treated outliers like data errors. But outliers tell stories. TechFlow had six orders above $513—that's their B2B opportunity, 3% of customers generating 8% of revenue. Missing that costs money."
+
+**Pitfall 3: Not Checking Distribution Shape**
+
+"We calculated skewness because the formula was in the textbook," Maria says. "But we didn't understand what -0.95 meant until we plotted the data. Left-skewed satisfaction means most customers happy, few unhappy. Right-skewed response times means most tickets resolved quickly, few taking forever. Same statistic, opposite business implications."
+
+### Key Takeaway: Descriptive Statistics
+
+A student named Miguel asks, "So what's the one thing you'd tell someone just starting descriptive statistics?"
+
+David doesn't hesitate: "Every statistic answers a business question. Mean answers 'What's typical?' SD answers 'How consistent?' Z-scores answer 'What's unusual?' Correlation answers 'What's related?' Don't calculate statistics because they're in the textbook. Calculate them because they help someone make a decision."
+
+::: callout-tip
+## Descriptive Statistics Quick Reference
+
+**Measures of Location** (What's typical?)  
+
+- **Mean**: Use for symmetric data, no outliers  
+- **Median**: Use for skewed data, robust to outliers  
+- **Mode**: Use for categorical data, multi-modal distributions  
+- **Percentiles**: Use to define thresholds (e.g., "top 10% get bonus")
+
+**Measures of Variability** (How consistent?)  
+
+- **Standard Deviation**: Typical deviation from mean  
+- **Coefficient of Variation**: Compare variability across different scales  
+- **IQR**: Robust measure of spread, resistant to outliers  
+- **Range**: Simple spread measure, sensitive to outliers
+
+**Distribution Characteristics** (What's the shape?)  
+
+- **Skewness**: Is data symmetric or leaning one direction?  
+- **Z-scores**: How unusual is this value? (|z| > 2 is notable)  
+- **Outliers**: Problems to fix or opportunities to leverage?
+
+**Association** (What's related?)  
+
+- **Correlation**: Strength and direction of linear relationship (-1 to +1)  
+- **Remember**: Correlation ≠ Causation (always)
+:::
+
+---
+
+## Lecture 2 Review: Probability—Quantifying Uncertainty
+
+"PrecisionCast Industries was our second case," David begins. "And honestly, it was where we almost failed."
+
+The room goes quiet. A few students lean forward.
+
+"Their quality manager, Robert Martinez, handed us a report that said things like 'defect rate is around 2%' and 'tests are pretty good.' We thought, 'Okay, we learned from TechFlow—let's calculate exact numbers!' So we did. P(Defect) = 0.0203 exactly. Expected Q2 defects = 1,117. Done."
+
+"Except," Maria interjects, "we missed the entire point of probability. It's not about calculating exact numbers. It's about understanding what those numbers mean for decision-making under uncertainty."
+
+### The Core Lesson: Probability Converts Uncertainty into Decisions
+
+Maria pulls up the PrecisionCast case:
+
+"Robert was about to spend $2 million on new equipment because his inspection system showed 'pretty good' test accuracy. Here's what we discovered through probability analysis:"
+
+**The Inspection System:**  
+
+- Sensitivity (catch defects): 95%  
+- Specificity (correctly pass good parts): 99%  
+- Sound great, right?
+
+"Wrong," David says flatly. "We calculated the Positive Predictive Value using Bayes' Theorem. When a part tests positive for defects, what's the probability it's actually defective?"
+
+**Answer: 49.6%**
+
+"Basically a coin flip," Maria adds. "Despite '95% accuracy,' half of all flagged parts were actually fine. Robert was about to invest $2 million to reduce 'false positives,' but the real problem was the base rate—only 2% defect rate makes even good tests unreliable."
+
+### A Student's Question: "What's the Difference Between Probability and Statistics?"
+
+Jennifer asks, "I'm still not clear on when I'm doing probability versus when I'm doing statistics. Aren't they the same thing?"
+
+David shakes his head. "That's the question we asked too. Here's how we finally understood it:"
+
+**Probability** (known population → predict sample):  
+
+- "I know the defect rate is 2%. What's the probability the next batch has 10 or fewer defects?"  
+- You know the population parameters, predict sample outcomes  
+- Forward-looking: What will happen?
+
+**Statistics** (observed sample → infer population):  
+
+- "I observed 1,015 defects in 50,000 parts. What's the population defect rate?"  
+- You observe sample data, infer population parameters  
+- Backward-looking: What does this tell us about reality?
+
+"PrecisionCast was pure probability," Maria clarifies. "We knew their historical defect rate (2.03%), we knew their batch size (55,000 units), we knew their machine characteristics. We used probability to predict Q2 outcomes and evaluate the proposed equipment investment."
+
+### Common Pitfalls in Probability
+
+**Pitfall 1: Confusing P(A|B) with P(B|A)**
+
+"This almost cost Robert $2 million," David says. "His test manufacturer claimed '95% sensitivity'—meaning P(Test+ | Defect) = 0.95. Robert interpreted this as 'if the test is positive, there's 95% probability of a defect'—which would be P(Defect | Test+)."
+
+"Bayes' Theorem reverses conditional probabilities. We calculated P(Defect | Test+) = 49.6%. Huge difference."
+
+**Pitfall 2: Treating Probability as Certainty**
+
+"Expected value is *expected*—not guaranteed," Maria emphasizes. "We calculated E(Q2 defects) = 1,117. Robert started planning capacity for exactly 1,117 defects. We had to explain: 'That's the average over many quarters. Any individual quarter could be 1,000 or 1,200. You need buffer capacity.'"
+
+**Pitfall 3: Ignoring Distributions**
+
+"Robert asked: 'What's the probability Q2 defects exceed 1,200?'" David recalls. "We couldn't answer with expected value alone. We needed the binomial distribution to calculate: P(X > 1,200) = 10.2%. That became his contingency planning threshold."
+
+### The Expected Value Decision Framework
+
+Carlos asks, "How did you use probability to actually make the recommendation about the $2 million investment?"
+
+Maria projects the decision tree:
+
+**Decision: Invest $2M in new equipment?**
+
+**Scenario Analysis:**
+
+| Scenario | Probability | Defects (w/o investment) | Cost | Defects (w/ investment) | Cost |
+|:---------|:------------|:-------------------------|:-----|:------------------------|:-----|
+| Best case | 0.30 | 1,000 | $200,000 | 500 | $30,000 |
+| Most likely | 0.50 | 1,117 | $223,400 | 700 | $70,000 |
+| Worst case | 0.20 | 1,300 | $260,000 | 850 | $34,000 |
+
+**Expected Cost Without Investment:** $223,800  
+**Expected Cost With Investment:** $134,000  
+**Expected Savings:** $89,800/quarter
+
+"But the investment costs $2 million," David continues. "Payback period: $2M / $357,200 per year = 5.6 years. Robert's equipment lifespan: 7 years. Marginal decision, not the slam dunk the manufacturer claimed."
+
+::: callout-tip
+## Probability Quick Reference
+
+**Basic Probability:**  
+
+- P(Event) = favorable outcomes / total outcomes  
+- Use for forecasting, capacity planning, budgeting
+
+**Conditional Probability:**  
+
+- P(A|B) asks "given B occurred, what's P(A)?"  
+- Use for root cause analysis, targeted interventions
+
+**Bayes' Theorem:**  
+
+- Reverses conditional probabilities: P(A|B) → P(B|A)  
+- Critical for medical testing, quality control, fraud detection  
+- **Warning**: P(Test+|Disease) ≠ P(Disease|Test+)
+
+**Expected Value:**  
+
+- E(X) = Σ[value × probability]  
+- Use for decision-making under uncertainty  
+- Remember: Expected ≠ guaranteed
+
+**Distributions:**  
+
+- **Binomial**: Count successes/failures (discrete events)  
+- **Normal**: Model continuous measurements  
+- Match the distribution to the business question
+:::
+
+---
+
+## Lecture 3 Review: Statistical Inference—Acknowledging What We Don't Know
+
+The room shifts. Students sense this topic is different.
+
+"BorderMed Pharmaceuticals," Maria begins quietly, "was where statistics stopped being academic and started being life-or-death. They'd developed a drug for hypertension. Their Phase II clinical trial showed a 12.4 mmHg reduction in blood pressure. They were ready to commit $500 million to Phase III trials."
+
+"Their report said the drug 'proves efficacy' and 'has no significant safety risk,'" David continues. "Every calculation was correct. Every p-value properly computed. And every conclusion was dangerously wrong."
+
+### The Core Lesson: Sample Statistics ≠ Population Parameters
+
+"This is where we learned the hardest lesson in statistics," Maria says. "You observe a sample. You calculate statistics. But those statistics are just estimates of population parameters—and estimates come with uncertainty."
+
+David projects the BorderMed error:
+
+**What Their Report Said** (❌):  
+"VasoRelief reduced systolic blood pressure by 12.4 mmHg. This **represents the true efficacy** of the drug."
+
+**What They Should Have Said** (✓):  
+"In our sample of 85 patients, we observed a mean reduction of 12.4 mmHg (SD = 8.6). We estimate the true population mean reduction to be between **10.6 and 14.2 mmHg** (95% confidence interval)."
+
+"See the difference?" Maria asks the class. "One treats the sample statistic as truth. The other acknowledges it's an estimate with a range of plausible values."
+
+### A Student's Question: "What Does 95% Confidence Mean?"
+
+Sarah asks, "I've heard '95% confidence interval' a hundred times, but I still don't fully understand what it means. Can you explain it without the technical jargon?"
+
+David nods. "We struggled with this too. Here's how we finally got it:"
+
+"Imagine you could repeat the BorderMed trial infinite times—same size (n=85), same drug, different random patients each time. Each trial gives you a different sample mean and a different confidence interval."
+
+"If you calculated 95% CIs for all those trials, approximately 95% of them would contain the true population mean. About 5% would miss it entirely—that's the risk we accept."
+
+"For BorderMed's specific CI of (10.6, 14.2), we can't say 'there's a 95% probability the true mean is in this range'—the true mean is either in there or it isn't. What we can say is: 'We're 95% confident this interval contains the true mean.'"
+
+Maria adds the business translation: "For decision-makers, it means: 'The effect is probably somewhere between 10.6 and 14.2 mmHg. Plan for that range, not for exactly 12.4.'"
+
+### Common Pitfalls in Statistical Inference
+
+**Pitfall 1: Confusing "Fail to Reject" with "Accept"**
+
+"This almost became a patient safety disaster," David says seriously. "BorderMed tested whether headache rates differed from placebo. Result: p = 0.10. Their report concluded: 'We accept the null hypothesis. No significant headache risk.'"
+
+"That's not what p = 0.10 means," Maria emphasizes. "When p > α, you haven't proven the null hypothesis true. You've just failed to find evidence against it. Two completely different things."
+
+"BorderMed's observed headache rate was 27.1% versus 20% placebo—a 35% relative increase. But with only 85 patients, they lacked statistical power to detect it. Type II error risk was approximately 50%."
+
+"'No evidence of difference' is not the same as 'evidence of no difference,'" David states firmly. "Especially for safety endpoints, failing to detect harm doesn't mean harm doesn't exist."
+
+**Pitfall 2: Misinterpreting P-Values**
+
+"Their report said: 'p < 0.001 proves the drug works with 99.9% certainty,'" Maria recalls. "This is the single most common statistical error in all of science."
+
+She projects the correction:
+
+**Wrong Interpretation** (❌):  
+"p-value = probability the hypothesis is true"  
+"p < 0.001 = 99.9% certain the drug works"
+
+**Correct Interpretation** (✓):  
+"p-value = probability of observing data this extreme if H₀ were true"  
+"p < 0.001 = if drug had no effect, data this extreme would occur <0.1% of the time by chance"
+
+"P-values tell you about the data, not about the hypothesis," David clarifies. "They measure 'how weird would this data be if nothing were happening?' Not 'how likely is it that something is happening?'"
+
+**Pitfall 3: Treating Small Samples Like Large Ones**
+
+"BorderMed had one site with only 15 patients," Maria notes. "Their confidence interval for that site was 9.4 mmHg wide. The other sites? About 3-4 mmHg wide. But their report treated all sites as equally reliable."
+
+"Small samples → wide confidence intervals → imprecise estimates. You can't fix that with fancier statistics. You need more data."
+
+### The Asymmetry of Hypothesis Testing
+
+Miguel raises his hand. "I'm still confused about the asymmetry. Why can we 'reject' but not 'accept'?"
+
+"Great question," David responds. "Think of it like a criminal trial. The defendant is presumed innocent (null hypothesis). If evidence is overwhelming, we reject innocence (reject H₀). But if evidence is weak, we don't 'accept innocence'—we just say 'insufficient evidence to convict.'"
+
+"In hypothesis testing:"  
+
+- **Small p-value** (p < α): Strong evidence against H₀ → Reject H₀  
+- **Large p-value** (p ≥ α): Insufficient evidence against H₀ → Fail to reject H₀
+
+"You never 'accept' H₀ because a large p-value could mean either: (1) H₀ is actually true, or (2) H₀ is false but your sample was too small to detect it. You can't tell which."
+
+::: callout-tip
+## Statistical Inference Quick Reference
+
+**Confidence Intervals:**  
+
+- Quantify uncertainty in estimates  
+- Provide range of plausible population parameter values  
+- **Interpretation**: "95% confident this interval contains the true mean"  
+- **NOT**: "95% probability the true mean is in this interval"
+
+**P-Values:**  
+
+- P(data this extreme | H₀ true)  
+- **NOT** P(hypothesis true | data)  
+- Small p-value = strong evidence against H₀  
+- **Never say**: "proves," "X% certain hypothesis is true"
+
+**Hypothesis Testing:**  
+
+- Reject H₀: Strong evidence for H_a  
+- Fail to reject H₀: Insufficient evidence (not "accept H₀")  
+- Always consider Type I error (α) and Type II error (β)  
+- For safety endpoints, Type II errors can be catastrophic
+
+**Sample Size Matters:**  
+
+- Small n → wide CIs → imprecise estimates  
+- Calculate required n before study, not after  
+- Don't treat all CIs as equally reliable regardless of n
+:::
+
+---
+
+## Lecture 4 Review: ANOVA—Comparing Multiple Groups Simultaneously
+
+"DesertVine Hospitality Group taught us about multiple comparisons," Maria begins. "They had four hotel properties and wanted to know: 'Do they all perform equally?' Simple question. Not a simple answer."
+
+### The Core Lesson: Multiple Comparisons Inflate Error Rates
+
+David projects the challenge:
+
+"DesertVine had satisfaction data from four properties: El Paso (8.4), Tucson (8.5), Santa Fe (7.8), and Albuquerque (8.0). They wanted to compare them all."
+
+"Naive approach: Run six pairwise t-tests (El Paso vs. Tucson, El Paso vs. Santa Fe, etc.). Problem: Each test has 5% chance of false positive. Six tests means cumulative error rate of approximately 26%."
+
+**Why ANOVA?**  
+"ANOVA does one omnibus test first: 'Is there any difference among the four properties?' If yes (reject H₀), then we investigate which specific properties differ. If no (fail to reject), we stop. This controls the family-wise error rate."
+
+### A Student's Question: "What Does the F-Statistic Tell Me?"
+
+Carlos asks, "I can calculate F = MS_between / MS_within, but what does it actually mean?"
+
+Maria responds: "F-statistic compares two sources of variation:"
+
+**MS_between** (variation between groups):  
+
+- How much do the group means differ from each other?  
+- If groups truly differ, this should be large
+
+**MS_within** (variation within groups):  
+
+- How much do individuals within each group vary?  
+- This represents random noise
+
+"F = between-group variation / within-group variation. If F is large, group differences are bigger than random noise. If F is small, apparent differences might just be noise."
+
+"DesertVine's F = 4.89 with p = 0.003. Translation: The property differences are real, not just random variation."
+
+### Common Pitfalls in ANOVA
+
+**Pitfall 1: Multiple Testing Without Adjustment**
+
+"DesertVine's original report ran six pairwise t-tests after ANOVA without any adjustment," David recalls. "They found several 'significant' differences that weren't really there."
+
+"If you run multiple tests, you need Bonferroni correction or Tukey's HSD. Otherwise, you're inflating your Type I error rate."
+
+**Bonferroni Correction:**  
+α_adjusted = α_family / number of comparisons  
+For 6 comparisons: 0.05 / 6 = 0.0083
+
+**Pitfall 2: Confusing "No Evidence of Difference" with "No Difference"**
+
+"Their original report compared business vs. leisure travelers," Maria notes. "Result: p = 0.279. They concluded: 'Travel purpose has no effect. Business and leisure travelers have identical satisfaction.'"
+
+"Wrong on two counts. First, we don't 'accept' null hypotheses. Second, the confidence interval was (-0.56 to 0.16). That includes zero, but it also includes differences as large as 0.56 points—potentially meaningful for business decisions."
+
+**Pitfall 3: Ignoring Unequal Sample Sizes**
+
+"Albuquerque property had only 47 guests compared to 95+ at other properties," David points out. "This creates unequal precision. Albuquerque's CI was much wider, but the report treated all properties as equally reliable."
+
+"When sample sizes differ substantially, be extra cautious about conclusions involving the small-sample groups."
+
+### When to Use ANOVA vs. Multiple t-Tests
+
+Jennifer asks, "If I only have two groups, do I use ANOVA or t-test?"
+
+"Either works," Maria responds. "For two groups, ANOVA and t-test give identical results (actually, F = t²). But for three or more groups, always start with ANOVA."
+
+**The Decision Tree:**
+
+```
+How many groups?
+├─ Two groups → Independent samples t-test (or ANOVA, equivalent)
+└─ Three or more groups → ANOVA
+   ├─ ANOVA insignificant (p > α) → Stop, no evidence of differences
+   └─ ANOVA significant (p < α) → Post-hoc tests (Tukey or Bonferroni)
+```
+
+::: callout-tip
+## ANOVA Quick Reference
+
+**When to Use ANOVA:**  
+
+- Comparing means of three or more groups  
+- Want to control family-wise error rate  
+- Example: Compare satisfaction across multiple properties
+
+**F-Statistic Interpretation:**  
+
+- F = between-group variation / within-group variation  
+- Large F → groups differ more than expected by chance  
+- Small F → observed differences consistent with random variation
+
+**Post-Hoc Testing:**  
+
+- Only conduct if ANOVA is significant  
+- Use Tukey HSD or Bonferroni correction  
+- Controls Type I error inflation from multiple comparisons
+
+**Common Mistakes:**  
+
+- Running multiple t-tests without ANOVA  
+- No adjustment for multiple comparisons  
+- Accepting H₀ when ANOVA is non-significant  
+- Ignoring unequal sample sizes
+:::
+
+---
+
+## Lecture 5 Review: Categorical Data Analysis—Association ≠ Causation
+
+"PixelPerfect Marketing Agency was our final case," David begins, "and in some ways, the most dangerous. Because their statistical analysis was technically correct, but their interpretation was completely wrong."
+
+### The Core Lesson: Statistical Association Does Not Establish Causation
+
+Maria projects the PixelPerfect findings:
+
+**Their Analysis:**  
+
+- Tested whether marketing channel (Social Media, Email, Display Ads, Search Ads) was associated with conversion outcome  
+- χ² = 42.87, p < 0.001  
+- Conclusion: "Channel choice **causes** different conversion rates"  
+- Recommendation: Reallocate $150,000 budget based on observed conversion rates
+
+"Everything up to the word 'causes' was correct," David emphasizes. "The chi-square test shows association. But association doesn't prove causation—especially in observational data."
+
+### A Student's Question: "Why Can't I Say 'Causes' If It's Significant?"
+
+Sarah challenges this. "If the chi-square test shows a significant relationship with p < 0.001, why can't I say the channel causes the difference? Isn't that what 'significant' means?"
+
+David shakes his head. "This is the most important distinction in all of applied statistics. Statistical significance tells you the association is unlikely due to chance. It doesn't tell you why the association exists."
+
+Maria pulls up an example:
+
+**Simpson's Paradox Scenario:**
+
+"Imagine Social Media appears to have the highest conversion rate overall. But when you stratify by product type:"
+
+**Premium Products** (naturally high conversion):  
+
+- Email: 30% conversion  
+- Social Media: 28% conversion
+
+**Budget Products** (naturally low conversion):  
+
+- Email: 15% conversion  
+- Social Media: 13% conversion
+
+"Email is better for both product types individually, but Social Media appears better overall because it's used more heavily for premium products. The apparent channel advantage is actually product mix."
+
+"This is Simpson's Paradox—an association that reverses when you account for confounding variables. Chi-square can't detect this. You need to think about the data-generating process."
+
+### Common Pitfalls in Categorical Data Analysis
+
+**Pitfall 1: Confusing Association with Causation**
+
+"PixelPerfect's original report said: 'χ² = 42.87 proves channel choice causes conversion differences,'" David recalls. "We had to explain: Chi-square establishes association in observational data. Causation requires randomization or strong causal identification strategy."
+
+**The Correction:**  
+"χ² = 42.87 provides strong evidence that channel and conversion are statistically associated. However, observational marketing data cannot establish causation. Apparent channel effects may reflect confounding variables such as product type, customer demographics, or seasonal patterns."
+
+Maria adds a cautionary example: "We also discovered what statisticians call 'spurious correlations'—associations that exist in the data but have no meaningful causal connection."
+
+She projects a striking example:
+
+**Spurious Correlation in Marketing Data:**
+
+"In PixelPerfect's Q3 data, we found a statistically significant association between customer zip code digit sum and conversion rate. Customers whose zip code digits summed to an even number converted at 22%, while odd-sum zip codes converted at 17%. Chi-square test: p = 0.008."
+
+"This was statistically significant. Should PixelPerfect target even-sum zip codes?"
+
+The class laughs, but Maria stays serious. "This actually happened. And without thinking critically, someone could have built a targeting strategy around it. The association is real in the data—it's just meaningless. Pure coincidence arising from multiple testing and pattern-seeking in large datasets."
+
+"The lesson: Statistical significance doesn't validate causal mechanisms. Just because you can find an association doesn't mean it's meaningful. Always ask: 'What's the causal story? Does this make business sense?'"
+
+**Pitfall 2: Overconfident Interpretation of P-Values**
+
+"They said: 'p < 0.001 means we can be 99.9% confident in reallocating the budget,'" Maria notes. "That's not what p-values mean. A small p-value tells you the association is unlikely due to chance, not that your recommended action is correct."
+
+**Pitfall 3: Ignoring Effect Size**
+
+"They reported χ² = 42.87 but not Cramér's V," David adds. "Cramér's V = 0.095—a small to moderate association. Statistically significant? Yes. Practically large enough to justify $150,000 reallocation? Questionable."
+
+"Statistical significance ≠ practical significance. Always report and interpret effect sizes, not just p-values."
+
+### The Recommended Approach: Pilot Study
+
+Carlos asks, "So what did you actually recommend to PixelPerfect?"
+
+Maria pulls up their revised recommendation:
+
+**Phase 1: Pilot Test ($20,000)**  
+
+- Randomly assign customers to channels (true randomization)  
+- Control for product type, demographics, time period  
+- Measure channel effects under controlled conditions  
+- This establishes causation
+
+**Phase 2: If Pilot Succeeds**  
+
+- Scale up with confidence  
+- Continue monitoring for changes in effectiveness
+
+"We recommended spending $20,000 to test causation before reallocating $150,000 based on potentially spurious associations. That's evidence-based decision-making."
+
+::: callout-tip
+## Categorical Data Analysis Quick Reference
+
+**Chi-Square Test of Independence:**  
+
+- Tests whether two categorical variables are associated  
+- χ² = Σ[(Observed - Expected)² / Expected]  
+- **Interpretation**: "Variables are statistically associated"  
+- **NOT**: "X causes Y"
+
+**Association vs. Causation:**  
+
+- Chi-square establishes association in observational data  
+- Causation requires: (1) randomization, (2) temporal precedence, (3) controlling confounders, (4) ruling out alternative explanations  
+- In observational studies: Always suspect confounding
+
+**Effect Size Matters:**  
+
+- Cramér's V measures strength of association (0 to 1)  
+- V < 0.1: small, 0.1-0.3: moderate, >0.3: large  
+- Statistical significance ≠ practical significance
+
+**Simpson's Paradox:**  
+
+- Association can reverse when stratifying by confounders  
+- Always check whether associations hold within subgroups  
+- Aggregated data can be misleading
+
+**Recommendations:**  
+
+- Observational data: Report associations, not causal claims  
+- If making budget decisions: Pilot test with randomization  
+- Monitor for changes (today's association may not persist)
+:::
+
+---
+
+## The Mistakes We Almost Made: A Candid Reflection
+
+The presentation has covered the technical content. Now comes the hard part.
+
+"Before we talk about what's next," Maria says, "we want to share the mistakes we almost made. Because knowing the formulas isn't enough—you need to develop statistical judgment."
+
+### Mistake #1: Treating Calculations as Understanding
+
+"We calculated the coefficient of variation for TechFlow," David admits. "Got CV = 5.3% for monthly revenue and CV = 46.6% for products. We almost just reported those numbers without interpretation."
+
+"Then Sarah asked: 'So what?' And we froze. We'd done the math but hadn't thought about what it meant."
+
+"That's when we learned: Every statistic must answer a business question. If you can't explain why a number matters, don't report it."
+
+### Mistake #2: Confusing "Correct" with "Appropriate"
+
+"For PrecisionCast, we calculated exact probabilities using the binomial distribution," Maria recalls. "We were proud of our precision. Then Robert asked: 'Should I invest $2 million?'"
+
+"We'd calculated P(X > 1,200) = 10.2% correctly. But we hadn't connected it to his decision. The right answer to a question he didn't ask isn't helpful."
+
+"We learned: Statistics serves decisions, not the other way around."
+
+### Mistake #3: Overconfidence in Our Conclusions
+
+"After BorderMed, we wrote: 'The drug reduces blood pressure by 10.6 to 14.2 mmHg,'" David says. "Our professor circled it in red and wrote: 'Are you sure?'"
+
+"We'd reported the confidence interval correctly. But we'd stated it like a fact. The drug doesn't 'reduce blood pressure by 10.6 to 14.2 mmHg'—that's the range we estimate based on 85 patients."
+
+"Better: 'We estimate the drug reduces blood pressure by 10.6 to 14.2 mmHg (95% CI, n=85).'"
+
+"That subtle difference—acknowledging uncertainty—separates good statisticians from dangerous ones."
+
+### Mistake #4: Accepting Results That Confirmed Our Priors
+
+"DesertVine's original report said all properties performed equivalently," Maria notes. "We wanted to believe it—it was the 'good news' story. We almost didn't dig deeper."
+
+"Then David noticed: 'Wait, Albuquerque only has 47 guests. How can they be confident about equivalence?' We reran the analysis and found significant property differences (F = 4.89, p = 0.003)."
+
+"We learned: Be extra skeptical of results that tell you what you want to hear."
+
+### Mistake #5: Confusing Statistical Significance with Importance
+
+"PixelPerfect's chi-square test gave p < 0.001," David recalls. "We almost recommended the full $150,000 reallocation because the result was 'highly significant.'"
+
+"Then we calculated Cramér's V = 0.095—a small effect size. Statistical significance with n=2,400 doesn't automatically mean large practical importance."
+
+"We learned: Always report effect sizes alongside p-values. And always ask: 'Is this large enough to matter for the decision at hand?'"
+
+## Looking Forward: Preparing for Econometrics
+
+The professor stands. "Thank you, David and Maria. Your journey illustrates something crucial: Statistics isn't just formulas and calculations. It's a way of thinking about uncertainty, evidence, and decisions."
+
+"You've mastered the foundations: description, probability, inference, comparison, and association. But notice what's missing from your toolkit?"
+
+A student named Alex raises his hand tentatively. "Prediction? You've described relationships, but you haven't modeled them mathematically."
+
+"Exactly," the professor nods. "You've answered questions like:"  
+
+- 'What happened?' (Descriptive statistics)  
+- 'What will happen?' (Probability)  
+- 'What can we conclude?' (Inference)  
+- 'Which groups differ?' (ANOVA)  
+- 'What's associated with what?' (Chi-square)
+
+"But you haven't answered:"  
+
+- 'How much does X affect Y?' (Regression)  
+- 'Which variables matter most?' (Multiple regression)  
+- 'Can we predict outcomes from predictors?' (Econometric modeling)
+
+### The Bridge to Econometrics
+
+David projects one final slide:
+
+**The Natural Progression:**
+
+**Lecture 1: Descriptive Statistics**  
+→ Measured relationships (correlation: r = -0.68 between response time and satisfaction)
+
+**Lecture 5: Categorical Data Analysis**  
+→ Tested associations (chi-square: channel and conversion are associated)
+
+**Lecture 6 (Next): Regression Analysis**  
+→ Model relationships mathematically  
+→ Quantify effects: "Each 1-hour increase in response time decreases satisfaction by 0.08 points"  
+→ Predict outcomes: "Given these customer characteristics and service attributes, predicted satisfaction = 7.2"  
+→ Control for confounders: "After controlling for product type, Social Media increases conversion by 3.2 percentage points"
+
+"You've been seeing relationships in data all semester," Maria observes. "TechFlow's correlation between response times and satisfaction. DesertVine's property differences. PixelPerfect's channel associations. But you've only described them, not modeled them."
+
+"Regression gives you the mathematical framework to model those relationships. To quantify exactly how much one variable affects another. To predict outcomes. To control for confounding. To test causal mechanisms."
+
+"Everything you've learned builds to this," David concludes. "Descriptive statistics taught you about variability—regression models that variability. Probability taught you about distributions—regression uses those distributions. Inference taught you about uncertainty—regression quantifies it with standard errors and confidence intervals. ANOVA taught you about group comparisons—regression generalizes that to continuous predictors. Chi-square taught you about associations—regression models those associations mathematically."
+
+### What Makes Econometrics Different?
+
+The professor adds, "Econometrics extends regression by taking seriously the causal questions you've been wrestling with all semester."
+
+"When PixelPerfect asked 'Does Social Media cause higher conversions?', you correctly said: 'We can't tell from observational data.' Econometrics gives you tools to address causation: instrumental variables, difference-in-differences, regression discontinuity, fixed effects."
+
+"When BorderMed worried about Type I and Type II errors, you calculated them for single hypothesis tests. Econometrics extends this to complex models with multiple predictors, teaching you about specification error, omitted variable bias, and model selection."
+
+"When DesertVine had unequal sample sizes across properties, you noted the precision differences but couldn't formally model them. Econometrics gives you weighted regression, hierarchical models, and robust standard errors."
+
+"The foundations you've built—understanding variability, probability, inference, multiple comparisons, and the difference between association and causation—those are essential. But now we layer on the modeling framework that lets you answer 'how much?' and 'what if?'"
+
+### A Final Question from the Cohort
+
+Miguel raises his hand one last time. "After everything you've learned, if you could give one piece of advice to someone just starting their statistical journey, what would it be?"
+
+David and Maria exchange glances. They'd anticipated this question.
+
+Maria speaks first: "Statistical methods are tools, not magic. They can't fix bad data, biased samples, or flawed study designs. We learned that with PixelPerfect—no amount of sophisticated analysis can turn observational data into causal conclusions."
+
+David adds: "Always ask three questions before running any analysis: (1) What business question am I answering? (2) What assumptions am I making? (3) What could I be wrong about? If you can't answer all three, you're not ready to interpret results."
+
+"But most importantly," Maria concludes, "statistical significance is not the same as practical importance, and p-values are not proof. Every number you report should make a decision clearer, not just make you look smart."
+
+## Chapter Summary: The Statistical Toolkit in Review
+
+The professor concludes the session: "You've just witnessed the progression from description to decision. Let me synthesize what David and Maria have shown you."
+
+::: callout-note
+## The Complete Statistical Framework
+
+**Stage 1: Descriptive Statistics** (What happened?)  
+
+- Measures of location: mean, median, percentiles  
+- Measures of variability: SD, CV, IQR  
+- Distribution characteristics: skewness, outliers, z-scores  
+- Association: correlation  
+- **Key lesson**: Precision replaces vagueness
+
+**Stage 2: Probability** (What will happen?)  
+
+- Basic probability: P(Event)  
+- Conditional probability: P(A|B)  
+- Bayes' Theorem: Reversing conditional probabilities  
+- Expected value: E(X)  
+- Distributions: Binomial, Normal  
+- **Key lesson**: Quantify uncertainty for decisions
+
+**Stage 3: Statistical Inference** (What can we conclude?)  
+
+- Confidence intervals: Quantify uncertainty in estimates  
+- Hypothesis testing: Evaluate evidence against null  
+- P-values: Probability of data given H₀  
+- Type I and Type II errors  
+- Sample size and power  
+- **Key lesson**: Acknowledge what you don't know
+
+**Stage 4: ANOVA** (Which groups differ?)  
+
+- F-test: Omnibus test for group differences  
+- Post-hoc testing: Specific pairwise comparisons  
+- Multiple testing adjustments: Bonferroni, Tukey  
+- Effect sizes: Practical vs. statistical significance  
+- **Key lesson**: Control error rates in multiple comparisons
+
+**Stage 5: Categorical Data Analysis** (What relates to what?)  
+
+- Chi-square test: Association between categorical variables  
+- Effect size: Cramér's V  
+- Confidence intervals for proportions  
+- Association vs. causation  
+- Simpson's Paradox  
+- **Key lesson**: Association ≠ causation
+
+**Stage 6: Regression & Econometrics** (How much? What if?)  
+
+- Model relationships mathematically  
+- Quantify effects  
+- Predict outcomes  
+- Control for confounding  
+- Causal inference methods  
+- **Key lesson**: Coming next...
+:::
+
+### The Common Thread: Statistical Thinking
+
+"Notice what connects all five lectures," the professor points out. "It's not the formulas. It's the mindset."
+
+**Statistical thinking means:**
+
+1. **Distinguish data from populations**: Samples estimate, they don't define  
+2. **Quantify uncertainty**: Every estimate has a margin of error  
+3. **Avoid overconfidence**: 'Significant' doesn't mean 'large' or 'certain'  
+4. **Question assumptions**: What could make my conclusions wrong?  
+5. **Serve decisions**: Statistics inform action, not replace judgment  
+6. **Think causally**: Association is not causation without proper identification  
+7. **Report honestly**: Acknowledge limitations, not just strengths
+
+"These principles don't change whether you're calculating a mean or running a regression. They're the foundation of rigorous quantitative analysis."
+
+## Closing Thoughts: The Journey Continues
+
+As students pack up their laptops, several cluster around David and Maria with follow-up questions. The professor watches, satisfied.
+
+"You're ready," he says when the room finally clears. "You've built the foundation. You understand variability, probability, inference, comparison, and association. You've learned to distinguish statistical significance from practical importance. You've internalized that correlation isn't causation."
+
+"Next lecture, we layer regression and econometrics on top of this foundation. You'll learn to model the relationships you've been describing. To quantify the effects you've been observing. To predict the outcomes you've been analyzing."
+
+"But remember: Regression is powerful, but it's not magic. It can't fix bad data, substitute for causal reasoning, or replace business judgment. The same principles you learned from TechFlow, PrecisionCast, BorderMed, DesertVine, and PixelPerfect still apply."
+
+"The journey from vague descriptions to precise statistics to informed decisions—that continues. The only thing changing is the sophistication of the tools."
+
+David and Maria walk out of the lecture hall into the November sunshine, already thinking about regression analysis. Five companies down. One statistical framework built. And the most powerful tool—econometric modeling—still ahead.
+
+But they're ready. Because they understand that statistics isn't about memorizing formulas. It's about developing the judgment to use those formulas wisely, interpret results honestly, and serve the decision-makers who depend on their analysis.
+
+The journey continues.
+
+---
+
+## Practice Questions for Review
+
+To consolidate your understanding of Lectures 1-5, work through these integrative questions that require connecting multiple concepts:
+
+### Question 1: Connecting Descriptive Statistics and Inference
+
+A company collects customer satisfaction scores from 200 customers and finds:  
+
+- Mean = 7.8  
+- Median = 8.2  
+- SD = 2.1  
+- Skewness = -0.85
+
+**Answer these questions:**
+
+a. Based on skewness, is the distribution symmetric? If not, which direction is it skewed?  
+b. Should the company report mean or median in their marketing materials? Why?  
+c. Calculate the 95% confidence interval for the population mean satisfaction.  
+d. The company claims "Our average satisfaction exceeds 7.5." Test this claim at α = 0.05.  
+e. Explain why reporting only the point estimate (7.8) without a confidence interval would be inadequate.
+
+### Question 2: Connecting Probability and Inference
+
+A quality control system has 98% sensitivity (detects 98% of defects) and 97% specificity (correctly passes 97% of good items). The true defect rate is 3%.
+
+**Answer these questions:**
+
+a. If a part tests positive, what's the probability it's actually defective? (Use Bayes' Theorem)  
+b. If you test 1,000 parts, what's the expected number of false positives?  
+c. You observe 45 defects in a sample of 1,000 parts. Calculate the 95% confidence interval for the true defect rate.  
+d. Test whether the observed defect rate differs significantly from the claimed 3% rate.  
+e. Explain how the concepts of probability (parts a-b) and inference (parts c-d) complement each other.
+
+### Question 3: Connecting ANOVA and Multiple Testing
+
+A retail chain tests three store layouts (A, B, C) with the following daily sales (in thousands):  
+
+- Layout A (n=30): Mean = $45.2, SD = $6.1  
+- Layout B (n=30): Mean = $48.7, SD = $5.8  
+- Layout C (n=30): Mean = $43.5, SD = $6.3
+
+ANOVA results: F = 6.42, p = 0.003
+
+**Answer these questions:**
+
+a. What does F = 6.42 tell you about between-group vs. within-group variation?  
+b. Based on the ANOVA result, what can you conclude about the three layouts?  
+c. If you want to compare all pairwise combinations (A vs. B, A vs. C, B vs. C), what should your adjusted α be using Bonferroni correction?  
+d. Layout B has the highest mean. Can you conclude "Layout B is superior"? What additional analysis is needed?  
+e. What would be the problem with running three separate t-tests instead of ANOVA?
+
+### Question 4: Connecting Categorical Analysis and Causation
+
+A marketing study finds that customers who receive email promotions have 22% conversion rate, while customers who don't receive emails have 15% conversion rate. Chi-square test: χ² = 18.4, p < 0.001, n = 800.
+
+**Answer these questions:**
+
+a. What does the chi-square test tell you about the relationship between emails and conversion?  
+b. Can you conclude "Email promotions cause higher conversion rates"? Why or why not?  
+c. Describe a confounding variable that might explain the association.  
+d. How would you design a study to test whether emails cause higher conversions?  
+e. Even if the association is causal, calculate the 95% confidence interval for the conversion rate difference. What does this tell you about the precision of the effect estimate?
+
+### Question 5: Integrative Case Study
+
+You're analyzing employee productivity across four departments with the following data:
+
+| Department | n | Mean Productivity | SD |
+|:---|:---|:---|:---|
+| Sales | 45 | 87.2 | 12.3 |
+| Marketing | 38 | 92.5 | 10.8 |
+| Operations | 52 | 85.1 | 14.1 |
+| Finance | 30 | 88.9 | 11.7 |
+
+Additional information: Productivity is measured on a 0-100 scale. Company average across all employees is 87.8.
+
+**Answer these questions:**
+
+a. **Descriptive**: Calculate the coefficient of variation for each department. Which department has the most consistent productivity?  
+b. **Inference**: Calculate the 95% confidence interval for Marketing's mean productivity. Can you conclude Marketing exceeds the company average of 87.8?  
+c. **ANOVA**: If ANOVA gives F = 4.12, p = 0.008, what can you conclude? What would be your next statistical step?  
+d. **Interpretation**: If Finance has the smallest sample size (n=30), how does this affect the reliability of conclusions about Finance compared to other departments?  
+e. **Decision**: The CEO wants to implement Marketing's practices company-wide because they have the highest mean productivity. What statistical and practical concerns would you raise?
+
+---
+
+::: callout-tip
+## Final Thoughts: Statistical Maturity
+
+You've now completed the foundational sequence. You understand:  
+
+- How to describe data precisely (Lecture 1)  
+- How to quantify uncertainty (Lecture 2)  
+- How to make inferences from samples (Lecture 3)  
+- How to compare multiple groups (Lecture 4)  
+- How to analyze categorical relationships (Lecture 5)
+
+But more importantly, you've developed statistical judgment:  
+
+- You know when to use mean vs. median  
+- You understand what p-values do and don't tell you  
+- You recognize that "fail to reject" ≠ "accept"  
+- You appreciate the difference between statistical and practical significance  
+- You understand that association ≠ causation
+
+This judgment—knowing not just how to calculate but when to calculate and how to interpret—is what distinguishes competent analysts from dangerous ones.
+
+As you move into regression and econometrics, these principles remain constant. The math gets more sophisticated, but the thinking stays the same: Be precise about what you know, honest about what you don't, and always serve the decision at hand.
+
+Welcome to the next stage of your statistical journey.
+:::

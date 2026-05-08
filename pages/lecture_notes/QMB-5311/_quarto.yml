@@ -1,0 +1,24 @@
+project:
+  type: book
+  output-dir: ../_site/QMB-5311  # Output to website's _site
+
+book:
+  title: "Quantitative Methods"
+  author: "Nicolas Cachanosky"
+  twitter-card: true
+  search: true
+  downloads: [pdf]
+  sidebar:
+    style: floating
+  chapters:
+    - index.qmd
+    - lecture_01/lecture_01.qmd
+
+format:
+  html:
+    theme: cosmo
+    code-fold: true
+    code-tools: true
+    fig-width: 10
+    fig-height: 6
+

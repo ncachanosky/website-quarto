@@ -1,5 +1,5 @@
 typography:
   fonts:
-    - family: Roboto Condensed
+    - family: Open Sans
       source: google
-      font-weight: 400
+#      font-weight: 400

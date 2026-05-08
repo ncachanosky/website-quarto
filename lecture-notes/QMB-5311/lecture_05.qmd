@@ -1,0 +1,1184 @@
+---
+title: "Categorical Data Analysis"
+subtitle: "Lecture 5"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: true
+    code-tools: true
+    fig-width: 10
+    fig-height: 6
+---
+
+## Learning Objectives {.unnumbered}
+
+By the end of this chapter, you will be able to:
+
+1. ✅ Conduct goodness of fit tests to evaluate whether data follows a hypothesized distribution
+2. ✅ Perform tests of independence to determine relationships between categorical variables
+3. ✅ Calculate and interpret chi-square test statistics and p-values for categorical data
+4. ✅ Understand the critical difference between association and causation in observational studies
+5. ✅ Calculate confidence intervals for proportions and conversion rates
+6. ✅ Recognize and avoid common interpretation errors in chi-square testing
+7. ✅ Apply categorical data analysis to digital marketing, A/B testing, and customer segmentation decisions
+
+## Introduction: The $150,000 Question
+
+It's 8:30 AM on October 8, 2025. Jennifer Torres, Chief Marketing Officer at PixelPerfect Marketing Agency, sits in her office reviewing her team's Q3 2025 campaign performance report. Her digital marketing agency tracked 2,400 customer interactions across four channels for their major e-commerce client, and the recommendations seem... dangerously aggressive.
+
+Her analytics director's report states:
+
+> **Channel Performance Analysis**: Social Media has the highest conversion rate at 24.5%, establishing it as our top-performing channel. Email marketing converts at 18.7%, significantly lower than Social Media. Display Ads perform worst with only 12.3% conversion, raising serious concerns about ROI.
+> 
+> **Statistical Validation**: Chi-square statistic: χ² = 42.87, p-value: < 0.001. Since the p-value is less than 0.001, we can conclude that **channel choice causes different conversion rates**. The relationship between channel and conversion is statistically significant, meaning these differences are real and not due to chance. With such a low p-value, we can be **over 99.9% confident in this finding**.
+>
+> **Regional Analysis**: The p-value of 0.64 is well above our significance threshold of 0.05, so we **accept the null hypothesis** that regions have equal conversion rates. There is no regional effect, the small differences we observe are simply random variation.
+>
+> **Recommendation**: Increase Social Media budget by 40% and reduce Display Ad spending by 50%. Reallocate **$150,000 from Display to Social Media for Q4** to maximize conversions.
+
+Jennifer sets down the report, alarmed. "Hold on. We're recommending a $150,000 budget shift based on one quarter of observational data?"
+
+Her analytics director nods confidently. "The p-value is less than 0.001. The chi-square test **proves** that channel choice **causes** different conversion rates."
+
+"Does it?" Jennifer challenges. "I see several red flags here:
+
+- You say the test '**proves**' and '**causes**'—chi-square tests association, not causation  
+- You '**accept the null hypothesis**' for regions—we never accept H₀, only fail to reject it  
+- You claim '99.9% confident'—that's not what p-values mean  
+- I see no confidence intervals for conversion rates  
+- I see no cost-per-conversion analysis (what if Email converts less but costs way less?)  
+- I see no consideration of confounding: product type, customer intent, seasonality"
+
+She pushes the report across the table. "I want this redone. I want proper interpretation of what chi-square tests actually mean. I want confidence intervals. I want cost-effectiveness. And most importantly, I want acknowledgment of what we DON'T know from observational data. We're presenting to the client Friday. I will not recommend a $150,000 shift without proper statistical justification."
+
+The analytics team realizes they've fundamentally misunderstood chi-square interpretation—not the calculations, but what the results actually mean. Following the success stories from TechFlow Solutions, PrecisionCast Industries, and BorderMed Pharmaceuticals, they reach out to the EMBA program at The University of Texas at El Paso.
+
+Enter David Martinez and Maria Rodriguez, the same EMBA students who transformed vague reports into statistical precision over the past nine months. But this time, the challenge is different. The math is correct. The chi-square test was run properly. The p-value is accurate. But the **interpretations** are dangerously wrong.
+
+::: {.callout-warning}
+## The Cost of Misinterpreting Chi-Square Tests
+
+When TechFlow said "around $767,000," they couldn't set budgets. When PrecisionCast said "tests are pretty good," they risked shipping defective units. When BorderMed said "proves efficacy," they nearly committed $500M based on overconfidence.
+
+When PixelPerfect says chi-square "**proves** that channel choice **causes** different conversion rates" and recommends reallocating $150,000 based on observational data, they might:
+
+- Waste $150,000 shifting budget to channels that appear better only due to confounding  
+- Miss that Display Ads might excel for certain product categories despite lower overall rates  
+- Ignore critical cost differences (Email: $187/conversion vs Social Media: $306/conversion)  
+- Make causal claims that observational chi-square tests cannot support  
+- "Accept" null hypotheses when they should only "fail to reject"  
+- Overlook Simpson's Paradox: channel rankings might reverse within product categories
+
+In digital marketing, misinterpreting chi-square tests doesn't just cost money—it destroys client relationships when promised results fail to materialize.
+
+**The fix**: Understand chi-square tests **association**, NOT causation. Calculate confidence intervals for proportions. Acknowledge confounding in observational data. Never say "proves," "causes," or "accept H₀."
+:::
+
+This chapter is about mastering categorical data analysis the right way. From "proves causation" to "shows association." From "accept the null" to "fail to reject." From treating observational data like experimental data to acknowledging inherent limitations.
+
+Welcome to categorical data analysis—where the calculations are straightforward, but interpretation requires careful, critical thinking.
+
+## The Statistical Journey Continues
+
+David and Maria meet with Jennifer and her analytics team at PixelPerfect's El Paso office. It's been nine months since they started their EMBA program, and their statistical toolkit has grown systematically.
+
+"Let's review your journey," Maria begins, pulling up a timeline. "January: TechFlow taught you descriptive statistics for continuous data—means, standard deviations, z-scores."
+
+"April: PrecisionCast taught you probability—binomial distributions, expected values, normal curves," David continues.
+
+"July: BorderMed taught you statistical inference—confidence intervals, hypothesis testing, acknowledging uncertainty," Maria adds.
+
+"And now," David says, "PixelPerfect is teaching you categorical data analysis. But there's a twist this time."
+
+Jennifer leans forward. "What's the twist?"
+
+"Your team got the math right," Maria explains. "The chi-square statistic of 42.87 is correct. The p-value < 0.001 is correct. The contingency table is accurate. The problem isn't the calculations—it's the **interpretation**."
+
+David pulls up the report. "Three critical errors:
+
+1. **Causation from association**: Claiming chi-square proves channel choice **causes** conversion differences  
+2. **Accepting H₀**: Saying you 'accept the null hypothesis' for regional differences  
+3. **Misunderstanding p-values**: Claiming '99.9% confident' based on p < 0.001"
+
+"Each of these errors," Maria emphasizes, "could lead to a disastrous $150,000 budget decision. Let's fix them."
+
+## The First Error: Association vs. Causation
+
+David highlights the most dangerous line in the report: "Since the p-value is less than 0.001, we can conclude that channel choice **causes** different conversion rates."
+
+"That single word, 'causes', turns a correct statistical test into a false claim," he says.
+
+### What Chi-Square Actually Tests
+
+Maria creates a clear explanation:
+
+**The Chi-Square Test of Independence Asks ONE Question:**  
+*"Are these two categorical variables statistically independent, or is there evidence they are associated?"*
+
+**What Chi-Square Does NOT Test:**
+
+- Whether X causes Y  
+- Whether Y causes X  
+- Whether some third variable Z causes both X and Y  
+- The direction of any causal relationship  
+- The mechanism of the relationship  
+- Whether the association matters practically
+
+"In your case," David explains to the team, "chi-square tells you that marketing channel and conversion outcome are **associated**—they're not independent. But it says absolutely nothing about WHY they're associated."
+
+Maria draws a diagram on the whiteboard:
+
+```
+Possible Explanations for Channel-Conversion Association:
+
+✗ Channel CAUSES conversion differences (what your report claims)
+
+✓ Product type confounds both:
+  - Premium products → promoted on Social Media → naturally convert better
+  - Budget products → promoted via Email → naturally convert worse
+  
+✓ Customer intent drives everything:
+  - High-intent buyers → convert regardless of channel
+  - Low-intent browsers → don't convert regardless of channel
+  
+✓ Selection bias:
+  - Social Media reaches younger, tech-savvy customers (already more likely to convert)
+  - Email reaches older, less engaged customers (already less likely to convert)
+  
+✓ Time of day:
+  - Social Media ads shown during peak shopping hours
+  - Display Ads shown during low-engagement times
+```
+
+"Chi-square can't distinguish between these scenarios," David emphasizes. "To claim causation, you need:
+
+- **Randomized experiments**: Randomly assign customers to channels  
+- **Statistical control**: Analyze within product categories, demographics, etc.  
+- **Causal inference methods**: Propensity scores, instrumental variables, difference-in-differences"
+
+Jennifer processes this. "So when my team says 'channel choice causes different conversion rates,' they're..."
+
+"Making an unjustified causal inference from correlation," Maria finishes. "It's the #1 error in observational data analysis."
+
+::: {.callout-important}
+## Critical Distinction: Association vs. Causation
+
+**Chi-Square Tests Tell You:** Two categorical variables are statistically associated (not independent). They tend to occur together in patterns not explained by chance alone.
+
+**Chi-Square Tests Do NOT Tell You:**
+
+- Which variable (if either) causes the other  
+- Whether a third variable causes both  
+- Whether the association is causal or merely correlational  
+- The mechanism behind the relationship
+
+**To Claim Causation from Observational Data, You Must:**
+
+1. Establish temporal precedence (cause precedes effect)  
+2. Show the association persists after controlling for confounders  
+3. Rule out plausible alternative explanations  
+4. Provide a theoretical mechanism  
+5. Ideally: conduct randomized experiments (gold standard)
+
+**PixelPerfect's Data:** Observational (customers self-selected into channels), cross-sectional (single quarter), uncontrolled (no adjustment for confounders) → **Cannot support causal claims**
+
+**Correct Language:**
+
+- ❌ "Channel choice causes conversion differences"  
+- ❌ "Social Media directly impacts conversion rates"  
+- ✅ "Channel and conversion are statistically associated"  
+- ✅ "Conversion patterns differ by channel, though causation cannot be inferred"  
+- ✅ "The data suggest an association that warrants further investigation"
+:::
+
+## The Second Error: "Accepting" the Null Hypothesis
+
+David flips to page 3 of the report: "The p-value of 0.64 is well above 0.05, so we **accept the null hypothesis** that regions have equal conversion rates. There is no regional effect."
+
+Maria shakes her head. "Three words that shouldn't exist in statistics: 'accept the null.' We **never** accept H₀. Ever."
+
+The analytics director looks confused. "But if p = 0.64, that means regions are the same, right?"
+
+"No," David responds firmly. "It means we don't have sufficient evidence to conclude they're different. Those are NOT the same statement."
+
+### The Courtroom Analogy
+
+Maria draws an analogy everyone understands:
+
+"Imagine a criminal trial. The jury deliberates and returns with: 'Not guilty.' Does that mean the defendant is innocent?"
+
+Jennifer responds immediately: "No. 'Not guilty' means insufficient evidence to convict. The person might be innocent, or guilty but we can't prove it."
+
+"Exactly!" David confirms. "Same principle in statistics:"
+
+| **Legal System** | **Statistical Hypothesis Testing** |
+|:-----------------|:----------------------------------|
+| Presumption of innocence | Assume null hypothesis is true |
+| Prosecution must prove guilt beyond reasonable doubt | Researcher must show strong evidence against H₀ |
+| Verdict: "Not guilty" | Decision: "Fail to reject H₀" |
+| Does NOT mean "proven innocent" | Does NOT mean "H₀ is true" |
+| Means "insufficient evidence to convict" | Means "insufficient evidence against H₀" |
+
+"In your regional analysis," Maria explains, "p = 0.64 means: 
+
+- We **fail to reject** H₀ (regions are equal)  
+- We do **NOT** conclude regions are actually equal  
+- We lack evidence of regional differences **in this dataset**"
+
+David adds three possible explanations:
+
+**Why might we get p = 0.64?**
+
+1. **Regions are truly equal** (H₀ is actually true)
+2. **Regions differ, but sample size too small** to detect the difference (Type II error)
+3. **Regions differ, but confounders obscure** the pattern (measurement issues)
+
+"We don't know which explanation is correct," Maria emphasizes. "That's why we never 'accept' H₀—we simply acknowledge we don't have evidence against it."
+
+::: {.callout-note}
+## Correct Interpretation of Non-Significant Results
+
+**Wrong (from the bad report):**  
+"p = 0.64, so we accept H₀. Regions have equal conversion rates. There is no regional effect."
+
+**Right:**  
+"p = 0.64, so we fail to reject H₀. We lack sufficient evidence to conclude regional conversion rates differ. This could mean:
+
+- Regions are truly similar in performance  
+- Regional differences exist but our sample size (n=2,400) is insufficient to detect them  
+- Regional differences exist but confounding variables obscure them  
+- Seasonal or measurement factors mask real regional patterns"
+
+**Business Implications:**
+
+- Don't assume "not significant" means "no difference exists"  
+- Consider statistical power: Did we collect enough data?  
+- Consider effect size: Might the difference be real but small?  
+- Consider practical significance: Even if not statistically detectable, could small regional differences matter strategically?  
+
+**What to do:** If regional performance is strategically important, collect more data rather than concluding regions don't matter based on one non-significant test.
+:::
+
+## The Third Error: Misunderstanding P-Values
+
+David points to another problematic sentence: "With such a low p-value, we can be over 99.9% confident in this finding."
+
+"That's not what p-values mean," Maria says. "Not even close."
+
+### What P-Values Actually Mean
+
+David writes out the formal definition:
+
+**P-value = Probability of observing data this extreme (or more extreme) IF the null hypothesis were true**
+
+"Breaking that down," Maria explains:
+
+- **IF H₀ is true** (channel and outcome are independent)  
+- **AND** we repeated this study many times  
+- **THEN** we'd see a chi-square statistic ≥ 42.87 less than 0.1% of the time
+
+"The p-value is NOT," David emphasizes:
+
+- ❌ The probability H₀ is true  
+- ❌ The probability H₁ is true   
+- ❌ The probability the results occurred by chance  
+- ❌ Our confidence in the finding  
+- ❌ The probability we're making an error  
+
+Jennifer interrupts: "So what DOES p < 0.001 tell us?"
+
+"It tells us," Maria responds, "that IF channels and outcomes were truly independent, it would be very surprising to see differences this large. So either:
+
+1. We witnessed a very rare event (< 0.1% chance), OR  
+2. The null hypothesis of independence is false"
+
+"We conclude #2 is more plausible," David adds, "but we can't quantify how 'confident' we are. That would require Bayesian analysis with prior probabilities."
+
+::: {.callout-important}
+## P-Value Interpretation Guide
+
+**What p = 0.001 means:**  
+"If channel and outcome were truly independent (H₀ true), we'd see data this extreme in fewer than 1 in 1,000 studies."
+
+**What p = 0.001 does NOT mean:**
+
+- ❌ "There's a 0.1% chance H₀ is true"  
+- ❌ "We're 99.9% confident in our conclusion"  
+- ❌ "There's a 0.1% chance this is due to chance"  
+- ❌ "The effect size is large or important"
+
+**Correct interpretation:**
+
+- ✅ "This provides strong evidence against H₀"  
+- ✅ "These data are very unlikely under the assumption of independence"  
+- ✅ "We reject H₀ at the α = 0.05 level"
+
+**Remember:** P-values measure evidence against H₀, not probability H₀ is false. They don't tell you effect size, practical importance, or how confident you should be.
+:::
+
+## The Correct Analysis: Chi-Square Test of Independence
+
+"Now let's do this right," David says, opening Excel. "Same data, same test, but proper interpretation."
+
+### Step 1: The Observed Data (Contingency Table)
+
+Maria recreates the 2,400 customer interactions:
+
+| **Channel** | **Conversion** | **Click** | **No Action** | **Total** |
+|:------------|:---------------|:----------|:--------------|:----------|
+| Social Media | 147 | 312 | 141 | 600 |
+| Email | 150 | 418 | 232 | 800 |
+| Display Ads | 74 | 298 | 228 | 600 |
+| Search Ads | 89 | 201 | 110 | 400 |
+| **Total** | **460** | **1,229** | **711** | **2,400** |
+
+"This shows observed frequencies," David explains. "147 Social Media impressions converted, 312 clicked without converting, 141 took no action."
+
+### Step 2: Expected Frequencies Under Independence
+
+"Under H₀ (independence)," Maria explains, "we calculate what we'd **expect** if channel choice told us nothing about outcome."
+
+$$E_{ij} = \frac{(\text{Row}_i \text{ Total}) \times (\text{Column}_j \text{ Total})}{\text{Grand Total}}$$
+
+Example for Social Media/Conversion:
+$$E_{\text{SM, Conv}} = \frac{600 \times 460}{2,400} = 115$$
+
+"If channel doesn't matter," David clarifies, "we'd expect 115 conversions from Social Media's 600 impressions (because overall, 460/2,400 = 19.2% convert)."
+
+Expected frequencies:
+
+| **Channel** | **Conversion** | **Click** | **No Action** |
+|:------------|:---------------|:----------|:--------------|
+| Social Media | 115.0 | 307.3 | 177.8 |
+| Email | 153.3 | 410.3 | 236.7 |
+| Display Ads | 115.0 | 307.3 | 177.8 |
+| Search Ads | 76.7 | 204.8 | 118.3 |
+
+"Notice," Maria points out, "Social Media observed 147 conversions but expected only 115. That's 32 more than expected under independence."
+
+### Step 3: Calculate Chi-Square Statistic
+
+$$\chi^2 = \sum_{i=1}^{r} \sum_{j=1}^{c} \frac{(O_{ij} - E_{ij})^2}{E_{ij}}$$
+
+"This formula," David explains, "measures how far observed frequencies deviate from expected frequencies, standardized by the expected frequencies."
+
+Computing for each cell:
+
+- Social Media/Conversion: (147 - 115)² / 115 = 8.90  
+- Social Media/Click: (312 - 307.3)² / 307.3 = 0.07  
+- Social Media/No Action: (141 - 177.8)² / 177.8 = 7.60  
+- ... (repeating for all 12 cells)
+
+$$\chi^2 = 8.90 + 0.07 + 7.60 + ... = 42.87$$
+
+**Degrees of freedom:** df = (rows - 1)(columns - 1) = (4 - 1)(3 - 1) = 6
+
+### Understanding the Chi-Square Distribution
+
+"Wait," Jennifer interrupts. "We've calculated this chi-square statistic of 42.87. But what does that number actually mean? Why are we using chi-square anyway?"
+
+Maria nods. "Great question. Let's step back and understand what we're doing."
+
+#### What Is the Chi-Square Distribution?
+
+David explains: "Remember from BorderMed (Lecture 3) when we used the **t-distribution** to test hypotheses about means? The t-distribution told us what values of t we'd expect to see if the null hypothesis were true."
+
+"The **chi-square distribution** does the same thing, but for categorical data," Maria adds. "It tells us what values of χ² we'd expect to see **if the two variables were truly independent**."
+
+She draws a chi-square distribution curve:
+
+```
+         Chi-Square Distribution (df = 6)
+         
+    P(χ²)
+      |     
+ 0.15 |    ╱‾╲
+      |   ╱   ╲___
+ 0.10 |  ╱        ╲___
+      | ╱             ╲____
+ 0.05 |╱                   ╲_______
+      |__________________________|____╲______
+      0    5    10   15   20   25   30   35   40  χ²
+                          ↑            ↑
+                      Critical     Our test
+                      value        statistic
+                      (12.59)      (42.87)
+```
+
+"This distribution," David explains, "shows us the probability of different χ² values **if H₀ were true** (if channel and outcome were independent)."
+
+**Key Properties of Chi-Square Distribution:**
+
+1. **Always positive**: χ² ≥ 0 (because we're squaring differences)  
+2. **Right-skewed**: Most values cluster near zero, long tail to the right  
+3. **Shape depends on df**: More degrees of freedom → more symmetric, shifts right  
+4. **Mean equals df**: For df = 6, average χ² = 6 under H₀
+
+#### Why Chi-Square for Categorical Data?
+
+"But why this specific distribution?" Jennifer asks.
+
+Maria explains the mathematical foundation:
+
+"When we calculate our test statistic, we're summing up squared standardized differences:
+
+$$\chi^2 = \sum \frac{(O - E)^2}{E}$$
+
+Each term is approximately:
+$$\frac{(O - E)^2}{E} \approx \frac{(O - E)^2}{\sqrt{E} \times \sqrt{E}} = \left(\frac{O - E}{\sqrt{E}}\right)^2$$
+
+The part in parentheses, $\frac{O - E}{\sqrt{E}}$, is like a **z-score** (it's a standardized deviation). And remember from Lecture 2: when you square a standard normal variable (z), you get a chi-square distribution with df = 1."
+
+"So," David continues, "our χ² statistic is essentially summing up **squared z-scores** across all cells. When we have multiple cells, the sum of independent squared z-scores follows a chi-square distribution with degrees of freedom equal to the number of **independent** squared terms."
+
+#### Why df = (r-1)(c-1)?
+
+"Why not just df = rows × columns?" Jennifer asks.
+
+"Because not all cells are independent," Maria explains. "Once we know:
+
+- The row totals (600 for Social Media, 800 for Email, etc.)  
+- The column totals (460 Conversions, 1,229 Clicks, etc.)  
+- And we fill in all but one cell in each row
+
+...the last cell in each row is **determined**. It must make the row total correct."
+
+David illustrates:
+
+"For Social Media's 600 impressions:
+
+- If 147 converted and 312 clicked  
+- Then No Action **must be** 600 - 147 - 312 = 141
+
+We have no freedom to choose that last cell."
+
+"Same logic applies to columns," Maria adds. "So the number of 'free' cells is:
+
+- Rows: We can freely choose (r-1) rows, the last is determined  
+- Columns: We can freely choose (c-1) columns, the last is determined  
+- Total free choices: (r-1) × (c-1) = degrees of freedom"
+
+"For our table: (4-1)(3-1) = 3 × 2 = 6 degrees of freedom"
+
+#### Connecting to the Hypothesis Test
+
+"Now here's how it all comes together," David says, pointing to the distribution curve.
+
+"**Under H₀** (independence): 
+
+- Our χ² statistic should be relatively small  
+- Most of the probability mass is near the mean (df = 6)  
+- Values much larger than 6 are **rare**  
+
+**Our observed χ² = 42.87**:
+
+- Way out in the right tail  
+- Far beyond the critical value of 12.59  
+- Probability of seeing χ² ≥ 42.87 under H₀ is < 0.001
+
+**Conclusion**: Either:
+
+1. We witnessed an extremely rare event (< 0.1% chance), OR  
+2. H₀ is false—the variables are NOT independent"
+
+"We conclude #2," Maria summarizes. "The data are incompatible with independence."
+
+::: {.callout-note}
+## The Chi-Square Distribution: Key Insights
+
+**What it is**: A probability distribution for the sum of squared standard normal variables
+
+**When we use it**: 
+
+- Testing independence in contingency tables (this lecture)  
+- Testing goodness of fit (comparing observed to expected distributions)  
+- Testing variance (comparing sample variance to hypothesized value)
+
+**Why it works for categorical data**:
+$$\chi^2 = \sum \frac{(O - E)^2}{E} = \sum \left(\frac{O - E}{\sqrt{E}}\right)^2 = \sum (\text{standardized deviation})^2$$
+
+- Each term is approximately a squared z-score  
+- Sum of independent squared z-scores ~ χ²
+
+**Key properties**:
+
+- Always non-negative (χ² ≥ 0)  
+- Right-skewed, especially for small df  
+- Mean = df, Variance = 2×df  
+- As df increases, approaches normal distribution
+
+**Degrees of freedom for contingency tables**:
+$$df = (r-1)(c-1)$$
+
+- Accounts for constraints imposed by fixed row and column totals  
+- Represents number of cells we can freely choose before rest are determined
+
+**Interpretation**:
+
+- Small χ² (close to df): Observed ≈ Expected → Consistent with H₀  
+- Large χ² (far from df): Observed ≠ Expected → Evidence against H₀  
+- Critical value (at α = 0.05): Threshold beyond which we reject H₀  
+:::
+
+### Step 4: P-Value and Decision
+
+Using the chi-square distribution with df = 6:
+- **Critical value** at α = 0.05: χ²₀.₀₅,₆ = 12.59
+- **Test statistic**: χ² = 42.87
+- **P-value**: < 0.001
+
+**Decision:** Since χ² = 42.87 > 12.59 (or equivalently, p < 0.001 < 0.05), we **reject H₀**.
+
+### Step 5: Proper Interpretation
+
+Maria writes out the correct conclusion:
+
+**Statistical Conclusion:**  
+"We reject the null hypothesis of independence (χ² = 42.87, df = 6, p < 0.001). The data provide strong evidence that marketing channel and conversion outcome are statistically associated."
+
+**What This Means:**  
+"Conversion patterns differ across channels in ways unlikely to occur if channel and outcome were truly independent. However, this observational study cannot determine whether channel choice causes conversion differences, or whether confounding variables explain the association."
+
+**What We DON'T Know:**
+
+- Whether changing a customer's channel would change their conversion probability  
+- Whether product mix, customer intent, or other factors drive both channel exposure and conversion  
+- Whether the association holds within specific product categories or customer segments
+
+"See the difference?" David asks Jennifer's team. "Same test, same p-value, but we're not claiming causation. We're acknowledging association while being honest about limitations."
+
+::: {.callout-note}
+## Chi-Square Test Formula and Assumptions
+
+**Test Statistic:**
+$$\chi^2 = \sum_{i,j} \frac{(O_{ij} - E_{ij})^2}{E_{ij}}$$
+
+**Expected Frequency:**
+$$E_{ij} = \frac{(\text{Row}_i \text{ Total}) \times (\text{Column}_j \text{ Total})}{\text{Grand Total}}$$
+
+**Degrees of Freedom:**
+$$df = (r-1)(c-1)$$
+where r = number of rows, c = number of columns
+
+**Assumptions:**
+
+1. **Independent observations**: Each customer counted once  
+2. **Random sampling**: Data represents population  
+3. **Expected frequencies ≥ 5**: All E_{ij} ≥ 5 (if violated, combine categories)  
+4. **Fixed marginal totals**: Row and column totals are treated as fixed
+
+**Excel Functions:**
+```
+=CHISQ.TEST(observed_range, expected_range)    ' Returns p-value
+=CHISQ.INV.RT(alpha, df)                       ' Returns critical value  
+=CHISQ.DIST.RT(chi_square_stat, df)            ' Returns p-value from statistic
+```
+
+**Interpretation:**
+
+- Large χ² → Observed frequencies far from expected → Evidence against independence  
+- Small χ² → Observed frequencies close to expected → Insufficient evidence against independence  
+- P-value < α → Reject H₀ (conclude association exists)  
+- P-value ≥ α → Fail to reject H₀ (insufficient evidence of association)
+:::
+
+## Adding Confidence Intervals for Proportions
+
+"Chi-square tells us channels and outcomes are associated," Maria says. "But it doesn't quantify conversion rates with uncertainty. For that, we need confidence intervals."
+
+### Conversion Rate Confidence Intervals
+
+David calculates 95% CIs for each channel's conversion rate:
+
+**Formula for proportion CI:**
+$$\hat{p} \pm z_{\alpha/2} \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$$
+
+where $\hat{p}$ = sample proportion, $z_{0.025}$ = 1.96 for 95% CI
+
+**Results:**
+
+| **Channel** | **Conversions** | **Total** | **Rate** | **95% CI** |
+|:------------|:----------------|:----------|:---------|:-----------|
+| Social Media | 147 | 600 | 24.5% | (21.2%, 27.8%) |
+| Email | 150 | 800 | 18.75% | (16.0%, 21.5%) |
+| Search Ads | 89 | 400 | 22.25% | (18.2%, 26.3%) |
+| Display Ads | 74 | 600 | 12.3% | (9.8%, 14.8%) |
+
+"Notice," Maria points out, "Social Media's CI (21.2% to 27.8%) doesn't overlap with Email's CI (16.0% to 21.5%). That confirms they're significantly different."
+
+"But," David adds, "Social Media's CI (21.2% to 27.8%) DOES overlap with Search Ads' CI (18.2% to 26.3%). So while Social Media's point estimate is higher (24.5% vs 22.25%), we can't conclusively say Social Media beats Search Ads."
+
+Jennifer sees the implication: "So recommending we shift budget from Search Ads to Social Media might not be justified?"
+
+"Exactly," Maria confirms. "The uncertainty overlaps. You'd want more data before concluding Social Media is definitively better."
+
+## Cost-Effectiveness: The Missing Analysis
+
+"But there's an even bigger problem with the original recommendation," David says, pulling up a new spreadsheet.
+
+"Your report recommends shifting $150,000 to Social Media because it has the highest conversion rate. But **conversion rate isn't the only metric that matters**. What about cost-per-conversion?"
+
+Maria displays the cost analysis:
+
+| **Channel** | **Conv Rate** | **95% CI** | **Cost/Conv** | **95% CI** |
+|:------------|:--------------|:-----------|:--------------|:-----------|
+| **Email** | 18.75% | (16.0%, 21.5%) | **$187** | ($168, $206) |
+| Social Media | 24.5% | (21.2%, 27.8%) | **$306** | ($275, $337) |
+| Search Ads | 22.25% | (18.2%, 26.3%) | **$393** | ($348, $438) |
+| Display Ads | 12.3% | (9.8%, 14.8%) | **$703** | ($621, $785) |
+
+Jennifer's eyes widen. "Email has the **lowest** cost-per-conversion at $187, even though it has the lowest conversion rate?"
+
+"Exactly," David confirms. "Social Media converts at 24.5% vs Email's 18.75%—that's 30% better. But Social Media costs $306 per conversion vs Email's $187—that's 64% more expensive."
+
+"So which channel is actually better?" Jennifer asks.
+
+"It depends," Maria responds, "on:
+
+1. **Customer lifetime value (CLV)**: If converted customers are worth $1,000+, paying $306 vs $187 doesn't matter much  
+2. **Scale constraints**: Can Email scale to 10x volume at the same cost?  
+3. **Attribution**: Do customers see Social Media ads then convert via Email? (multi-touch attribution)  
+4. **Strategic goals**: Are you optimizing for volume (favor Social Media) or efficiency (favor Email)?"
+
+"Your original report," David emphasizes, "recommended a $150,000 shift based solely on conversion rate, ignoring cost-effectiveness entirely. That's incomplete analysis."
+
+::: {.callout-warning}
+## The Danger of Optimizing One Metric
+
+**Original Recommendation (flawed):**  
+
+"Social Media has highest conversion rate (24.5%) → Shift $150,000 to Social Media"
+
+**Problems:**
+
+1. Ignores cost-per-conversion ($306 vs Email's $187)  
+2. Ignores customer lifetime value by channel  
+3. Ignores scale/capacity constraints  
+4. Ignores multi-touch attribution  
+5. Based on 1 quarter of observational data  
+6. Makes causal claims from correlational evidence
+
+**Better Approach:**
+
+1. Calculate cost-per-conversion with confidence intervals  
+2. Estimate CLV by channel (if possible)  
+3. Test sensitivity to confounders (product type, customer segment)  
+4. Run small-scale pilot ($20K) before major reallocation  
+5. Set clear success metrics and evaluation timeline  
+6. Acknowledge observational limitations
+
+**Recommendation:**  
+"Before reallocating $150,000, conduct a 4-week pilot test with $20,000. Randomly assign 2,000 customers to channels, control for product type, and measure conversion rates, costs, and CLV. Use results to justify larger reallocation."
+:::
+
+## Potential Confounding: Simpson's Paradox
+
+"There's one more critical issue," Maria says. "Your analysis doesn't account for **confounding variables**."
+
+### The Product Mix Problem
+
+David creates a hypothetical scenario:
+
+"Suppose your client sells two product types:
+
+- **Premium products** (naturally convert at 30%)  
+- **Budget products** (naturally convert at 15%)
+
+And suppose your marketing strategy is:
+
+- Promote premium products mainly on Social Media  
+- Promote budget products mainly via Email
+
+**What would happen?**"
+
+He shows the data:
+
+**Overall (what you observed):**
+
+- Social Media: 24.5% conversion  
+- Email: 18.75% conversion  
+- Conclusion: Social Media appears better
+
+**Within Premium Products:**
+
+- Social Media: 28% conversion  
+- Email: 32% conversion  
+- Conclusion: Email is better!
+
+**Within Budget Products:**
+
+- Social Media: 14% conversion  
+- Email: 16% conversion  
+- Conclusion: Email is better!
+
+"This is Simpson's Paradox," Maria explains. "Social Media appears better overall, but Email is actually better for BOTH product types. The overall reversal happens because Social Media gets disproportionately assigned to the higher-converting product category."
+
+Jennifer looks stunned. "So our recommendation to shift to Social Media could be completely backwards?"
+
+"Possibly," David confirms. "Without controlling for product type, customer intent, time of day, and other confounders, you can't know if channels genuinely differ or if you're seeing selection bias."
+
+::: {.callout-important}
+## Simpson's Paradox in Marketing
+
+**Definition:** A trend that appears in overall data reverses when data are separated into subgroups.
+
+**Marketing Example:**
+
+- **Overall:** Channel A converts at 25%, Channel B at 20% → "A is better"  
+- **Premium products:** A converts at 22%, B at 28% → "B is better"  
+- **Budget products:** A converts at 18%, B at 19% → "B is better"
+
+**Why It Happens:**  
+Channel A is assigned disproportionately to premium products (which convert better naturally), making A appear better overall even though B outperforms A within each category.
+
+**How to Detect:**
+
+1. Stratify analysis by potential confounders (product type, customer segment, etc.)  
+2. Check if channel rankings hold within each stratum  
+3. If rankings reverse, you have confounding
+
+**Implication for PixelPerfect:**  
+Your overall channel rankings might reverse when controlling for:
+
+- Product category (electronics vs apparel vs home goods)  
+- Price point (premium vs budget)  
+- Customer demographics (age, gender, location)  
+- Time of day (morning vs evening)  
+- Day of week (weekday vs weekend)
+
+**Recommendation:** Before implementing $150,000 budget shift, stratify the analysis by product category and customer segment to ensure channel rankings hold within subgroups.
+:::
+
+## The Corrected Report: What David and Maria Delivered
+
+Five days after receiving PixelPerfect's request, David and Maria present their corrected analysis. Gone are the claims of "causation," "accepting H₀," and "99.9% confident."
+
+Instead, Jennifer sees:
+
+**Statistical Findings:**
+
+- Marketing channel and conversion outcome show strong statistical association (χ² = 42.87, df = 6, p < 0.001)  
+- This means conversion patterns differ across channels in ways unlikely under independence  
+- **However**, observational data cannot determine whether channels cause conversion differences  
+- Social Media's conversion rate: 24.5% (95% CI: 21.2%, 27.8%)  
+- Email's cost-per-conversion: $187 (95% CI: $168, $206) — lowest among all channels
+
+**Regional Analysis:**
+
+- Fail to reject hypothesis that regions have equal conversion rates (χ² = 0.90, df = 4, p = 0.64)  
+- This means: insufficient evidence of regional differences in this dataset  
+- **Does NOT mean** regions are proven equal — could be Type II error or confounding
+
+**Potential Confounding Factors:**
+
+- Product type may drive both channel selection and conversion (Simpson's Paradox risk)  
+- Customer intent likely differs by channel (high-intent vs browsers)  
+- Selection bias: Different customer demographics across channels  
+- Temporal factors: Time-of-day, day-of-week effects not controlled
+
+**Cost-Effectiveness:**
+| Channel | Conv Rate | Cost/Conv | Efficiency Rank |
+|:--------|:----------|:----------|:----------------|
+| Email | 18.75% | $187 | 1st (most efficient) |
+| Social Media | 24.5% | $306 | 2nd |
+| Search Ads | 22.25% | $393 | 3rd |
+| Display Ads | 12.3% | $703 | 4th |
+
+**Recommendations:**
+
+1. **Do NOT implement immediate $150,000 reallocation**
+   - Current analysis cannot support causal conclusions  
+   - Confounding factors not controlled  
+   - Cost-effectiveness varies dramatically by channel
+
+2. **Conduct controlled pilot test**
+   - Budget: $20,000 over 4 weeks  
+   - Randomly assign 2,000 customers to channels  
+   - Stratify by product category  
+   - Measure: conversion rate, cost-per-conversion, CLV, multi-touch attribution
+
+3. **Collect additional data**
+   - Product type/category for each interaction  
+   - Customer demographics and intent signals  
+   - Time-of-day and day-of-week patterns  
+   - Multi-touch attribution (customer journey)
+
+4. **Stratified analysis**
+   - Rerun chi-square tests within product categories  
+   - Check for Simpson's Paradox  
+   - Calculate cost-effectiveness by customer segment
+
+5. **If pilot succeeds, implement phased rollout**
+   - Month 1: Shift $30K, monitor results  
+   - Month 2: If successful, shift another $50K  
+   - Month 3: If still successful, complete reallocation  
+   - Set clear success criteria and decision rules upfront
+
+Jennifer reviews the corrected report carefully. "Three days ago, you recommended I invest $150,000 based on one chi-square test. Now you're recommending a $20,000 pilot with clear evaluation criteria."
+
+"That's right," Maria confirms. "The first recommendation confused association with causation. The second acknowledges what we know, what we don't know, and how to learn more."
+
+Every claim is qualified. Every limitation is acknowledged. Every recommendation accounts for uncertainty.
+
+"This," Jennifer says, "is analysis I can defend to my client. Not because it gives them the answer they want, but because it gives them the truth about what the data actually show."
+
+## Connecting the Complete Statistical Journey
+
+As David and Maria pack up, they reflect on their nine-month journey through the EMBA program.
+
+"Five companies, five statistical challenges," Maria says.
+
+**January — TechFlow Solutions:**
+
+- **Question**: "What happened in Q4?"  
+- **Tool**: Descriptive statistics  
+- **Lesson**: Calculate exact values, quantify variability, identify outliers  
+- **Error fixed**: "Around" → "Exactly"
+
+**April — PrecisionCast Industries:**
+
+- **Question**: "What will happen in Q2?"  
+- **Tool**: Probability distributions  
+- **Lesson**: Model uncertainty, calculate expected values, understand distributions  
+- **Error fixed**: "Pretty good" → "95% sensitivity, 49.6% PPV"
+
+**July — BorderMed Pharmaceuticals:**
+
+- **Question**: "What can we conclude?"  
+- **Tool**: Statistical inference  
+- **Lesson**: Quantify uncertainty, test hypotheses, acknowledge Type I/II errors  
+- **Error fixed**: "Proves efficacy" → "95% CI: 10.6 to 14.2 mmHg"
+
+**September — Desert Vine Hospitality (Lecture 4 - ANOVA):**
+
+- **Question**: "Do groups differ?"  
+- **Tool**: Analysis of variance  
+- **Lesson**: Compare multiple groups, control family-wise error, interpret post-hoc tests
+
+**October — PixelPerfect Marketing:**
+
+- **Question**: "Are categories related?"  
+- **Tool**: Chi-square tests  
+- **Lesson**: Association ≠ causation, never "accept H₀", interpret p-values correctly  
+- **Error fixed**: "Causes differences" → "Shows association; causation unclear"
+
+"Five different questions," David observes. "Five different statistical approaches. But they all share the same foundation."
+
+Maria nods. "Every analysis requires:
+
+1. **Precision over vagueness**: Calculate exact values, not approximations  
+2. **Quantified uncertainty**: Confidence intervals, p-values, power analysis  
+3. **Honest limitations**: Acknowledge what you don't know  
+4. **Proper interpretation**: Say what the test actually shows, not what you wish it showed  
+5. **Business context**: Connect statistics to decisions"
+
+"And," David adds, "they all transform the same fundamental problem: leaders who need to make decisions saying 'seems,' 'pretty good,' 'around,' 'proves,' 'causes'—and us turning that into 'statistically significant association,' 'fails to reject,' '95% confidence interval,' and 'insufficient evidence to determine causation.'"
+
+The journey from vague to precise. From overconfident to appropriately uncertain. From amateur interpretation to professional statistical reasoning.
+
+That's what these nine months taught them. And that's what they'll carry into their careers as data-driven business leaders.
+
+::: {.callout-note appearance="minimal"}
+*Categorical data analysis completes your core statistical toolkit. Combined with descriptive statistics, probability, inference, and ANOVA, you now have the methods to analyze any business data—continuous, discrete, or categorical. The key is not just running the tests correctly, but interpreting results honestly, acknowledging limitations transparently, and making recommendations that account for uncertainty.*
+:::
+
+
+## Looking Ahead: The Limits of What We've Learned
+
+As David and Maria finish their PixelPerfect presentation, Jennifer asks one final question.
+
+"This has been incredibly helpful," she says. "But I'm curious—with all these statistical tools we've learned, descriptive statistics, probability, inference, ANOVA, chi-square—can we predict exactly how much a customer will spend based on their demographics and behavior?"
+
+David and Maria exchange glances. "That's a great question," Maria responds. "And it reveals something important about what we've learned so far."
+
+### The Five Lectures: Comparing, Not Predicting
+
+David pulls up their statistical journey summary one more time:
+
+"Look at what all five lectures have in common," he says, pointing to the table:
+
+| **Lecture** | **Question** | **What We Can Do** | **What We Can't Do** |
+|:------------|:-------------|:-------------------|:---------------------|
+| 1: Descriptive | "What happened?" | Describe center, spread, shape | Predict individual values |
+| 2: Probability | "What will happen?" | Calculate probabilities, expected values | Predict precise outcomes |
+| 3: Inference | "What can we conclude?" | Test hypotheses, build CIs | Predict individual responses |
+| 4: ANOVA | "Do groups differ?" | Compare group means | Predict individual measurements |
+| 5: Chi-Square | "Are categories related?" | Test independence, association | Predict individual classifications |
+
+"Notice the pattern," Maria adds. "Every method we've used answers comparative questions:
+
+- Is this group different from that group?  
+- Is this variable associated with that variable?  
+- Is this mean significantly different from zero?  
+- Do these categories occur together more than by chance?"
+
+"But none of them," David emphasizes, "answer predictive questions like:
+
+- **How much** will Customer #2,401 spend?  
+- **Exactly what** conversion rate should we expect if we spend $50,000 on Social Media?  
+- **Which specific** customers should we target to maximize ROI?  
+- **How does** customer lifetime value **change** as we increase ad frequency?"
+
+Jennifer leans forward. "So all this statistical analysis we've done... we still can't predict?"
+
+"Correct," Maria confirms. "We can compare. We can test. We can describe associations. But we can't build a **prediction model**."
+
+### The Fundamental Limitation: Categories and Comparisons
+
+David explains the core issue:
+
+"Think about what PixelPerfect's chi-square test told us. Channel and conversion are associated. Social Media converts at 24.5%, Email at 18.75%. Great—we compared categories."
+
+"But suppose Jennifer asks: 'If we increase Social Media budget by $10,000, how many additional conversions should we expect?' The chi-square test can't answer that. It tells us channels differ, not **by how much** outcomes change when we change inputs."
+
+Maria adds another example: "Or suppose she asks: 'Can we predict which specific customers will convert based on their demographics, browsing behavior, and channel exposure?' Chi-square tells us these variables are associated, but it doesn't give us a prediction equation."
+
+"That's because," David continues, "everything we've learned treats variables as **categories** or **groups to compare**:
+
+- TechFlow: Compare Product A vs Product B vs Product C vs Product D  
+- PrecisionCast: Compare defective vs non-defective  
+- BorderMed: Compare treatment vs control (or sites)  
+- PixelPerfect: Compare Social Media vs Email vs Display vs Search"
+
+"But in the real world," Maria says, "many business variables are **continuous and related**:
+
+- Advertising spend (dollars) → Conversions (count)  
+- Customer age (years) → Purchase amount (dollars)  
+- Website visits (count) → Conversion probability (0-1)  
+- Product price (dollars) → Sales volume (units)"
+
+"To model those relationships," David concludes, "we need a different tool. We need **regression analysis**."
+
+### What Regression Analysis Adds
+
+Maria creates a new comparison:
+
+**What We've Learned (Lectures 1-5): Statistical Comparison**
+
+- Compare groups: Is Group A different from Group B?  
+- Test associations: Are Variable X and Variable Y related?  
+- Quantify uncertainty: What's the confidence interval for the difference?  
+- Make binary decisions: Reject H₀ or fail to reject?
+
+**What's Missing: Statistical Prediction**
+
+- Model relationships: **How does** Y change when X changes?  
+- Quantify effects: For every $1 increase in ad spend, conversions increase by ___  
+- Make predictions: **What value** of Y should we expect when X = 100?  
+- Control for confounders: What's the effect of X on Y **holding Z constant**?  
+- Optimize decisions: What value of X **maximizes** Y?
+
+"Chi-square told us channel and conversion are associated," David explains. "Regression will tell us **how much** conversion rates change when we shift from one channel to another, **controlling for** product type and demographics."
+
+"ANOVA told us that sites differ in blood pressure reduction," Maria adds. "Regression will tell us **how much** blood pressure decreases for each additional mg of medication dosage, **while accounting for** patient age and baseline BP."
+
+Jennifer's eyes light up. "So regression lets us build prediction models?"
+
+"Exactly," David confirms. "And that's Lecture 6."
+
+### The Statistical Toolkit: Complete vs. Comprehensive
+
+Maria draws a final distinction:
+
+"The toolkit you have now—descriptive statistics through chi-square—is **complete** for statistical comparison and testing:
+
+- You can describe any data  
+- You can test any hypothesis about group differences  
+- You can quantify uncertainty for any estimate  
+- You can evaluate associations between any categorical variables"
+
+"But," David adds, "your toolkit isn't yet **comprehensive** for business analytics:
+
+- You can't predict individual outcomes  
+- You can't model continuous relationships  
+- You can't control for multiple variables simultaneously  
+- You can't optimize decisions based on predicted outcomes"
+
+"Regression analysis," Maria concludes, "completes your transition from **statistical analyst** to **business analyst**. From answering 'Are these groups different?' to answering 'What should we expect to happen, and how can we optimize outcomes?'"
+
+### The Bridge to Lecture 6
+
+"So here's what happens next," David says to Jennifer. "You now know:
+
+- PixelPerfect's channels are **associated** with conversion outcomes (chi-square)  
+- Email is the most cost-effective channel (cost-per-conversion analysis)  
+- You should test for confounding before recommending budget shifts (Simpson's Paradox)"  
+
+"But you still don't know:" Maria continues:
+- **How many** conversions to expect if you spend $X on each channel  
+- **Which customers** are most likely to convert based on demographics + behavior  
+- **What mix** of channels maximizes conversions for a given budget  
+- **How** conversion rates change as you scale up channel spending"
+
+"To answer those questions," David says, "you need regression analysis. That's Lecture 6: **Building prediction models and quantifying relationships between continuous variables**."
+
+Jennifer nods slowly. "So we've learned to test and compare. Now we learn to predict and optimize."
+
+"Exactly," Maria confirms. "And that's when statistics becomes truly powerful for business decision-making."
+
+::: {.callout-note appearance="minimal"}
+**The Journey Continues:**
+
+**Lectures 1-5:** Statistical **comparison** and **testing**
+
+- Descriptive statistics: Describe data precisely  
+- Probability: Model uncertainty  
+- Inference: Generalize from samples honestly  
+- ANOVA: Compare multiple groups  
+- Chi-square: Test categorical associations
+
+**Lecture 6:** Statistical **prediction** and **modeling**
+
+- Simple regression: Model relationships between two variables  
+- Multiple regression: Control for confounders, predict outcomes  
+- Regression diagnostics: Validate model assumptions  
+- Business applications: Optimize decisions using predictive models  
+
+The toolkit isn't complete yet. But you're ready for the next level.
+:::
+
+
+## Practice Problems
+
+Now it's your turn to apply categorical data analysis using the PixelPerfect Marketing dataset.
+
+🔢 **Download the dataset**: Get `PixelPerfect_Q3_2025.xlsx` from your course materials.
+
+::: {.callout-note}
+## About This Dataset
+
+The dataset contains 2,400 customer interactions from PixelPerfect's Q3 2025 campaign:
+
+- **Marketing Channel**: Social Media, Email, Display Ads, Search Ads
+- **Outcome**: Conversion, Click, No Action
+- **Demographics**: Gender (Male, Female), Age Group (18-34, 35-54, 55+)
+- **Region**: West, Central, East
+- **Product Category**: Electronics, Apparel, Home Goods
+
+**Use this data** to complete the problems below.
+:::
+
+### Problem 1: Chi-Square Test of Independence (30 points)
+
+**Background**: The marketing team wants to know if conversion outcome depends on customer gender.
+
+**Required**:
+
+a. Create a contingency table with Gender (rows) and Outcome (columns)
+b. Calculate expected frequencies for each cell under independence
+c. Verify all expected frequencies ≥ 5
+d. Calculate the chi-square test statistic
+e. Determine degrees of freedom and critical value (α = 0.05)
+f. Calculate p-value using Excel's `CHISQ.TEST` function
+g. State your statistical conclusion (reject or fail to reject H₀)
+h. Write a 2-3 sentence **correct** interpretation (avoid claiming causation)
+
+**Excel Hints:**
+```
+=COUNTIFS(Gender_range, "Male", Outcome_range, "Conversion")   ' Observed frequencies
+=CHISQ.TEST(observed_range, expected_range)                    ' P-value
+```
+
+### Problem 2: Conversion Rate Confidence Intervals (25 points)
+
+**Background**: Calculate 95% confidence intervals for conversion rates by age group.
+
+**Required**:
+
+a. Calculate conversion rate for each age group (18-34, 35-54, 55+)
+b. Calculate 95% confidence interval for each conversion rate
+c. Identify which age groups have non-overlapping CIs (indicating significant differences)
+d. Create a visualization showing point estimates and CIs
+e. Write 3-4 sentences interpreting: Which age groups convert significantly differently? What are the business implications?
+
+**Formula:**
+$$\hat{p} \pm 1.96 \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$$
+
+### Problem 3: Testing for Confounding (30 points)
+
+**Background**: Check whether product category confounds the channel-outcome relationship (Simpson's Paradox).
+
+**Required**:
+
+a. Calculate overall conversion rates by channel (all products combined)
+b. Calculate conversion rates by channel **within Electronics category only**
+c. Calculate conversion rates by channel **within Apparel category only**
+d. Compare rankings: Do channels rank the same overall vs within categories?
+e. Conduct chi-square test for channel×outcome independence within each product category
+f. Write 4-5 sentences: Is there evidence of confounding? Do recommendations change when controlling for product category?
+
+### Problem 4: The Regional Analysis Revisited (15 points)
+
+**Background**: The original report claimed "we accept H₀" for regional differences (p = 0.64).
+
+**Required**:
+
+a. Conduct chi-square test for Region × Outcome independence
+b. Calculate the p-value
+c. Explain why "we accept H₀ that regions are equal" is **incorrect** language
+d. Provide the **correct** interpretation of p = 0.64
+e. List three possible reasons for a non-significant result
+f. Write 2-3 sentences: Should PixelPerfect conclude regions don't matter? Why or why not?
+
+---
+
+::: {.callout-warning}
+## Common Mistakes to Avoid
+
+**Association vs. Causation:**
+❌ "Chi-square proves that channel causes conversion differences"
+✅ "Chi-square shows channel and conversion are statistically associated; causation cannot be inferred from observational data"
+
+**Accepting H₀:**
+❌ "p = 0.64, so we accept H₀. Regions have equal conversion rates."
+✅ "p = 0.64, so we fail to reject H₀. Insufficient evidence that regional conversion rates differ."
+
+**P-Value Interpretation:**
+❌ "p < 0.001 means we're 99.9% confident the finding is correct"
+✅ "p < 0.001 provides strong evidence against H₀; these data would be very unlikely if variables were truly independent"
+
+**Confidence Intervals:**
+❌ Reporting point estimates without CIs
+✅ Always report: "Social Media: 24.5% (95% CI: 21.2%, 27.8%)"
+
+**Cost-Effectiveness:**
+❌ Recommending channels based solely on conversion rate
+✅ Considering both conversion rate AND cost-per-conversion
+
+**Confounding:**
+❌ Ignoring potential confounders in observational data
+✅ Stratifying analysis by product category, demographics, etc.
+:::
+
+---
+
+### Submission Requirements
+
+Submit the following:
+
+1. ☐ Excel workbook with all calculations clearly labeled
+2. ☐ Written report (3-4 pages) with:
+   - Statistical findings (test statistics, p-values, CIs)
+   - Proper interpretations (avoiding common errors)
+   - Business recommendations
+   - Acknowledgment of limitations
+3. ☐ Ensure all formulas are visible and documented
+
+---
+
+### Additional Resources
+
+- **Lecture 5 Notes**: Review chi-square formulas and interpretation guidelines
+- **Textbook**: Chapter 12 (Categorical Data Analysis)
+- **Excel Functions**: `CHISQ.TEST`, `CHISQ.DIST.RT`, `CHISQ.INV.RT`, `COUNTIFS`
+- **Office Hours**: [Insert your office hours]
+
+---
+
+**Total Points: 100**
+
+Good luck! Remember: The hardest part of categorical data analysis isn't the math—it's the interpretation. Focus on saying what the tests actually show, acknowledging what they don't show, and avoiding overconfident claims from observational data.
+
+---

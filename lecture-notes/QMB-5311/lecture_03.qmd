@@ -1,0 +1,1154 @@
+---
+title: "Interval Estimation and Hypothesis Testing"
+subtitle: "Lecture 3"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: true
+    code-tools: true
+    fig-width: 10
+    fig-height: 6
+---
+
+## Learning Objectives {.unnumbered}
+
+By the end of this chapter, you will be able to:
+
+1. ✅ Distinguish between sample statistics and population parameters
+2. ✅ Calculate and interpret confidence intervals for means and proportions
+3. ✅ Determine appropriate sample sizes for desired precision
+4. ✅ Conduct and interpret hypothesis tests properly
+5. ✅ Understand Type I and Type II errors and their business consequences
+6. ✅ Communicate statistical uncertainty appropriately in business contexts
+
+## Introduction: The $500 Million Question
+
+It's 9:30 AM on July 18, 2025. Dr. Katherine Walsh, Chief Medical Officer of BorderMed Pharmaceuticals, sits in the boardroom reviewing a Phase II clinical trial report. The stakes couldn't be higher: advancing to Phase III means committing **$500 million** over the next three years.
+
+She reads the executive summary:
+
+> VasoRelief reduced systolic blood pressure by 12.4 mmHg on average. This 12.4 mmHg reduction **represents the true efficacy** of the drug, as measured in our patient population... The *p*-value less than 0.001 **proves** that VasoRelief causes blood pressure reduction. We can say with **over 99.9% certainty** that VasoRelief works... We **accept** that VasoRelief's headache rate is the same as placebo. **There is no significant headache risk.**
+
+Dr. Walsh sets down the report and looks at her leadership team. "This is going to the FDA?"
+
+Her VP of Regulatory Affairs shifts uncomfortably. "The statistics look solid. Strong *p*-values, clear efficacy—"
+
+"The *language* doesn't look solid," Dr. Walsh interrupts. "'Represents the true efficacy'? We tested 85 patients. 'Proves the drug works'? That's not how *p*-values work. 'Accept the null hypothesis'? That's a statistics 101 error."
+
+The room falls silent.
+
+"This report will get us laughed out of the FDA," she continues. "Or worse, we'll invest half a billion dollars in Phase III only to discover our Phase II conclusions were overconfident. I need this analyzed by someone who understands statistical inference."
+
+Her Director of Clinical Operations speaks up. "There's a success story I heard about from the Southwest. Two EMBA students at UTEP who transformed a manufacturing company's quality control analysis. They'd worked with TechFlow and PrecisionCast Industries. Maybe they can help?"
+
+Dr. Walsh nods. "Get them. We have one week before the board meeting."
+
+The clinical team realizes they lack the statistical expertise to distinguish between proper and improper inference. Following the success stories from TechFlow Solutions and PrecisionCast Industries, they reach out to the EMBA program at The University of Texas at El Paso.
+
+Enter David Martinez and Maria Rodriguez, the same EMBA students who transformed vague marketing reports into statistical precision and converted "pretty good" probability estimates into quantified risks. But this time, the challenge is different. The calculations are correct. The errors are subtle. And the consequences of misinterpreting the results could cost lives.
+
+::: callout-warning
+## The Cost of Statistical Overconfidence
+
+When TechFlow said "around $767,000," they couldn't set budgets. That's expensive.
+
+When PrecisionCast said "tests are pretty good," they risked shipping defective parts. That's catastrophic.
+
+When BorderMed says "proves the drug works" and "no significant risk," they might: 
+ 
+- Commit $500M to a Phase III trial based on overconfident Phase II conclusions  
+- Miss real safety signals by misinterpreting "failure to reject"  
+- Harm patients by rushing an inadequately tested drug to market  
+- Waste resources on a drug whose true effect might be smaller than estimated
+
+In clinical trials, improper statistical inference doesn't just cost money. It costs lives.
+
+**The fix**: Acknowledge uncertainty. Report confidence intervals. Interpret hypothesis tests correctly. Understand Type I and Type II errors. Communicate what the data actually say, not what we wish they said.
+:::
+
+This chapter is about that transformation. From point estimates to interval estimates. From "proves" to "provides evidence." From treating sample statistics as truth to acknowledging uncertainty. From overconfidence to appropriate confidence.
+
+Welcome to statistical inference. The art and science of learning about populations from samples—honestly.
+
+## Connecting the Journey: From Description to Inference
+
+David and Maria sit in a conference room at BorderMed's El Paso facility, reviewing the clinical trial report. It's been six months since they started their EMBA program, and their statistical journey has followed a clear progression.
+
+"Remember January?" Maria says, pulling up their TechFlow analysis. "Sarah Chen asked us: 'What happened in Q4?' We calculated means, medians, standard deviations. Everything was about describing the past."
+
+David nods. "TechFlow's mean monthly revenue: $766,667. Product D z-score: -1.21. Those were **descriptive statistics**, precise measurements of what actually occurred in that specific dataset."
+
+"Then April," Maria continues, opening the PrecisionCast report. "Robert Martinez asked: 'What will happen next quarter?' We moved from description to prediction. P(Defect) = 0.0203. Expected defects = 1,117. We used **probability** to look forward."
+
+"But now," David says, tapping the BorderMed report, "Dr. Walsh is asking something different. She's not asking what happened in the trial or what will happen next. She's asking: 'What can we **conclude with confidence** about this drug? How **certain** can we be? What does this sample of 85 patients tell us about the **millions** of future patients who might take this drug?'"
+
+Maria leans forward. "That's **statistical inference**. Moving from sample to population. From 85 patients to the entire hypertensive population. From what we observed to what we can conclude."
+
+"And that's where this report goes off the rails," David adds. "Look at this line: 'This 12.4 mmHg reduction represents the **true efficacy** of the drug.' They're treating a sample statistic as if it's a population parameter."
+
+### The Three Questions of Statistics
+
+Maria opens her laptop and creates a quick comparison:
+
+| **Lecture** | **Company** | **Question** | **Statistical Approach** | **Key Concept** |
+|:------------|:------------|:-------------|:-------------------------|:----------------|
+| Lecture 1 | TechFlow | "What happened in Q4?" | Descriptive Statistics | Mean, SD, z-scores describe the sample |
+| Lecture 2 | PrecisionCast | "What will happen in Q2?" | Probability | P(Event), E(X) predict the future |
+| Lecture 3 | BorderMed | "What can we conclude?" | Statistical Inference | Confidence intervals, hypothesis tests acknowledge uncertainty |
+
+"Three different questions, three different statistical toolkits," David observes. "But they build on each other. We can't do inference without understanding variability from Lecture 1. We can't do inference without probability distributions from Lecture 2."
+
+"And we can't do Phase III planning without proper inference," Maria adds. "Let's show them how."
+
+## The First Error: Confusing Statistics with Parameters
+
+David opens the report to the executive summary and highlights the problematic statement.
+
+"Look at this," he says. "'VasoRelief reduced systolic blood pressure by 12.4 mmHg on average. This 12.4 mmHg reduction **represents the true efficacy** of the drug.'"
+
+Maria frowns. "What's wrong with that? They measured the reduction. It was 12.4 mmHg."
+
+"In their **sample** of 85 patients, yes," David explains. "But '**true efficacy**' implies this is the exact effect for the **entire population**, every future patient who might take this drug. That's the difference between a sample statistic and a population parameter." The populatin parameteris the true number. Because we do not know this, we must to statistical analysis to produce an estimate, or guess, of what the true value might be.
+
+He sketches on the whiteboard:
+
+```
+Sample Statistic vs. Population Parameter
+
+Sample (n = 85):                    Population (all future patients):
+x̄ = 12.4 mmHg                       μ = ???
+(what we observed)                  (true efficacy - unknown!)
+
+The sample statistic ESTIMATES the population parameter.
+But they're NOT the same thing!
+```
+
+### Why This Distinction Matters
+
+"Think about it this way," Maria says, understanding dawning. "If we tested a different random sample of 85 hypertensive patients, would we get *exactly* 12.4 mmHg again?"
+
+"Almost certainly not," David responds. "We might get 13.1 mmHg. Or 11.8 mmHg. Or 12.9 mmHg. That's **sampling variability**. Every sample will give us a slightly different result, even if they're all drawn from the same population."
+
+::: callout-note
+## Definition: Sampling Distributions
+
+When we repeatedly draw samples from a population and calculate a statistic (like the mean), those statistics form a **sampling distribution**.
+
+**Key Insight**: The sample mean $\bar{x}$ is itself a random variable. Different samples produce different sample means.
+
+**Standard Error**: The standard deviation of the sampling distribution.
+$$SE = \frac{s}{\sqrt{n}}$$
+
+For BorderMed's trial: $SE = \frac{8.6}{\sqrt{85}} = 0.93$ mmHg
+
+This tells us how much sample means typically vary from sample to sample.
+:::
+
+"So when BorderMed says '12.4 mmHg represents the true efficacy,'" Maria continues, "they're ignoring the fact that 12.4 is just **one possible outcome** from one sample. Other samples would give different results."
+
+"Exactly," David confirms. "The **true efficacy** (the population mean μ) is some fixed number we don't know. Our sample gave us 12.4 mmHg, which is our **best estimate**, but we need to acknowledge the uncertainty."
+
+::: callout-warning
+## The Danger of Treating Estimates as Truth
+
+**What BorderMed's report implies:**
+
+- We know *exactly* that VasoRelief reduces BP by 12.4 mmHg
+- This is the *true* effect for all patients
+- No uncertainty exists
+
+**The reality:**
+
+- We *observed* 12.4 mmHg in *one sample* of 85 patients
+- The true population mean could be anywhere from ~10 to ~14 mmHg
+- Substantial uncertainty exists
+
+**Business consequence:**
+If you plan Phase III dosing, sample size, and marketing claims assuming *exactly* 12.4 mmHg, you're building on false precision.
+:::
+
+## The Second Error: Missing Confidence Intervals
+
+"The bigger problem," David continues, "is that nowhere in this entire report do they provide confidence intervals."
+
+He flips through the pages. "They give us the sample mean: 12.4 mmHg. They give us the standard deviation: 8.6 mmHg. They give us the sample size: 85. But they never calculate or report confidence intervals."
+
+"Why does that matter?" Maria asks.
+
+"Because a confidence interval **quantifies** our uncertainty," David explains. "It tells us: based on this sample, here's a range of plausible values for the true population mean."
+
+### Calculating the Confidence Interval
+
+David pulls out his calculator. "Let's fix their first error. They should be reporting:
+
+**Sample Results:**  
+
+- Sample mean: $\bar{x} = 12.4$ mmHg  
+- Sample standard deviation: $s = 8.6$ mmHg  
+- Sample size: $n = 85$
+
+**Standard Error:**
+$$SE = \frac{s}{\sqrt{n}} = \frac{8.6}{\sqrt{85}} = 0.93 \text{ mmHg}$$
+
+**95% Confidence Interval:**
+
+For $n = 85$, we use the t-distribution with $df = 84$.
+
+Critical value: $t_{0.025, 84} \approx 1.99$
+
+$$\text{Margin of Error} = t \times SE = 1.99 \times 0.93 = 1.85 \text{ mmHg}$$
+
+$$\text{95% CI} = 12.4 \pm 1.85 = (10.55, 14.25) \text{ mmHg}$$
+
+Maria pauses. "Wait, you said 't-distribution.' I remember from Lecture 2 we used the normal distribution with z-scores. Why are we using t instead of z now?"
+
+"Great question," David responds. "Remember when we calculated z = 1.96 for 95% confidence with the normal distribution? That was based on knowing the population standard deviation σ."
+
+He writes on the whiteboard:
+
+```
+Normal (Z) vs. t-Distribution
+
+Use NORMAL (Z):                Use t-DISTRIBUTION:
+✓ Population SD (σ) known      ✓ Population SD (σ) unknown
+✓ OR large sample (n ≥ 30)     ✓ Use sample SD (s) instead
+                                ✓ Especially when n < 30
+
+BorderMed situation:
+• We DON'T know population σ
+• We only have sample s = 8.6
+• n = 85 (could use z, but t is more accurate)
+• Therefore: use t-distribution
+```
+
+"In real business situations," David explains, "we almost never know the population standard deviation. We only have our sample. So we estimate σ with s, but that introduces additional uncertainty."
+
+"The t-distribution accounts for that extra uncertainty," Maria realizes.
+
+"Exactly. The t-distribution is wider than the normal distribution, it has fatter tails. This gives us wider confidence intervals, which is appropriate when we're estimating the standard deviation from the sample."
+
+::: callout-note
+## The t-Distribution: When Uncertainty About Uncertainty Matters
+
+**Why t instead of z?**
+
+When we don't know the population standard deviation σ, we:  
+
+1. Estimate it with sample standard deviation s  
+2. This adds uncertainty (we're uncertain about the uncertainty!)  
+3. The t-distribution accounts for this extra uncertainty  
+
+**Key differences from normal distribution:**  
+
+- **Fatter tails**: More probability in the extremes  
+- **Wider intervals**: More conservative (appropriately so)  
+- **Depends on degrees of freedom**: df = n - 1  
+- **Approaches normal as n increases**: With large samples, t ≈ z
+
+**Degrees of freedom (df)**: Number of independent pieces of information used to estimate the standard deviation. For one sample: df = n - 1.
+
+**When sample size increases:**  
+
+- Small n: t-distribution much wider than normal  
+- Large n (≥30): t-distribution very similar to normal  
+- As n → ∞: t-distribution → normal distribution  
+
+**Example (95% confidence):**
+
+| Sample Size | df | t-critical | z-critical | Difference |
+|:------------|:---|:-----------|:-----------|:-----------|
+| n = 5 | 4 | 2.776 | 1.96 | +42% wider |
+| n = 15 | 14 | 2.145 | 1.96 | +9% wider |
+| n = 30 | 29 | 2.045 | 1.96 | +4% wider |
+| n = 85 | 84 | 1.989 | 1.96 | +1.5% wider |
+| n = 1000 | 999 | 1.962 | 1.96 | +0.1% wider |
+
+**Excel**:
+```markdown
+t-critical value: =T.INV.2T(alpha, df)
+z-critical value: =NORM.S.INV(1-alpha/2)
+```
+:::
+
+"So for BorderMed with n = 85," Maria works through it, "we use $t_{0.025, 84} = 1.99$ instead of $z_{0.025} = 1.96$. The difference is small because our sample is reasonably large."
+
+"Right," David confirms. "If they'd only had n = 15 patients, the t-critical value would be about 2.14, noticeably larger. The smaller the sample, the more the t-distribution penalizes us for not knowing σ."
+
+"This is actually a safety feature," Maria observes. "When we have less data, the t-distribution forces us to be more conservative by giving wider confidence intervals."
+
+"Exactly. It's statistics being appropriately humble about what we can conclude from limited data."
+
+::: callout-note
+## Definition: Confidence Interval
+
+A **95% confidence interval** for the population mean $\mu$ is:
+$$\bar{x} \pm t_{\alpha/2, n-1} \times \frac{s}{\sqrt{n}}$$
+
+**What it means:**
+
+If we were to repeat this study many times, approximately 95% of the confidence intervals we calculate would contain the true population mean.
+
+**What it does NOT mean:**  
+
+- "There's a 95% probability μ is in this interval" (μ is fixed, not random!)  
+- "95% of patients will have reductions in this range" (this is about the mean, not individuals!)
+
+**Excel:**
+```markdown
+=CONFIDENCE.T(0.05, standard_dev, sample_size)
+```
+Returns the margin of error. Add/subtract from sample mean.
+:::
+
+"So the correct statement would be?" Maria prompts.
+
+David writes it out:
+
+> "In our sample of 85 patients, we observed a mean blood pressure reduction of 12.4 mmHg (SD = 8.6). Based on this sample, we estimate that the true population mean reduction lies between **10.6 and 14.2 mmHg** (95% confidence interval). We are 95% confident that this interval contains the true population mean effect of VasoRelief."
+
+"That's *completely different* from saying '12.4 mmHg represents the true efficacy,'" Maria observes.
+
+### Why Confidence Intervals Matter for Business Decisions
+
+"Look at what the confidence interval tells us," David points to his calculation. "The **lower bound** is 10.6 mmHg. That's still above the FDA's 10 mmHg threshold for clinical significance. That's good news."
+
+"But the **upper bound** is 14.2 mmHg," Maria notes. "So the true effect could be as high as 14.2 or as low as 10.6. That's a range of 3.6 mmHg."
+
+"Right. And that uncertainty matters for Phase III planning," David explains. "If they design Phase III assuming the effect is exactly 12.4 mmHg, but it's actually closer to 10.6 mmHg, their sample size calculations will be wrong."
+
+::: callout-tip
+## Business Application: Confidence Intervals in Action
+
+**Scenario 1: Narrow CI (high precision)**  
+
+- 95% CI: (12.0, 12.8) mmHg  
+- Range: 0.8 mmHg  
+- Interpretation: Very precise estimate. High confidence about effect size.  
+- Decision: Can design Phase III with confidence.
+
+**Scenario 2: Wide CI (low precision)**  
+
+- 95% CI: (8.5, 16.3) mmHg  
+- Range: 7.8 mmHg  
+- Interpretation: Imprecise estimate. Effect could be weak or strong.  
+- Decision: Need larger Phase II or acknowledge major uncertainty in Phase III planning.
+
+**BorderMed's Actual CI: (10.6, 14.2) mmHg**  
+
+- Range: 3.6 mmHg  
+- Interpretation: Moderate precision. Effect likely clinically significant, but considerable uncertainty about exact magnitude.  
+- Decision: Proceed to Phase III but design for conservative estimate (~10-11 mmHg).
+:::
+
+## The Third Error: Misinterpreting P-Values
+
+Maria flips to the hypothesis testing section of the report and reads aloud:
+
+> "The *p*-value less than 0.001 **proves** that VasoRelief causes blood pressure reduction. This means there is less than 0.1% probability that the **drug is ineffective**. We can say with **over 99.9% certainty** that VasoRelief works."
+
+She looks up. "This sounds impressive. What's wrong with it?"
+
+David sighs. "Almost everything. This is one of the most common statistical misinterpretations in all of science. Let's break down what's wrong."
+
+### What P-Values Actually Mean
+
+"A *p*-value is the probability of observing data this extreme **if the null hypothesis were true**," David explains. "It's P(data|H₀), not P(H₀|data)."
+
+He writes on the whiteboard:
+
+```
+BorderMed's Hypothesis Test:
+
+* H₀: μ = 0 (drug has no effect)
+* Hₐ: μ > 0 (drug reduces blood pressure)
+
+Test statistic: t = 13.29
+p-value < 0.001
+
+CORRECT interpretation:
+"If the drug had NO effect (H₀ true), there's < 0.1% chance we'd observe 
+a mean reduction of 12.4 mmHg or more just by random chance."
+
+INCORRECT interpretation (what BorderMed wrote):
+"There's < 0.1% probability the drug is ineffective."
+"We can say with 99.9% certainty the drug works."
+```
+
+"See the difference?" David asks. "The p-value tells us P(seeing 12.4 mmHg | drug doesn't work). But BorderMed is claiming it tells us P(drug doesn't work | seeing 12.4 mmHg). Those are *completely different* probabilities."
+
+::: callout-note
+## Definition: P-Value
+
+**Formal definition**: The p-value is the probability of obtaining test results at least as extreme as the observed results, **assuming the null hypothesis is true**.
+
+**What it measures**: How surprising our data would be if H₀ were true.
+
+**What it is NOT**:  
+
+- ❌ The probability that H₀ is true  
+- ❌ The probability that the treatment doesn't work  
+- ❌ The probability we made a mistake  
+- ❌ One minus the probability that Hₐ is true  
+
+**What it IS**:  
+
+- ✅ The probability of seeing data this extreme if H₀ is true  
+- ✅ A measure of compatibility between data and H₀  
+- ✅ Evidence against H₀ (smaller p-value = stronger evidence)
+
+**Rule of thumb**: Small *p*-value = data would be very surprising if H₀ were true = evidence against H₀
+:::
+
+### The "Prosecutor's Fallacy"
+
+Maria thinks for a moment. "So it's like... if you found a defendant's fingerprint at a crime scene, you might say 'If this person is innocent, the probability of finding their fingerprint here is very low.' But you can't flip it around and say 'Therefore, there's a low probability this person is innocent.'"
+
+"Exactly!" David lights up. "That's called the 'prosecutor's fallacy' in law. It's the same logical error. P(evidence | innocence) ≠ P(innocence | evidence)."
+
+"So what *should* BorderMed say?" Maria asks.
+
+David writes out the correct interpretation:
+
+> "We obtained p < 0.001, indicating that if VasoRelief had no effect on blood pressure, results this extreme would occur less than 0.1% of the time by chance alone. This provides **strong evidence against** the null hypothesis and **supports the conclusion** that VasoRelief reduces blood pressure. However, we acknowledge that with α = 0.05, there remains a 5% chance of Type I error (false positive)."
+
+"Notice what we *don't* say," David points out. "We don't say 'proves.' We don't claim to know the probability the drug works. We don't claim 99.9% certainty. We simply say the data provide strong evidence against the null hypothesis."
+
+::: callout-warning
+## Common P-Value Misinterpretations
+
+**What the report said** ❌  
+"p < 0.001 proves the drug works with 99.9% certainty"
+
+**Why it's wrong**:  
+
+- "Proves" is too strong—statistics provides evidence, not proof  
+- P-values don't give probability hypotheses are true  
+- Confuses P(data|H₀) with P(H₀|data)
+
+**Correct interpretation** ✅  
+"p < 0.001 provides strong evidence against H₀, supporting the conclusion that VasoRelief reduces blood pressure"
+
+**Business impact**:  
+
+Overstating certainty leads to:  
+- Overconfident investment decisions  
+- Inadequate contingency planning  
+- Surprise when Phase III results differ from Phase II  
+- FDA skepticism of exaggerated claims  
+:::
+
+## The Fourth Error: "Accepting" the Null Hypothesis
+
+David flips to the safety analysis section. "Here's another critical error. Look at this headache rate analysis."
+
+He reads: "'We fail to reject the null hypothesis (p = 0.10 > 0.05). This means we **accept** that VasoRelief's headache rate is the same as placebo. There is **no significant headache risk**.'"
+
+Maria's eyes widen. "That's a safety endpoint. They're saying there's no risk?"
+
+"Based on failing to find statistical significance," David confirms. "This is dangerous. They're confusing 'absence of evidence' with 'evidence of absence.'"
+
+### The Asymmetry of Hypothesis Testing
+
+"In hypothesis testing, there's an asymmetry," David explains, drawing a diagram:
+
+```
+Hypothesis Test Outcomes:
+
+Small p-value (p < α):
+→ Reject H₀
+→ "Strong evidence against H₀"
+→ "Data support Hₐ"
+
+Large p-value (p ≥ α):
+→ Fail to reject H₀  
+→ "Insufficient evidence against H₀"
+→ "Cannot conclude Hₐ"
+→ ≠ "Accept H₀"
+→ ≠ "H₀ is true"
+
+```
+
+"When p > α, we have two possible explanations," he continues:
+
+* "**Explanation 1**: H₀ is actually true (no difference exists)  
+* **Explanation 2**: H₀ is false, but our sample was too small to detect the difference (Type II error)
+
+We can't distinguish between these! That's why we say 'fail to reject' not 'accept.'"
+
+::: callout-note
+## Definition: Fail to Reject vs. Accept
+
+**"Fail to reject H₀"** (correct):  
+
+- Insufficient evidence to conclude a difference exists  
+- Could be because: (a) no difference exists, or (b) sample too small  
+- Acknowledges uncertainty  
+- Leaves question open
+
+**"Accept H₀"** (incorrect):  
+
+- Implies we've proven no difference exists  
+- Ignores possibility of Type II error  
+- Overstates what the data show  
+- Closes question inappropriately
+
+**Legal analogy**:  
+
+- "Not guilty" ≠ "innocent"  
+- Insufficient evidence to convict ≠ proof of innocence  
+- Fail to reject H₀ ≠ accept H₀
+:::
+
+### The Specific Problem with BorderMed's Safety Analysis
+
+"Let's look at their actual numbers," Maria says, pulling up the data.
+
+"They tested whether the headache rate (27.1%) differs from placebo (20%)."
+
+David calculates: "With n = 85 and observed rate of 27.1%, they got z = 1.64 and p = 0.10."
+
+"Since p = 0.10 > α = 0.05, they failed to reject H₀," Maria continues. "But then they concluded: 'VasoRelief's headache rate is the same as placebo. No significant headache risk.'"
+
+"That's exactly backward," David says firmly. "Look at the numbers. The observed rate was 27.1%. The placebo rate was 20%. That's 7.1 percentage points higher. That's not 'no risk', that's a 35% increase!"
+
+He writes out what they should have said:
+
+> "We failed to reject the null hypothesis (p = 0.10). This indicates **insufficient statistical evidence** to conclude the headache rate differs from placebo. However, the observed rate was **numerically higher** (27.1% vs 20%, a 7.1 percentage point or 35% relative increase). Our failure to detect a significant difference may reflect **insufficient sample size** (Type II error) rather than true equivalence. This potential safety signal requires careful monitoring in Phase III trials with adequate statistical power."
+
+"See the difference?" David asks. "Instead of claiming 'no risk,' we acknowledge the numerical difference, consider Type II error, and recommend further investigation."
+
+::: callout-warning
+## The Danger of "Accepting" H₀ for Safety Endpoints
+
+**Why this error is especially dangerous in safety analysis:**
+
+**Efficacy (benefits)**:  
+
+- If you miss a real effect (Type II error), you might abandon a useful drug  
+- Consequence: Lost opportunity, but no harm to patients
+
+**Safety (risks)**:  
+
+- If you miss a real adverse event (Type II error), you might expose patients to harm  
+- Consequence: Patient injuries or deaths
+
+**BorderMed's error**: Claiming "no headache risk" when they actually have:  
+
+- Observed rate 35% higher than placebo  
+- Inadequate sample size (n=85) to detect moderate increases  
+- Only ~50% power to detect a 7% difference
+
+**Correct approach**:  
+
+- Acknowledge insufficient evidence  
+- Note numerical increase  
+- Highlight Type II error risk  
+- Call for larger safety studies
+:::
+
+## The Fifth Error: Ignoring Type I and Type II Errors
+
+"One thing completely missing from this report," Maria observes, "is any discussion of Type I and Type II errors."
+
+David nods. "They set α = 0.05 for their hypothesis tests, but never explain what that means. And they never consider the risk of Type II errors, especially for their safety endpoints."
+
+### Type I Error: The False Positive
+
+"Type I error is rejecting H₀ when it's actually true," David explains. "In BorderMed's efficacy test, that would mean concluding the drug works when it actually doesn't."
+
+He draws a table:
+
+```
+Type I Error (α = 0.05)
+
+Reality: H₀ is true (drug has no effect)
+Our decision: Reject H₀ (conclude drug works)
+Consequence: FALSE POSITIVE
+
+By setting α = 0.05, BorderMed accepts a 5% chance of this error.
+
+Business impact:
+- Invest $500M in Phase III for ineffective drug
+- Waste resources, time, and potentially harm patients
+- Regulatory rejection after costly trials
+```
+
+"The good news," Maria says, "is that their p < 0.001 is much smaller than α = 0.05. So the risk of Type I error for efficacy is low."
+
+"True," David agrees. "With such a small *p*-value and a confidence interval that doesn't include zero, we can be reasonably confident the drug has some effect. The question is whether that effect is large enough to matter clinically."
+
+### Type II Error: The False Negative
+
+"Type II error is *failing* to reject H₀ when it's actually false," David continues. "This is what we're worried about for the headache analysis."
+
+```
+Type II Error (β)
+
+Reality: Hₐ is true (drug does increase headaches)
+Our decision: Fail to reject H₀ (insufficient evidence)
+Consequence: FALSE NEGATIVE
+
+Probability of Type II error: β
+Power = 1 - β (probability of correctly detecting a real effect)
+
+BorderMed's headache test:
+- Observed: 27.1% vs 20% (7.1 percentage point difference)
+- p = 0.10 (not significant)
+- With n = 85, power ≈ 50% to detect this size difference
+- β ≈ 50% (50% chance of missing a real 7% increase!)
+```
+
+"So there's a coin flip's chance they're missing a real safety problem?" Maria asks, concerned.
+
+"Exactly," David confirms. "That's why their conclusion 'no significant headache risk' is so problematic. They had insufficient power to detect moderate increases in adverse events."
+
+::: callout-note
+## Definition: Type I and Type II Errors
+
+|  | **H₀ is TRUE** | **Hₐ is TRUE** |
+|:---|:---:|:---:|
+| **Reject H₀** | Type I Error (α) | ✓ Correct |
+| **Fail to reject H₀** | ✓ Correct | Type II Error (β) |
+
+**Type I Error (α)**:  
+
+- Reject H₀ when it's true (false positive)  
+- Probability = α (we control this)  
+- Common choice: α = 0.05 (5% risk)
+
+**Type II Error (β)**:  
+
+- Fail to reject H₀ when it's false (false negative)  
+- Probability = β (depends on sample size, effect size, α)  
+- Power = 1 - β (probability of detecting real effect)
+
+**Typical target**: Power = 80% or 90% (β = 20% or 10%)
+:::
+
+### Calculating Power and Sample Size
+
+"Let's show them what proper power analysis looks like," David suggests.
+
+He pulls up Excel and demonstrates:
+
+"For their headache analysis, they're testing:  
+- H₀: p = 0.20 (placebo rate)  
+- Observed: p̂ = 0.271 (7.1 percentage point increase)  
+- n = 85  
+- α = 0.05
+
+To calculate power to detect a 7.1 percentage point difference:
+
+**Power ≈ 48%**
+
+This means they have less than 50-50 odds of detecting this difference!"
+
+"What sample size would they need for adequate power?" Maria asks.
+
+David calculates: "For 80% power to detect a difference between 20% and 27.1%:
+
+$$n = \frac{(z_{\alpha/2} + z_\beta)^2[p_1(1-p_1) + p_2(1-p_2)]}{(p_1 - p_2)^2}$$
+
+$$n = \frac{(1.96 + 0.84)^2[0.20(0.80) + 0.271(0.729)]}{(0.071)^2} \approx 294$$
+
+They'd need about **300 patients per group** to have adequate power for this safety endpoint."
+
+::: callout-warning
+## The Consequences of Low Power
+
+**BorderMed's situation**:  
+
+- Efficacy test: Very high power (>99%), p < 0.001 ✓  
+- Safety test: Low power (~48%), p = 0.10 ⚠️
+
+**Problem**:  
+They can detect the benefit (BP reduction) but might miss the harm (increased headaches)
+
+**Why this matters**:  
+
+- Asymmetric risk: Missing a benefit ≠ Missing a harm  
+- For patient safety, high power is crucial for adverse event detection  
+- "Fail to reject" with low power provides false reassurance
+
+**Recommendation**:  
+Phase III must be powered for safety endpoints, not just efficacy. With n=600 total (300 per group), power to detect 7% difference >90%.
+:::
+
+## The Sixth Error: Ignoring Small Sample Sizes
+
+Maria scrolls through the site-specific analysis. "Look at this. Albuquerque site: n = 15 patients. They're reporting the mean (9.2 mmHg) as if it's just as reliable as El Paso's mean (n = 42)."
+
+David calculates the confidence intervals for each site:
+
+"Let's see the precision:
+
+**El Paso (n = 42)**:  
+
+- Mean: 13.8 mmHg  
+- SE = 8.6/√42 = 1.33  
+- 95% CI = 13.8 ± 2.68 = (11.1, 16.5)  
+- Width: 5.4 mmHg
+
+**Phoenix (n = 28)**:  
+
+- Mean: 11.6 mmHg  
+- SE = 8.6/√28 = 1.63  
+- 95% CI = 11.6 ± 3.28 = (8.3, 14.9)  
+- Width: 6.6 mmHg
+
+**Albuquerque (n = 15)**:  
+
+- Mean: 9.2 mmHg  
+- SE = 8.6/√15 = 2.22  
+- 95% CI = 9.2 ± 4.74 = (4.5, 13.9)  
+- Width: **9.4 mmHg** 🚨"
+
+"Look at that," Maria exclaims. "The Albuquerque confidence interval is almost 10 mmHg wide! It could be anywhere from 4.5 to 13.9."
+
+"And it overlaps completely with the other sites," David adds. "We can't conclude anything meaningful about site differences with such imprecise estimates."
+
+::: callout-note
+## The Effect of Sample Size on Precision
+
+**Standard Error**: $SE = \frac{s}{\sqrt{n}}$
+
+As $n$ increases, SE decreases, giving narrower confidence intervals:
+
+| Sample Size | Standard Error | 95% Margin of Error |
+|:------------|:---------------|:--------------------|
+| n = 15      | 2.22           | ±4.74 mmHg          |
+| n = 25      | 1.72           | ±3.67 mmHg          |
+| n = 50      | 1.22           | ±2.44 mmHg          |
+| n = 85      | 0.93           | ±1.84 mmHg          |
+| n = 100     | 0.86           | ±1.72 mmHg          |
+
+**Key insight**: Precision improves with square root of sample size. To cut margin of error in half, need 4× the sample size.
+
+**Excel**:
+```markdown
+Standard Error: =STDEV.S(range)/SQRT(COUNT(range))
+Margin of Error: =CONFIDENCE.T(0.05, STDEV.S(range), COUNT(range))
+```
+:::
+
+"The report should flag this," Maria says. "They should warn readers that the Albuquerque results are imprecise and shouldn't be over-interpreted."
+
+David writes out what should have been included:
+
+> ⚠️ **CAUTION: Small Sample Size**
+> 
+> The Albuquerque site (n=15) provides an imprecise estimate due to small sample size. The wide confidence interval (4.5 to 13.9 mmHg, spanning 9.4 mmHg) overlaps substantially with the other sites, making it impossible to determine if the lower observed mean reflects true site differences or sampling variability. Conclusions about site-specific effects should not be drawn from this small subsample.
+
+## Creating the Corrected Report
+
+After identifying all the errors, David and Maria spend the next three days creating a properly written clinical trial report. They follow the template from Lectures 1 and 2: take the same data, apply proper statistical methods, and communicate the uncertainty honestly.
+
+Their corrected report includes:
+
+### Proper Confidence Intervals
+
+Instead of: "12.4 mmHg represents the true efficacy"
+
+They write:
+
+> "In our sample of 85 patients, we observed a mean blood pressure reduction of 12.4 mmHg (SD = 8.6). Based on this sample, we estimate that the true population mean reduction lies between **10.6 and 14.2 mmHg** (95% confidence interval). We are 95% confident that this interval contains the true population mean effect of VasoRelief."
+
+### Proper P-Value Interpretation
+
+Instead of: "p < 0.001 proves the drug works with 99.9% certainty"
+
+They write:
+
+> "We obtained p < 0.001, indicating that if VasoRelief had no effect on blood pressure, results this extreme would occur less than 0.1% of the time by chance alone. This provides **strong evidence against** the null hypothesis and **supports the conclusion** that VasoRelief reduces blood pressure. However, we acknowledge that with α = 0.05, there remains a 5% chance of Type I error (false positive)."
+
+### Proper Treatment of "Fail to Reject"
+
+Instead of: "We accept that headache rates are the same. No significant headache risk."
+
+They write:
+
+> "We failed to reject the null hypothesis (p = 0.10). This indicates **insufficient statistical evidence** to conclude the headache rate differs from placebo. However, the observed rate was **numerically higher** (27.1% vs 20%, a 35% relative increase). ⚠️ **RISK OF TYPE II ERROR**: With n=85, our statistical power to detect a 7 percentage point difference is approximately 50%. This means we had a 50% chance of failing to detect a real safety issue. **Phase III trials should specifically monitor headache rates with adequate power** (n≈300 per group) to definitively assess this potential safety signal."
+
+### Sample Size Justification
+
+They add a proper *a priori* sample size calculation:
+
+> "Sample size was calculated to detect a minimum clinically important difference of 10 mmHg with 90% power at α = 0.05, assuming SD = 8.0 mmHg:
+>
+> $$n = \left[\frac{(z_{1-\alpha/2} + z_{1-\beta}) \times \sigma}{\delta}\right]^2 = \left[\frac{(1.96 + 1.28) \times 8.0}{10}\right]^2 = 67$$
+>
+> We enrolled 85 patients to provide a safety margin above the minimum required sample size."
+
+### A Comprehensive Limitations Section
+
+They add a section completely missing from the original:
+
+> **Study Limitations**
+>
+> Several important limitations should be considered:
+>
+> - **Limited sample size**: With n=85, our estimates have moderate precision (margin of error ±1.84 mmHg)
+> - **Unbalanced site enrollment**: Albuquerque site (n=15) provides imprecise estimates with wide confidence intervals
+> - **Insufficient power for safety endpoints**: With n=85, statistical power to detect moderate increases in adverse event rates is limited
+> - **Phase II exploratory nature**: This trial was designed to estimate effect sizes and inform Phase III design, not to provide definitive evidence of efficacy
+
+### Measured Recommendations
+
+Instead of: "The drug demonstrates CLEAR EFFICACY... should proceed to Phase III"
+
+They write:
+
+> "Based on promising Phase II results (estimated 10.6-14.2 mmHg reduction with 95% confidence), we recommend Phase III trials to **confirm** efficacy in a larger, more diverse population. The Phase II results are **encouraging but not definitive**—they provide confidence intervals to guide Phase III design, not proof of effectiveness."
+
+## The Board Presentation
+
+One week later, David and Maria present their corrected analysis to BorderMed's board of directors.
+
+Dr. Walsh introduces them. "David and Maria have reviewed our Phase II results with a critical statistical eye. Their findings are... illuminating."
+
+David opens his presentation. "The good news: your drug appears to work. The bad news: your original report dramatically overstated your certainty."
+
+He clicks to the comparison slide:
+
+**Original Report Errors**:
+
+1. Treated sample statistic as population parameter ("true efficacy")  
+2. No confidence intervals reported  
+3. Misinterpreted *p*-values ("proves," "99.9% certainty")  
+4. "Accepted" null hypothesis for safety endpoint  
+5. No discussion of Type I/II errors  
+6. Ignored small sample size issues
+
+Maria takes over. "Here's what we can actually conclude with appropriate statistical confidence:
+
+**Efficacy**: Strong evidence of blood pressure reduction
+
+- Sample mean: 12.4 mmHg  
+- **95% CI: 10.6 to 14.2 mmHg**  
+- Both bounds exceed FDA's 10 mmHg threshold ✓  
+- p < 0.001 provides strong evidence against H₀  
+
+**Response Rate**: Promising but uncertain
+
+- Sample: 68.2% achieved target BP  
+- **95% CI: 58.3% to 78.1%**  
+- Lower bound only modestly better than existing agents
+
+**Safety Concern**: Insufficient evidence, not "no risk"
+
+- Headache rate numerically higher (27.1% vs 20%)  
+- Failed to reject H₀, but **⚠️ 50% Type II error risk**  
+- Phase III must be adequately powered for safety endpoints
+
+**Site Heterogeneity**: Cannot assess with confidence
+
+- Albuquerque (n=15): CI too wide for meaningful conclusions  
+- All site CIs overlap substantially"  
+
+One board member raises his hand. "So... should we proceed to Phase III or not?"
+
+"Yes," David answers. "But with eyes wide open about the uncertainty. Your Phase II suggests the drug works, but you need to:
+
+1. **Design Phase III conservatively**: Assume effect closer to lower bound (10-11 mmHg)
+2. **Increase sample size**: Target n=300 per group for adequate power on safety endpoints
+3. **Pre-specify safety monitoring**: Headache rates need definitive assessment
+4. **Budget for uncertainty**: The true effect could be anywhere in the 10.6-14.2 range"
+
+"The original report set you up to be overconfident," Maria adds. "You might have committed $500M based on point estimates, only to discover Phase III results differ from your expectations. Our report gives you the **range** of plausible outcomes so you can plan appropriately."
+
+Dr. Walsh nods slowly. "This is exactly what we needed. The FDA would have torn apart our original report. Now we have honest uncertainty estimates we can defend."
+
+::: callout-tip
+## Key Takeaways: Statistical Inference Done Right
+
+**Always Report Confidence Intervals**:  
+
+- Point estimates alone are insufficient  
+- CIs quantify uncertainty and precision  
+- Enable evidence-based planning  
+
+**Interpret P-Values Correctly**:  
+
+- P(data|H₀), not P(H₀|data)  
+- "Evidence against" not "proof"  
+- Never claim "proves" or "X% certain hypothesis is true"
+
+**Never "Accept" H₀**:  
+
+- "Fail to reject" ≠ "Accept"  
+- Consider Type II error risk  
+- Especially critical for safety endpoints
+
+**Acknowledge Type I and Type II Errors**:  
+
+- α = probability of false positive (you control)  
+- β = probability of false negative (depends on n, effect size)  
+- Asymmetric consequences: missing harms ≠ missing benefits
+
+**Respect Sample Size Limitations**:  
+
+- Small samples → wide CIs → imprecise estimates  
+- Calculate required n *before* study  
+- Flag subgroups with inadequate precision
+
+**Communicate Uncertainty Honestly**:  
+
+- Use ranges, not point estimates  
+- Acknowledge limitations  
+- Make recommendations that account for uncertainty
+:::
+
+## Connecting the Statistical Journey
+
+As they pack up after the presentation, Maria reflects on their six-month journey.
+
+"January: TechFlow taught us to calculate precise statistics from data."
+
+"April: PrecisionCast taught us to use probability for prediction," David adds.
+
+"July: BorderMed taught us the hardest lesson, acknowledging what we **don't** know."
+
+Maria nods. "Descriptive statistics describe the sample. Probability predicts the future. But statistical inference? That's about honestly assessing what a sample can tell us about a population, and what it can't."
+
+"And in some ways," David observes, "this is the most important skill for business. Anyone can calculate a mean. But knowing when to say 'we need more data' or 'our estimate is too imprecise'? That takes judgment informed by proper statistical inference."
+
+"Three companies, three questions, three statistical approaches," Maria summarizes. "But they all lead to the same principle: **be precise about what you know, and honest about what you don't**."
+
+
+## Chapter Summary: From Samples to Populations
+
+Seven days after Dr. Walsh's initial request, David and Maria present their final corrected report. Gone are the phrases "true efficacy," "proves," and "accept the null hypothesis."
+
+In their place:
+
+**Statistical Inference Done Right**:  
+
+**Confidence Intervals** (not just point estimates):  
+
+- Mean BP reduction: 12.4 mmHg, 95% CI (10.6, 14.2)  
+- Response rate: 68.2%, 95% CI (58.3%, 78.1%)  
+- Site-specific CIs acknowledging precision differences
+
+**Proper P-Value Interpretation** (not "proves"):  
+
+- "Strong evidence against H₀" not "proves drug works"  
+- "Supports the conclusion that" not "99.9% certain that"  
+- P(data|H₀) explained correctly
+
+**Appropriate Handling of Non-Significance** (not "accept"):
+
+- "Insufficient evidence" not "no difference exists"  
+- Type II error risk quantified (50% for headache test)  
+- Safety signals flagged for Phase III investigation
+
+**Power and Sample Size** (not vague justifications):
+
+- *A priori* calculation shown with formula  
+- Phase III requirements specified (n=300/group)  
+- Power inadequacy for safety endpoints acknowledged
+
+**Honest Communication of Uncertainty**:
+
+- Limitations section added  
+- Small sample sizes flagged  
+- Recommendations account for range of plausible effects
+
+The board approves the Phase III trial, but with the conservative design that proper statistical inference demands. The corrected report provides defendable estimates the FDA will respect.
+
+"This," Dr. Walsh says, "is what statistical inference should look like."
+
+::: {.callout-important}
+## The Three Pillars of Statistical Inference
+
+After three lectures and three companies, David and Maria have learned the complete toolkit:
+
+**Lecture 1: Descriptive Statistics** (TechFlow)
+
+- **Question**: "What happened?"  
+- **Tools**: Mean, median, SD, z-scores, correlation  
+- **Purpose**: Precisely describe the sample at hand  
+- **Output**: Exact statistics from observed data
+
+**Lecture 2: Probability** (PrecisionCast)
+
+- **Question**: "What will happen?"  
+- **Tools**: P(Event), E(X), binomial, normal distributions  
+- **Purpose**: Predict future outcomes under uncertainty  
+- **Output**: Probabilities and expected values
+
+**Lecture 3: Statistical Inference** (BorderMed)
+
+- **Question**: "What can we conclude?"  
+- **Tools**: Confidence intervals, hypothesis tests, power analysis  
+- **Purpose**: Learn about populations from samples, honestly  
+- **Output**: Estimates with quantified uncertainty
+
+**The Progression**:
+
+- Descriptive statistics **describe** what you have  
+- Probability **predicts** what might happen  
+- Statistical inference **generalizes** from sample to population **with appropriate uncertainty**  
+
+**The Integration**:
+
+- You need descriptive statistics (Lecture 1) to calculate sample statistics  
+- You need probability distributions (Lecture 2) to build sampling distributions  
+- You use both to do statistical inference (Lecture 3) properly  
+
+All three are essential for data-driven decision making.
+:::
+
+
+## Looking Ahead
+
+David and Maria have now completed the core of statistical inference: descriptive statistics, probability, and estimation/hypothesis testing for single populations.
+
+But Dr. Walsh has one more question.
+
+"Your report mentions that we can't determine if site differences are real or just sampling variability," she says. "You recommended ANOVA testing. Can you help us with that?"
+
+Maria smiles. "Actually, that's next lecture, Lecture 4. Next lecture is about comparing means and variances between groups. After that, we'll tackle ANOVA for comparing multiple groups simultaneously."
+
+"But before we get there," David adds, "we need to master the next building block: inference about means when we have *two* populations to compare, and inference about variances."
+
+The journey continues. From describing samples, to predicting futures, to generalizing to populations, and next, to comparing populations.
+
+The toolkit expands. The power grows. The decisions improve.
+
+That's the promise of statistics.
+
+
+## Practice Problems
+
+Now it's your turn to apply statistical inference. These problems use the BorderMed clinical trial dataset and mirror the types of analyses David and Maria performed.
+
+**Download the dataset**: Get `BorderMed_Phase2_Trial.xlsx` from your course materials before starting.
+
+::: {.callout-note}
+## About This Dataset
+
+The dataset contains individual-level data for 85 patients:
+- Baseline systolic BP
+- Week 12 systolic BP
+- Change in systolic BP
+- Site (El Paso, Phoenix, Albuquerque)
+- Adverse events (headache: yes/no)
+- Demographics (age, sex)
+
+**Use this data** to complete the problems below.
+:::
+
+### Problem Set 1: Confidence Intervals (30 points)
+
+**Part A: Mean Blood Pressure Reduction (15 points)**
+
+Using the full sample (n = 85):
+
+1. Calculate the sample mean reduction in systolic BP
+2. Calculate the sample standard deviation
+3. Calculate the standard error
+4. Find the appropriate t-critical value for 95% confidence
+5. Calculate the 95% confidence interval
+6. Interpret your interval in one sentence (what does "95% confident" mean?)
+7. Does your interval support the FDA's 10 mmHg threshold? Explain.
+
+**Part B: Response Rate (15 points)**
+
+Calculate the proportion of patients who achieved systolic BP < 140 mmHg at week 12.
+
+1. Calculate the sample proportion
+2. Calculate the standard error for a proportion
+3. Calculate the 95% confidence interval for the population proportion
+4. The original report claimed this response rate is "superior to existing agents (50-60%)." Based on your confidence interval, is this claim justified?
+
+### Problem Set 2: Hypothesis Testing (35 points)
+
+**Part A: Efficacy Test (15 points)**
+
+Test whether VasoRelief significantly reduces blood pressure:
+
+1. State null and alternative hypotheses
+2. Calculate the test statistic
+3. Find the p-value
+4. State your decision (reject or fail to reject H₀) at α = 0.05
+5. Write a proper interpretation (2-3 sentences, avoiding common p-value misinterpretations)
+
+**Part B: Safety Test (20 points)**
+
+Test whether the headache rate differs from the known placebo rate of 20%:
+
+1. State null and alternative hypotheses
+2. Calculate the observed proportion who experienced headaches
+3. Calculate the z-test statistic for proportions
+4. Find the p-value (two-tailed)
+5. State your decision at α = 0.05
+6. **Critical thinking**: The original report concluded "no significant headache risk." Explain why this conclusion is problematic, considering:
+   - The numerical difference between observed and placebo rates
+   - The concept of Type II error
+   - The implications for patient safety
+
+### Problem Set 3: Sample Size and Power (20 points)
+
+**Part A: Required Sample Size (10 points)**
+
+BorderMed wants to design Phase III to detect a minimum effect of 9 mmHg with 90% power at α = 0.05.
+
+1. Using SD = 8.6 mmHg, calculate the required sample size per group
+2. How does this compare to their Phase II sample (n = 85 total)?
+3. Explain why Phase III needs a larger sample even though Phase II "worked"
+
+**Part B: Power Analysis for Safety (10 points)**
+
+For the headache endpoint:
+
+1. With n = 85 and observed rates of 27.1% vs 20% (placebo), the power was approximately 48%. Explain what "48% power" means in context.
+2. Calculate the required sample size per group to achieve 80% power for detecting this difference
+3. Explain why adequate power is especially important for safety endpoints
+
+### Problem Set 4: Site-Specific Analysis (15 points)
+
+Calculate 95% confidence intervals for mean BP reduction at each site:
+
+1. **El Paso** (n = 42, mean = 13.8 mmHg): Calculate CI
+2. **Phoenix** (n = 28, mean = 11.6 mmHg): Calculate CI  
+3. **Albuquerque** (n = 15, mean = 9.2 mmHg): Calculate CI
+4. Compare the widths of these three confidence intervals. What does the difference in widths tell you?
+5. Do the confidence intervals provide strong evidence that sites differ in true efficacy? Explain.
+6. Why should we be especially cautious about interpreting the Albuquerque results?
+
+::: {.callout-tip collapse="true"}
+## Excel Functions You'll Need
+
+**Descriptive Statistics**:
+```
+=AVERAGE(range)
+=STDEV.S(range)
+=COUNT(range)
+```
+
+**Confidence Intervals**:
+```
+Standard Error: =STDEV.S(range)/SQRT(COUNT(range))
+t-critical value: =T.INV.2T(0.05, degrees_freedom)
+Margin of Error: =CONFIDENCE.T(0.05, stdev, n)
+```
+
+**Hypothesis Tests**:
+```
+t-test statistic: =T.TEST(range1, range2, tails, type)
+p-value for t-test: =T.DIST.2T(test_statistic, df)
+z-test for proportion: Use formula =(p_hat - p0)/SQRT(p0*(1-p0)/n)
+```
+
+**Sample Size** (use formula):
+$$n = \left[\frac{(z_{1-\alpha/2} + z_{1-\beta}) \times \sigma}{\delta}\right]^2$$
+
+Where:
+- $z_{1-\alpha/2}$ = 1.96 for 95% confidence
+- $z_{1-\beta}$ = 0.84 for 80% power, 1.28 for 90% power
+- $\sigma$ = standard deviation
+- $\delta$ = minimum detectable difference
+:::
+
